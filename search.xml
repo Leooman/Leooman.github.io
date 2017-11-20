@@ -1,0 +1,1115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+    
+    <entry>
+      <title><![CDATA[公众号支付]]></title>
+      <url>/2017/11/09/%E5%85%AC%E4%BC%97%E5%8F%B7%E6%94%AF%E4%BB%98/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p><strong>微信公众号支付类</strong></p>
+</blockquote>
+<pre><code>class WxPayService{
+    //=======【证书路径设置】=====================================
+    //证书路径,注意应该填写绝对路径
+    protected $SSLCERT_PATH = &apos;apiclient_cert.pem&apos;;
+    protected $SSLKEY_PATH =  &apos;apiclient_key.pem&apos;;
+    //=======【基本信息设置】=====================================
+    protected $APPID = &apos;&apos;;//填写微信公众号appid
+    protected $MCHID = &apos;&apos;;//支付商户号
+    protected $KEY = &apos;&apos;; //商户支付API密钥
+    protected $APPURL = &apos;https://api.mch.weixin.qq.com/pay/unifiedorder&apos;;//API请求地址
+
+    /**
+     * 微信公众号支付主函数
+     */
+    function pay($body,$fee,$openid, $notify_url){
+        $Parameters=array();
+          $Parameters[&apos;appid&apos;]=$this-&gt;APPID;
+        $Parameters[&apos;mch_id&apos;]=$this-&gt;MCHID;
+        $Parameters[&apos;spbill_create_ip&apos;]=$_SERVER[&apos;SERVER_ADDR&apos;];
+        $Parameters[&apos;nonce_str&apos;]=$this-&gt;createNonceStr();
+        $Parameters[&apos;body&apos;]=$body;//商品描述
+        $Parameters[&apos;out_trade_no&apos;]=&apos;Leooman&apos;.time().rand(10000, 99999);//自定义订单号，保持唯一性
+        $Parameters[&apos;total_fee&apos;]=$fee;
+        $Parameters[&apos;notify_url&apos;]=$notify_url;//通知地址
+        $Parameters[&apos;trade_type&apos;]=&quot;JSAPI&quot;;//交易类型
+        $Parameters[&apos;openid&apos;]=$openid;//交易类型为JSAPI时此参数必填
+        $Parameters[&apos;sign&apos;]=$this-&gt;getSign($Parameters);
+        //选填参数
+        //$Parameters[&apos;attach&apos;]=&quot;微信支付&quot;;//附加数据
+        //$Parameters[&apos;sub_mch_id&apos;]=&quot;&quot;;//子商户号
+        //$Parameters[&apos;device_info&apos;]=&quot;&quot;;//设备号
+        //$Parameters[&apos;goods_tag&apos;]=&quot;&quot;;//商品标记
+        //$Parameters[&apos;product_id&apos;]=&quot;&quot;;//商品ID
+        //$Parameters[&apos;time_start&apos;]=date(&quot;YmdHis&quot;);//交易起始时间
+        //$Parameters[&apos;time_expire&apos;]=date(&quot;YmdHis&quot;, time() + 600);//交易结束时间
+        $xml=$this-&gt;arrayToXml($Parameters);
+        $response=$this-&gt;postXmlSSLCurl($xml,$this-&gt;APPURL);
+        $result=$this-&gt;xmlToArray($response);
+        $jsApiParameters = $this-&gt;GetJsApiParameters($result);
+        return $jsApiParameters;
+    }
+
+    function GetJsApiParameters($UnifiedOrderResult){
+        $orderParameters[&apos;appId&apos;]=$UnifiedOrderResult[&quot;appid&quot;];
+        $orderParameters[&apos;timeStamp&apos;]=time();
+        $orderParameters[&apos;nonceStr&apos;]=$UnifiedOrderResult[&quot;nonce_str&quot;];
+        $orderParameters[&apos;package&apos;]=&quot;prepay_id=&quot; . $UnifiedOrderResult[&apos;prepay_id&apos;];
+        $orderParameters[&apos;signType&apos;]=&quot;MD5&quot;;
+        $orderParameters[&apos;paySign&apos;]=$this-&gt;getSign($orderParameters);
+        $parameters = json_encode($orderParameters);
+        return $parameters;
+    }
+
+    /**
+     *  作用：格式化参数，签名过程需要使用
+     */
+    function formatBizQueryParaMap($paraMap, $urlencode)
+    {
+        $buff = &quot;&quot;;
+        ksort($paraMap);
+        foreach ($paraMap as $k =&gt; $v)
+        {
+            if($urlencode)
+            {
+               $v = urlencode($v);
+            }
+            $buff .= $k . &quot;=&quot; . $v . &quot;&amp;&quot;;
+        }
+        $reqPar;
+        if (strlen($buff) &gt; 0) 
+        {
+            $reqPar = substr($buff, 0, strlen($buff)-1);
+        }
+        return $reqPar;
+    }
+
+    /**
+     *  作用：签名生成
+     */
+    function getSign($Obj)
+    {
+        foreach ($Obj as $k =&gt; $v)
+        {
+            $Parameters[$k] = $v;
+        }
+        //签名步骤一：按字典序排序参数
+        ksort($Parameters);
+        $String = $this-&gt;formatBizQueryParaMap($Parameters, false);
+        //签名步骤二：在string后加入KEY
+        $String = $String.&quot;&amp;key=&quot;.$this-&gt;KEY;
+        //签名步骤三：MD5加密
+        $String = md5($String);
+        //签名步骤四：所有字符转为大写
+        $result_ = strtoupper($String);
+        return $result_;
+    }
+
+    /**
+     *  作用：产生随机字符串，不长于32位
+     */
+    function createNoncestr( $length = 32 ) 
+    {
+        $chars = &quot;abcdefghijklmnopqrstuvwxyz0123456789&quot;;  
+        $str =&quot;&quot;;
+        for ( $i = 0; $i &lt; $length; $i++ )  {  
+            $str.= substr($chars, mt_rand(0, strlen($chars)-1), 1);  
+        }  
+        return $str;
+    }
+
+    /**
+     *  作用：array转xml
+     */
+    function arrayToXml($arr)
+    {
+        $xml = &quot;&lt;xml&gt;&quot;;
+        foreach ($arr as $key=&gt;$val)
+        {
+            if (is_numeric($val)){
+                $xml.=&quot;&lt;&quot;.$key.&quot;&gt;&quot;.$val.&quot;&lt;/&quot;.$key.&quot;&gt;&quot;;
+            }else{
+                $xml.=&quot;&lt;&quot;.$key.&quot;&gt;&lt;![CDATA[&quot;.$val.&quot;]]&gt;&lt;/&quot;.$key.&quot;&gt;&quot;;
+            }
+        }
+        $xml.=&quot;&lt;/xml&gt;&quot;;
+        return $xml; 
+    }
+
+    /**
+     *  作用：将xml转为array
+     */
+    function xmlToArray($xml)
+    {        
+        $array_data = json_decode(json_encode(simplexml_load_string($xml, &apos;SimpleXMLElement&apos;, LIBXML_NOCDATA)), true);      
+        return $array_data;
+    }
+
+    /**
+     *  作用：使用证书，以post方式提交xml到对应的接口url
+     */
+    function postXmlSSLCurl($xml,$url,$second=30)
+    {
+        $ch = curl_init();
+        //超时时间
+        curl_setopt($ch,CURLOPT_TIMEOUT,$second);
+        //这里设置代理，如果有的话
+        //curl_setopt($ch,CURLOPT_PROXY, &apos;8.8.8.8&apos;);
+        //curl_setopt($ch,CURLOPT_PROXYPORT, 8080);
+        curl_setopt($ch,CURLOPT_URL, $url);
+        curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,FALSE);
+        curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,FALSE);
+        //设置header
+        curl_setopt($ch,CURLOPT_HEADER,FALSE);
+        //要求结果为字符串且输出到屏幕上
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,TRUE);
+        //设置证书
+        //使用证书：cert 与 key 分别属于两个.pem文件
+        //默认格式为PEM，可以注释
+        curl_setopt($ch,CURLOPT_SSLCERTTYPE,&apos;PEM&apos;);
+        // 自行修改成绝对路径
+        curl_setopt($ch,CURLOPT_SSLCERT, dirname(__FILE__).DIRECTORY_SEPARATOR.&apos;cert&apos;.DIRECTORY_SEPARATOR.$this-&gt;SSLCERT_PATH);
+        //默认格式为PEM，可以注释
+        curl_setopt($ch,CURLOPT_SSLKEYTYPE,&apos;PEM&apos;);
+        // 自行修改成绝对路径
+        curl_setopt($ch,CURLOPT_SSLKEY, dirname(__FILE__).DIRECTORY_SEPARATOR.&apos;cert&apos;.DIRECTORY_SEPARATOR.$this-&gt;SSLKEY_PATH);
+        //post提交方式
+        curl_setopt($ch,CURLOPT_POST, true);
+        curl_setopt($ch,CURLOPT_POSTFIELDS,$xml);
+        $data = curl_exec($ch);
+        //返回结果
+        if($data){
+            curl_close($ch);
+            return $data;
+        }
+        else { 
+            $error = curl_errno($ch);
+            echo &quot;curl出错，错误码:$error&quot;.&quot;&quot;; 
+            curl_close($ch);
+            return false;
+        }
+    }
+}
+</code></pre><blockquote>
+<p><strong>调用类</strong></p>
+</blockquote>
+<pre><code>$wxPay = new WxPayService();
+$wxPay-&gt;pay(&apos;商品描述&apos;, 金额, &apos;用户openid&apos;, &apos;通知地址&apos;);
+</code></pre><blockquote>
+<p><strong>以post方式提交到接口url的xml必填数据</strong></p>
+</blockquote>
+<pre><code>&lt;xml&gt;
+  &lt;openid&gt;&lt;![CDATA[用户openid]]&gt;&lt;/openid&gt;
+  &lt;body&gt;&lt;![CDATA[商品描述]]&gt;&lt;/body&gt;
+  &lt;out_trade_no&gt;&lt;![CDATA[Leooman121454512122]]&gt;&lt;/out_trade_no&gt;
+  &lt;total_fee&gt;1&lt;/total_fee&gt;
+  &lt;notify_url&gt;&lt;![CDATA[通知地址]]&gt;&lt;/notify_url&gt;
+  &lt;trade_type&gt;&lt;![CDATA[JSAPI]]&gt;&lt;/trade_type&gt;
+  &lt;appid&gt;&lt;![CDATA[商户appid]]&gt;&lt;/appid&gt;
+  &lt;mch_id&gt;支付商户号&lt;/mch_id&gt;
+  &lt;spbill_create_ip&gt;&lt;![CDATA[客户端ip地址]]&gt;&lt;/spbill_create_ip&gt;
+  &lt;nonce_str&gt;&lt;![CDATA[60uf9sh6nmppr9azveb2bn7arhy79izk]]&gt;&lt;/nonce_str&gt;
+  &lt;sign&gt;&lt;![CDATA[签名]]&gt;&lt;/sign&gt;
+&lt;/xml&gt;
+</code></pre><blockquote>
+<p><strong>从接口url返回的xml数据</strong></p>
+</blockquote>
+<pre><code>&lt;xml&gt;
+  &lt;return_code&gt;&lt;![CDATA[SUCCESS]]&gt;&lt;/return_code&gt;  
+  &lt;return_msg&gt;&lt;![CDATA[OK]]&gt;&lt;/return_msg&gt;  
+  &lt;appid&gt;&lt;![CDATA[商户appid]]&gt;&lt;/appid&gt;  
+  &lt;mch_id&gt;&lt;![CDATA[支付商户号]]&gt;&lt;/mch_id&gt;  
+  &lt;nonce_str&gt;&lt;![CDATA[Be8YX7gjCdtCT7cr]]&gt;&lt;/nonce_str&gt;  
+  &lt;sign&gt;&lt;![CDATA[签名]]&gt;&lt;/sign&gt;  
+  &lt;prepay_id&gt;&lt;![CDATA[预支付ID参数]]&gt;&lt;/prepay_id&gt;  
+  &lt;trade_type&gt;&lt;![CDATA[JSAPI]]&gt;&lt;/trade_type&gt; 
+&lt;/xml&gt;
+</code></pre><blockquote>
+<p><strong>主函数返回json数据</strong></p>
+</blockquote>
+<pre><code>{
+    &quot;appId&quot;: &quot;商户appid&quot;,
+    &quot;timeStamp&quot;: &quot;时间戳&quot;,
+    &quot;nonceStr&quot;: &quot;随机字符串&quot;,
+    &quot;package&quot;: &quot;prepay_id=预支付ID参数&quot;,
+    &quot;signType&quot;: &quot;MD5&quot;,
+    &quot;paySign&quot;: &quot;支付签名&quot;
+}
+</code></pre><blockquote>
+<p><strong>前端调用</strong></p>
+</blockquote>
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+    &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html;charset=utf-8&quot;/&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;/&gt; 
+    &lt;title&gt;微信支付&lt;/title&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
+    function jsApiCall()
+    {
+        WeixinJSBridge.invoke(
+            &apos;getBrandWCPayRequest&apos;,
+            {jsApiParameters},//主函数pay返回的json数据
+            function(res){
+                WeixinJSBridge.log(res.err_msg);
+                alert(res.err_code+res.err_desc+res.err_msg);
+            }
+        );
+    }
+    function callpay()
+    {
+        if (typeof WeixinJSBridge == &quot;undefined&quot;){
+            if( document.addEventListener ){
+                document.addEventListener(&apos;WeixinJSBridgeReady&apos;, jsApiCall, false);
+            }else if (document.attachEvent){
+                document.attachEvent(&apos;WeixinJSBridgeReady&apos;, jsApiCall); 
+                document.attachEvent(&apos;onWeixinJSBridgeReady&apos;, jsApiCall);
+            }
+        }else{
+            jsApiCall();
+        }
+    }
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div align=&quot;center&quot;&gt;
+        &lt;button onclick=&quot;callpay()&quot; &gt;立即支付&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><blockquote>
+<p><strong>参考文档</strong></p>
+</blockquote>
+<p><a href="https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=4_3" target="_blank" rel="noopener">微信开发——签名算法</a></p>
+<p><a href="https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=7_7&amp;index=6" target="_blank" rel="noopener">微信开发——微信内H5调起支付</a></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> 微信支付 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[企业付款至零钱]]></title>
+      <url>/2017/11/08/%E5%BE%AE%E4%BF%A1%E4%BC%81%E4%B8%9A%E4%BB%98%E6%AC%BE/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p><strong>企业付款零钱入账类</strong></p>
+</blockquote>
+<pre><code>class wxPay{
+    //=======【证书路径设置】=====================================
+    //证书路径,注意应该填写绝对路径
+    protected $SSLCERT_PATH = &apos;apiclient_cert.pem&apos;;
+    protected $SSLKEY_PATH =  &apos;apiclient_key.pem&apos;;
+    //=======【基本信息设置】=====================================
+    protected $APPID = &apos;&apos;;//填写微信公众号appid
+    protected $MCHID = &apos;&apos;;//支付商户号
+    protected $KEY = &apos;&apos;; //商户支付API密钥
+    protected $APPURL = &apos;https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers&apos;;//JSAPI接口地址
+
+    /**
+     * 微信企业付款
+     * @param  [type] $openid   商户appid下，某用户的openid
+     * @param  [type] $username 收款用户真实姓名。
+     * @param  [type] $desc     企业付款操作说明信息。必填。
+     * @param  [type] $money    企业付款金额，单位为分
+     */
+    function pay($openid=&apos;&apos;, $username=&apos;&apos;, $desc=&apos;&apos;, $money=0){
+        $apiUrl = $this-&gt;APPURL;
+        $Parameters=array();
+        $Parameters[&apos;amount&apos;]           = $money;//企业付款金额，单位为分
+        $Parameters[&apos;check_name&apos;]       = &apos;NO_CHECK&apos;;//NO_CHECK：不校验真实姓名 FORCE_CHECK：强校验真实姓名（未实名认证的用户会校验失败，无法转账） OPTION_CHECK：针对已实名认证的用户才校验真实姓名（未实名认证用户不校验，可以转账成功）
+        $Parameters[&apos;desc&apos;]             = $desc;//企业付款操作说明信息。必填。
+        $Parameters[&apos;mch_appid&apos;]        = $this-&gt;APPID;//微信分配的公众账号ID
+        $Parameters[&apos;mchid&apos;]            = $this-&gt;MCHID;//微信支付分配的商户号
+        $Parameters[&apos;nonce_str&apos;]        = $this-&gt;createNoncestr();//随机字符串，不长于32位
+        $Parameters[&apos;openid&apos;]           = $openid;//商户appid下，某用户的openid
+        $Parameters[&apos;partner_trade_no&apos;] = &apos;Leooman&apos;.time().rand(10000, 99999);//商户订单号，需保持唯一性
+        $Parameters[&apos;re_user_name&apos;]     = $username;//收款用户真实姓名。 如果check_name设置为FORCE_CHECK或OPTION_CHECK，则必填用户真实姓名
+        $Parameters[&apos;spbill_create_ip&apos;] = $_SERVER[&apos;SERVER_ADDR&apos;];//调用接口的机器Ip地址
+        //$Parameters[&apos;spbill_create_ip&apos;] = gethostbyname($_ENV[&apos;COMPUTERNAME&apos;]);//调用接口的机器Ip地址(本地测试调用)
+        $Parameters[&apos;sign&apos;]             = $this-&gt;getSign($Parameters);//签名
+        $xml  = $this-&gt;arrayToXml($Parameters);
+        $res  = $this-&gt;postXmlSSLCurl($xml,$apiUrl);
+        $return = $this-&gt;xmlToArray($res);
+        return $res;
+    }
+
+    /**
+     *  作用：格式化参数，签名过程需要使用
+     */
+    function formatBizQueryParaMap($paraMap, $urlencode)
+    {
+        $buff = &quot;&quot;;
+        ksort($paraMap);
+        foreach ($paraMap as $k =&gt; $v)
+        {
+            if($urlencode)
+            {
+               $v = urlencode($v);
+            }
+            $buff .= $k . &quot;=&quot; . $v . &quot;&amp;&quot;;
+        }
+        $reqPar;
+        if (strlen($buff) &gt; 0) 
+        {
+            $reqPar = substr($buff, 0, strlen($buff)-1);
+        }
+        return $reqPar;
+    }
+
+    /**
+     *  作用：签名生成
+     */
+    function getSign($Obj)
+    {
+        foreach ($Obj as $k =&gt; $v)
+        {
+            $Parameters[$k] = $v;
+        }
+        //签名步骤一：按字典序排序参数
+        ksort($Parameters);
+        $String = $this-&gt;formatBizQueryParaMap($Parameters, false);
+        //签名步骤二：在string后加入KEY
+        $String = $String.&quot;&amp;key=&quot;.$this-&gt;KEY;
+        //签名步骤三：MD5加密
+        $String = md5($String);
+        //签名步骤四：所有字符转为大写
+        $result_ = strtoupper($String);
+        return $result_;
+    }
+
+    /**
+     *  作用：产生随机字符串，不长于32位
+     */
+    function createNoncestr( $length = 32 ) 
+    {
+        $chars = &quot;abcdefghijklmnopqrstuvwxyz0123456789&quot;;  
+        $str =&quot;&quot;;
+        for ( $i = 0; $i &lt; $length; $i++ )  {  
+            $str.= substr($chars, mt_rand(0, strlen($chars)-1), 1);  
+        }  
+        return $str;
+    }
+
+    /**
+     *  作用：array转xml
+     */
+    function arrayToXml($arr)
+    {
+        $xml = &quot;&lt;xml&gt;&quot;;
+        foreach ($arr as $key=&gt;$val)
+        {
+            if (is_numeric($val)){
+                $xml.=&quot;&lt;&quot;.$key.&quot;&gt;&quot;.$val.&quot;&lt;/&quot;.$key.&quot;&gt;&quot;;
+            }else{
+                $xml.=&quot;&lt;&quot;.$key.&quot;&gt;&lt;![CDATA[&quot;.$val.&quot;]]&gt;&lt;/&quot;.$key.&quot;&gt;&quot;;
+            }
+        }
+        $xml.=&quot;&lt;/xml&gt;&quot;;
+        return $xml; 
+    }
+
+    /**
+     *  作用：将xml转为array
+     */
+    function xmlToArray($xml)
+    {        
+        $array_data = json_decode(json_encode(simplexml_load_string($xml, &apos;SimpleXMLElement&apos;, LIBXML_NOCDATA)), true);      
+        return $array_data;
+    }
+
+    /**
+     *  作用：使用证书，以post方式提交xml到对应的接口url
+     */
+    function postXmlSSLCurl($xml,$url,$second=30)
+    {
+        $ch = curl_init();
+        //超时时间
+        curl_setopt($ch,CURLOPT_TIMEOUT,$second);
+        //这里设置代理，如果有的话
+        //curl_setopt($ch,CURLOPT_PROXY, &apos;8.8.8.8&apos;);
+        //curl_setopt($ch,CURLOPT_PROXYPORT, 8080);
+        curl_setopt($ch,CURLOPT_URL, $url);
+        curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,FALSE);
+        curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,FALSE);
+        //设置header
+        curl_setopt($ch,CURLOPT_HEADER,FALSE);
+        //要求结果为字符串且输出到屏幕上
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,TRUE);
+        //设置证书
+        //使用证书：cert 与 key 分别属于两个.pem文件
+        //默认格式为PEM，可以注释
+        curl_setopt($ch,CURLOPT_SSLCERTTYPE,&apos;PEM&apos;);
+        // 自行修改成绝对路径
+        curl_setopt($ch,CURLOPT_SSLCERT, dirname(__FILE__).DIRECTORY_SEPARATOR.&apos;cert&apos;.DIRECTORY_SEPARATOR.$this-&gt;SSLCERT_PATH);
+        //默认格式为PEM，可以注释
+        curl_setopt($ch,CURLOPT_SSLKEYTYPE,&apos;PEM&apos;);
+        // 自行修改成绝对路径
+        curl_setopt($ch,CURLOPT_SSLKEY, dirname(__FILE__).DIRECTORY_SEPARATOR.&apos;cert&apos;.DIRECTORY_SEPARATOR.$this-&gt;SSLKEY_PATH);
+        //post提交方式
+        curl_setopt($ch,CURLOPT_POST, true);
+        curl_setopt($ch,CURLOPT_POSTFIELDS,$xml);
+        $data = curl_exec($ch);
+        //返回结果
+        if($data){
+            curl_close($ch);
+            return $data;
+        }
+        else { 
+            $error = curl_errno($ch);
+            echo &quot;curl出错，错误码:$error&quot;.&quot;&quot;; 
+            curl_close($ch);
+            return false;
+        }
+    }
+}
+</code></pre><blockquote>
+<p><strong>调用类</strong></p>
+</blockquote>
+<pre><code>$wxPay = new wxPay();
+$wxPay-&gt;pay(&apos;用户openid&apos;, &apos;用户名&apos;, &apos;详细信息&apos;, 金额);
+</code></pre><blockquote>
+<p><strong>参考文档</strong></p>
+</blockquote>
+<p><a href="https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=4_3" target="_blank" rel="noopener">微信开发——签名算法</a></p>
+<p><a href="https://pay.weixin.qq.com/wiki/doc/api/tools/mch_pay.php?chapter=14_2" target="_blank" rel="noopener">微信开发——企业付款</a></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> 微信支付 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[ChangeDetectionCont]]></title>
+      <url>/2017/11/01/ChangeDetectionCont/</url>
+      <content type="html"><![CDATA[<h2 id="Change-Detection-Constants-4-21-2017-1-22-43-PM"><a href="#Change-Detection-Constants-4-21-2017-1-22-43-PM" class="headerlink" title="Change Detection Constants 4/21/2017 1:22:43 PM "></a>Change Detection Constants <span style="float:right;font-size:12px;line-height:40px;">4/21/2017 1:22:43 PM </span></h2><h3 id="ChangeDetectionStrategy"><a href="#ChangeDetectionStrategy" class="headerlink" title="ChangeDetectionStrategy"></a>ChangeDetectionStrategy</h3><p>Describes within the change detector which strategy will be used the next time change detection is triggered.</p>
+<ul>
+<li>OnPush = 0</li>
+</ul>
+<p><code>OnPush</code> means that the change detector’s mode will be set to <code>CheckOnce</code> during hydration.</p>
+<ul>
+<li>Default = 1</li>
+</ul>
+<p><code>Default</code> means that the change detector’s mode will be set to <code>CheckAlways</code> during hydration</p>
+<h3 id="ChangeDetectorStatus"><a href="#ChangeDetectorStatus" class="headerlink" title="ChangeDetectorStatus"></a>ChangeDetectorStatus</h3><p>Describes the status of the detector</p>
+<ul>
+<li>CheckOnce = 0</li>
+</ul>
+<p><code>CheckedOnce</code> means that after calling detectChanges the mode of the change detector will become <code>Checked</code>.</p>
+<ul>
+<li>Checked = 1</li>
+</ul>
+<p><code>Checked</code> means that the change detector should be skipped until its mode changes to <code>CheckOnce</code></p>
+<ul>
+<li>CheckAlways = 2</li>
+</ul>
+<p><code>CheckAlways</code> means that after calling detectChanges the mode of the change detector will remain <code>CheckAlways</code></p>
+<ul>
+<li>Detached = 3</li>
+</ul>
+<p><code>Detached</code> means that the change detector sub tree is not a part of the main tree and should be skipped</p>
+<ul>
+<li>Errored = 4</li>
+</ul>
+<p><code>Errored</code> means that the change detector encountered an error checking a binding or calling a directive lifecycle method and is now in an inconsistent state. Change detectors in this state will no longer detect changes.</p>
+<ul>
+<li>Destroyed = 5</li>
+</ul>
+<p><code>Destroyed</code> means that the change detector is destroyed</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Angular </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[ChangeDetectorRef]]></title>
+      <url>/2017/10/31/ChangeDetectorRef/</url>
+      <content type="html"><![CDATA[<h2 id="ChangeDetectorRef-4-21-2017-12-52-43-AM"><a href="#ChangeDetectorRef-4-21-2017-12-52-43-AM" class="headerlink" title="ChangeDetectorRef 4/21/2017 12:52:43 AM "></a>ChangeDetectorRef <span style="float:right;font-size:12px;line-height:40px;">4/21/2017 12:52:43 AM </span></h2><blockquote>
+<p><strong>object method</strong></p>
+</blockquote>
+<pre><code>export class ChangeDetectorRef {
+    markForCheck(): void,
+    detach(): void,
+    detectChanges(): void,
+    checkNoChanges(): void,
+    reattach(): void
+}
+</code></pre><blockquote>
+<p><strong>markForCheck</strong></p>
+</blockquote>
+<p>Marks all {@link ChangeDetectionStrategy#OnPush} ancestors as to be checked.</p>
+<h4 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h4><p><img src="https://github.com/Leooman/Angular/raw/master/images/changedetection.jpg" alt="markForCheck"></p>
+<blockquote>
+<p><strong>detach</strong></p>
+</blockquote>
+<p>Detaches the change detector from the change detector tree.</p>
+<p>The detached change detector will not be checked until it is reattached.</p>
+<p>This can also be used in combination with {@link ChangeDetectorRef#detectChanges} to implement local change detection checks.</p>
+<blockquote>
+<p><strong>detectChanges</strong></p>
+</blockquote>
+<p>Checks the change detector and its children.</p>
+<p>This can also be used in combination with {@link ChangeDetectorRef#detach} to implement local change detection checks.</p>
+<h4 id="Example-1"><a href="#Example-1" class="headerlink" title="Example"></a>Example</h4><p>For performance reasons,we want to check and update the list every five seconds. We can do that by detaching the component’s change detector and doing a local check every five seconds.</p>
+<p><img src="https://github.com/Leooman/Angular/raw/master/images/detach.jpg" alt="detach"></p>
+<blockquote>
+<p><strong>checkNoChanges</strong></p>
+</blockquote>
+<p>Checks the change detector and its children, and throws if any changes are detected.</p>
+<p>This is used in development mode to verify that running change detection doesn’t introduce other changes.</p>
+<blockquote>
+<p><strong>reattach</strong></p>
+</blockquote>
+<p>Reattach the change detector to the change detector tree.</p>
+<p>This also marks OnPush ancestors as to be checked. This reattached change detector will be checked during the next change detection run.</p>
+<h4 id="Example-2"><a href="#Example-2" class="headerlink" title="Example"></a>Example</h4><p><img src="https://github.com/Leooman/Angular/raw/master/images/reattach.jpg" alt="reattach"></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Angular </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Render]]></title>
+      <url>/2017/10/31/Render/</url>
+      <content type="html"><![CDATA[<h2 id="Render-4-21-2017-1-22-30-PM"><a href="#Render-4-21-2017-1-22-30-PM" class="headerlink" title="Render 4/21/2017 1:22:30 PM "></a>Render <span style="float:right;font-size:12px;line-height:40px;">4/21/2017 1:22:30 PM </span></h2><h4 id="RenderComponentType"><a href="#RenderComponentType" class="headerlink" title="RenderComponentType"></a>RenderComponentType</h4><pre><code>export class RenderComponentType {
+    id: string;
+    templateUrl: string;
+    slotCount: number;
+    encapsulation: ViewEncapsulation;
+    styles: Array&lt;string | any[]&gt;;
+    animations: {
+        [key: string]: Function;
+    };
+    constructor(id: string, templateUrl: string, slotCount: number, encapsulation: ViewEncapsulation, styles: Array&lt;string | any[]&gt;, animations: {
+        [key: string]: Function;
+    });
+}
+</code></pre><h4 id="RenderDebugInfo"><a href="#RenderDebugInfo" class="headerlink" title="RenderDebugInfo"></a>RenderDebugInfo</h4><pre><code>export class RenderDebugInfo {
+    injector: Injector;
+    component: any;
+    providerTokens: any[];
+    references: {
+        [key: string]: any;
+    };
+    context: any;
+    source: string;
+}
+</code></pre><h4 id="DirectRenderer-Use-the-Renderer2-instead-in-version-4-0"><a href="#DirectRenderer-Use-the-Renderer2-instead-in-version-4-0" class="headerlink" title="DirectRenderer [Use the Renderer2 instead in version 4.0]"></a>DirectRenderer [Use the <code>Renderer2</code> instead in version 4.0]</h4><pre><code>export interface DirectRenderer {
+    remove(node: any): void;
+    appendChild(node: any, parent: any): void;
+    insertBefore(node: any, refNode: any): void;
+    nextSibling(node: any): any;
+    parentElement(node: any): any;
+}
+</code></pre><h4 id="Renderer-Use-the-Renderer2-instead-in-version-4-0"><a href="#Renderer-Use-the-Renderer2-instead-in-version-4-0" class="headerlink" title="Renderer [Use the Renderer2 instead in version 4.0]"></a>Renderer [Use the <code>Renderer2</code> instead in version 4.0]</h4><ul>
+<li><p><code>selectRootElement</code> (selectorOrNode: string | any, debugInfo?: RenderDebugInfo): any</p>
+</li>
+<li><p><code>createElement</code> (parentElement: any, name: string, debugInfo?: RenderDebugInfo): any</p>
+</li>
+<li><p><code>createViewRoot</code> (hostElement: any): any</p>
+</li>
+<li><p><code>createTemplateAnchor</code> (parentElement: any, debugInfo?: RenderDebugInfo): any</p>
+</li>
+<li><p><code>createText</code> (parentElement: any, value: string, debugInfo?: RenderDebugInfo): any</p>
+</li>
+<li><p><code>projectNodes</code> (parentElement: any, nodes: any[]): void</p>
+</li>
+<li><p><code>attachViewAfter</code> (node: any, viewRootNodes: any[]): void</p>
+</li>
+<li><p><code>detachView</code> (viewRootNodes: any[]): void</p>
+</li>
+<li><p><code>destroyView</code> (hostElement: any, viewAllNodes: any[]): void</p>
+</li>
+<li><p><code>listen</code> (renderElement: any, name: string, callback: Function): Function</p>
+</li>
+<li><p><code>listenGlobal</code> (target: string, name: string, callback: Function): Function</p>
+</li>
+<li><p><code>setElementProperty</code> (renderElement: any, propertyName: string, propertyValue: any): void</p>
+</li>
+<li><p><code>setElementAttribute</code> (renderElement: any, attributeName: string, attributeValue: string): void</p>
+</li>
+<li><p><code>setBindingDebugInfo</code> (renderElement: any, propertyName: string, propertyValue: string): void</p>
+</li>
+<li><p><code>setElementClass</code> (renderElement: any, className: string, isAdd: boolean): void</p>
+</li>
+<li><p><code>setElementStyle</code> (renderElement: any, styleName: string, styleValue: string): void</p>
+</li>
+<li><p><code>invokeElementMethod</code> (renderElement: any, methodName: string, args?: any[]): void</p>
+</li>
+<li><p><code>setText</code> (renderNode: any, text: string): void</p>
+</li>
+<li><p><code>animate</code> (element: any, startingStyles: AnimationStyles, keyframes: AnimationKeyframe[], duration: number, delay: number, easing: string): AnimationPlayer</p>
+</li>
+</ul>
+<h4 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h4><p><img src="https://github.com/Leooman/Angular/raw/master/images/renderer.jpg" alt="Renderer"></p>
+<blockquote>
+<p><strong>RootRenderer</strong> [Use <code>RendererFactory2</code> instead in version 4.0]</p>
+</blockquote>
+<p>If you are implementing a custom renderer, you must implement this interface.</p>
+<p>The default Renderer implementation is <code>DomRenderer</code>. Also available is <code>WebWorkerRenderer</code>.</p>
+<pre><code>export declare abstract class RootRenderer {
+    abstract renderComponent(componentType: RenderComponentType): Renderer;
+}
+</code></pre><h2 id="Version-4-0"><a href="#Version-4-0" class="headerlink" title="Version 4.0"></a>Version 4.0</h2><h3 id="RendererType2"><a href="#RendererType2" class="headerlink" title="RendererType2"></a>RendererType2</h3><pre><code>export interface RendererType2 {
+    id: string;
+    encapsulation: ViewEncapsulation;
+    styles: (string | any[])[];
+    data: {
+        [kind: string]: any;
+    };
+}
+</code></pre><h3 id="RendererFactory2"><a href="#RendererFactory2" class="headerlink" title="RendererFactory2"></a>RendererFactory2</h3><pre><code>export class RendererFactory2 {
+    createRenderer(hostElement: any, type: RendererType2 | null): Renderer2;
+}
+</code></pre><h3 id="RendererStyleFlags2"><a href="#RendererStyleFlags2" class="headerlink" title="RendererStyleFlags2"></a>RendererStyleFlags2</h3><pre><code>export declare enum RendererStyleFlags2 {
+    Important = 1,
+    DashCase = 2,
+}
+</code></pre><h3 id="Renderer2"><a href="#Renderer2" class="headerlink" title="Renderer2"></a>Renderer2</h3><p>This field can be used to store arbitrary data on this renderer instance.</p>
+<p>This is useful for renderers that delegate to other renderers.</p>
+<ul>
+<li>[readonly] <code>data</code>: {[key: string]: any}</li>
+<li><code>destroy()</code>: void</li>
+<li><code>createElement</code>(name: string, namespace?: string | null): any</li>
+<li><code>createComment</code>(value: string): any</li>
+<li><code>createText</code>(value: string): any</li>
+<li><code>destroyNode</code>: ((node: any) =&gt; void) | null</li>
+<li><code>appendChild</code>(parent: any, newChild: any): void</li>
+<li><code>insertBefore</code>(parent: any, newChild: any, refChild: any): void</li>
+<li><code>removeChild</code>(parent: any, oldChild: any): void</li>
+<li><code>selectRootElement</code>(selectorOrNode: string | any): any</li>
+<li><p><code>parentNode</code>(node: any): any</p>
+</li>
+<li><p><code>nextSibling</code>(node: any): any</p>
+</li>
+<li><code>setAttribute</code>(el: any, name: string, value: string, namespace?: string | null): void</li>
+<li><code>removeAttribute</code>(el: any, name: string, namespace?: string | null): void</li>
+<li><code>addClass</code>(el: any, name: string): void</li>
+<li><code>removeClass</code>(el: any, name: string): void</li>
+<li><code>setStyle</code>(el: any, style: string, value: any, flags?: RendererStyleFlags2): void</li>
+<li><code>removeStyle</code>(el: any, style: string, flags?: RendererStyleFlags2): void</li>
+<li><code>setProperty</code>(el: any, name: string, value: any): void</li>
+<li><code>setValue</code>(node: any, value: string): void</li>
+<li><code>listen</code>(target: ‘window’ | ‘document’ | ‘body’ | any, eventName: string, callback: (event: any) =&gt; boolean | void): () =&gt; void</li>
+</ul>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Angular </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Directive]]></title>
+      <url>/2017/10/30/Directive/</url>
+      <content type="html"><![CDATA[<h2 id="Directive-4-16-2017-4-40-14-PM"><a href="#Directive-4-16-2017-4-40-14-PM" class="headerlink" title="Directive 4/16/2017 4:40:14 PM "></a>Directive <span style="float:right;font-size:12px;line-height:40px;">4/16/2017 4:40:14 PM </span></h2><blockquote>
+<p><strong>what it does</strong></p>
+</blockquote>
+<p>Marks a class as an Angular directive and collects directive configuration metadata.</p>
+<blockquote>
+<p><strong>how to use</strong></p>
+</blockquote>
+<pre><code>import { Directive } from &apos;@angular/core&apos;;
+@Directive({
+    selector?: string,
+    inputs  ?: string[],
+    outputs ?: string[],
+    host    ?: {
+        [key: string]: string
+    },
+    providers?: Provider[],
+    exportAs ?: string,
+    queries  ?: {
+        [key: string]: any
+    }
+})
+export class MyDirective{
+}
+</code></pre><blockquote>
+<p><strong>description</strong></p>
+</blockquote>
+<p>A directive must belong to an NgModule in order for it to be usable by another directive, component, or application. To specify that a directive is a member of an NgModule.</p>
+<p>you should list it in the <code>declarations</code> field of that NgModule.</p>
+<blockquote>
+<p><strong>metadata properties</strong></p>
+</blockquote>
+<p><code>exportAs</code> - name under which the component  instance is exported in a template</p>
+<p><code>host</code> - map of class property to host element bindings for events, properties and attributes</p>
+<p><code>inputs</code> - list of class property names to data-bind as component inputs</p>
+<p><code>outputs</code> - list of class property names that expose output events that others can subscribe to</p>
+<p><code>providers</code> - list of providers available to this component and its children</p>
+<p><code>queries</code> -  configure queries that can be injected into the component</p>
+<p><code>selector</code> - css selector that identifies this component in a template</p>
+<blockquote>
+<p><strong>selector</strong> </p>
+</blockquote>
+<p>may be declared as one of the following:</p>
+<ul>
+<li><code>element-name</code>: select by element name.</li>
+<li><code>.class</code>: select by class name.</li>
+<li><code>[attribute]</code>: select by attribute name.</li>
+<li><code>[attribute=value]</code>: select by attribute name and value.</li>
+<li><code>:not(sub_selector)</code>: select only if the element does not match the <code>sub_selector</code>.</li>
+<li><code>selector1, selector2</code>: select if either <code>selector1</code> or <code>selector2</code> matches.</li>
+</ul>
+<blockquote>
+<p><strong>inputs</strong></p>
+</blockquote>
+<p>Enumerates the set of data-bound input properties for a directive</p>
+<p>The <code>inputs</code> property defines a set of <code>directiveProperty</code> to <code>bindingProperty</code> configuration:</p>
+<ul>
+<li><code>directiveProperty</code> specifies the component property where the value is written.</li>
+<li><code>bindingProperty</code> specifies the DOM property where the value is read from.</li>
+</ul>
+<p>When <code>bindingProperty</code> is not provided, it is assumed to be equal to <code>directiveProperty</code>.</p>
+<blockquote>
+<p><strong>outputs</strong> </p>
+</blockquote>
+<p>Enumerates the set of event-bound output properties.</p>
+<p>When an output property emits an event, an event handler attached to that event the template is invoked.</p>
+<p><img src="https://github.com/Leooman/Angular/raw/master/images/output.jpg" alt="output"></p>
+<blockquote>
+<p><strong>host</strong></p>
+</blockquote>
+<ul>
+<li><strong>host listeners</strong>:</li>
+</ul>
+<p>Specify the events, actions, properties and attributes related to the host element.</p>
+<p>Specifies which DOM events a directive listens to via a set of <code>(event)</code> to <code>method</code></p>
+<p>key-value pairs:</p>
+<ul>
+<li><code>event</code>: the DOM event that the directive listens to.</li>
+<li><code>statement</code>: the statement to execute when the event occurs.</li>
+</ul>
+<p>If the evaluation of the statement returns <code>false</code>, then <code>preventDefault</code>is applied on the DOM event.</p>
+<p><img src="https://github.com/Leooman/Angular/raw/master/images/host_listener.jpg" alt="host listeners"></p>
+<ul>
+<li><strong>host property binding</strong></li>
+</ul>
+<p>Specifies which DOM properties a directive updates.</p>
+<ul>
+<li><strong>host attributes binding</strong></li>
+</ul>
+<p>Specifies static attributes that should be propagated to a host element.</p>
+<p><img src="https://github.com/Leooman/Angular/raw/master/images/host_attr.jpg" alt="host attributes"></p>
+<blockquote>
+<p><strong>providers</strong></p>
+</blockquote>
+<p><img src="https://github.com/Leooman/Angular/raw/master/images/providers.jpg" alt="providers"></p>
+<blockquote>
+<p><strong>exportAs</strong></p>
+</blockquote>
+<p>Defines the name that can be used in the template to assign this directive to a variable.</p>
+<p><img src="https://github.com/Leooman/Angular/raw/master/images/exportas.jpg" alt="exportAs"></p>
+<blockquote>
+<p><strong>queries</strong></p>
+</blockquote>
+<p>Configures the queries that will be injected into the directive.</p>
+<ul>
+<li><p>Content queries are set before the <code>ngAfterContentInit</code> callback is called.</p>
+</li>
+<li><p>View queries are set before the <code>ngAfterViewInit</code> callback is called.</p>
+</li>
+</ul>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Angular </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Communication]]></title>
+      <url>/2017/10/30/Communication/</url>
+      <content type="html"><![CDATA[<h2 id="Component-Communication-4-23-2017-8-58-19-AM"><a href="#Component-Communication-4-23-2017-8-58-19-AM" class="headerlink" title="Component Communication 4/23/2017 8:58:19 AM "></a>Component Communication <span style="float:right;font-size:12px;line-height:40px;">4/23/2017 8:58:19 AM </span></h2><blockquote>
+<p><strong>Input</strong></p>
+</blockquote>
+<pre><code>@Component({
+    selector: &apos;bank-account&apos;,
+    template: `
+      Bank Name: {{bankName}}
+      Account Id: {{id}}
+    `
+  })
+  class BankAccount {
+    @Input() bankName: string;
+    @Input(&apos;account-id&apos;) id: string;
+
+    // this property is not bound, and won&apos;t be automatically updated by Angular
+    normalizedBankName: string;
+  }
+
+  @Component({
+    selector: &apos;app&apos;,
+    template: `
+      &lt;bank-account bank-name=&quot;RBC&quot; account-id=&quot;4747&quot;&gt;&lt;/bank-account&gt;
+    `
+  })
+
+  class App {}
+</code></pre><blockquote>
+<p><strong>Output</strong></p>
+</blockquote>
+<pre><code>@Directive({
+    selector: &apos;interval-dir&apos;,
+  })
+  class IntervalDir {
+    @Output() everySecond = new EventEmitter();
+    @Output(&apos;everyFiveSeconds&apos;) five5Secs = new EventEmitter();
+
+    constructor() {
+      setInterval(() =&gt; this.everySecond.emit(&quot;event&quot;), 1000);
+      setInterval(() =&gt; this.five5Secs.emit(&quot;event&quot;), 5000);
+    }
+  }
+
+  @Component({
+    selector: &apos;app&apos;,
+    template: `
+      &lt;interval-dir (everySecond)=&quot;everySecond()&quot; (everyFiveSeconds)=&quot;everyFiveSeconds()&quot;&gt;
+      &lt;/interval-dir&gt;
+    `
+  })
+  class App {
+    everySecond() { console.log(&apos;second&apos;); }
+    everyFiveSeconds() { console.log(&apos;five seconds&apos;); }
+  }
+</code></pre><blockquote>
+<p><strong>HostBinding</strong></p>
+</blockquote>
+<pre><code>@Directive({selector: &apos;[ngModel]&apos;})
+  class NgModelStatus {
+    constructor(public control:NgModel) {}
+    @HostBinding(&apos;class.valid&apos;) get valid() { return this.control.valid; }
+    @HostBinding(&apos;class.invalid&apos;) get invalid() { return this.control.invalid; }
+  }
+
+  @Component({
+    selector: &apos;app&apos;,
+    template: `&lt;input [(ngModel)]=&quot;prop&quot;&gt;`,
+  })
+  class App {
+    prop;
+  }
+</code></pre><blockquote>
+<p><strong>HostListener</strong></p>
+</blockquote>
+<pre><code>@Directive({selector: &apos;button[counting]&apos;})
+  class CountClicks {
+    numberOfClicks = 0;
+
+    @HostListener(&apos;click&apos;, [&apos;$event.target&apos;])
+    onClick(btn) {
+      console.log(&apos;button&apos;, btn, &apos;number of clicks:&apos;, this.numberOfClicks++);
+    }
+  }
+
+  @Component({
+    selector: &apos;app&apos;,
+    template: &apos;&lt;button counting&gt;Increment&lt;/button&gt;&apos;,
+  })
+  class App {}
+</code></pre>]]></content>
+      
+        
+        <tags>
+            
+            <tag> Angular </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Component]]></title>
+      <url>/2017/10/30/Component/</url>
+      <content type="html"><![CDATA[<h2 id="Component-extends-Directive-4-16-2017-5-36-18-PM"><a href="#Component-extends-Directive-4-16-2017-5-36-18-PM" class="headerlink" title="Component extends Directive 4/16/2017 5:36:18 PM "></a>Component extends Directive <span style="float:right;font-size:12px;line-height:40px;">4/16/2017 5:36:18 PM </span></h2><blockquote>
+<p><strong>what it does</strong></p>
+</blockquote>
+<p>Marks a class as an Angular component and collects component configuration<br>metadata.</p>
+<blockquote>
+<p><strong>how to use</strong></p>
+</blockquote>
+<pre><code>import { Component } from &apos;@angular/core&apos;;
+@Component({
+    changeDetection?: ChangeDetectionStrategy,
+    viewProviders?: Provider[],
+    moduleId?: string,
+    templateUrl?: string,
+    template?: string,
+    styleUrls?: string[],
+    styles?: string[],
+    animations?: AnimationEntryMetadata[],
+    encapsulation?: ViewEncapsulation,
+    interpolation?: [string, string],
+    entryComponents?: Array&lt;Type&lt;any&gt; | any[]&gt;
+})
+export class MyComponent{
+}
+</code></pre><blockquote>
+<p><strong>description</strong></p>
+</blockquote>
+<p>A component must belong to an NgModule in order for it to be usable by another component or application. To specify that a component is a member of an NgModule</p>
+<p>you should list it in the <code>declarations</code> field of that NgModule.</p>
+<blockquote>
+<p><strong>metadata properties</strong></p>
+</blockquote>
+<p><code>animations</code> - list of animations of this component</p>
+<p><code>changeDetection</code> - change detection strategy used by this component</p>
+<p><code>encapsulation</code> - style encapsulation strategy used by this component</p>
+<p><code>entryComponents</code> - list of components that are dynamically inserted into the view of this component</p>
+<p><code>exportAs</code> - name under which the component instance is exported in a template</p>
+<p><code>host</code> - map of class property to host element bindings for events, properties and attributes</p>
+<p><code>inputs</code> - list of class property names to data-bind as component inputs</p>
+<p><code>interpolation</code> - custom interpolation markers used in this component’s template</p>
+<p><code>moduleId</code> - ES/CommonJS module id of the file in which this component is defined</p>
+<p><code>outputs</code> - list of class property names that expose output events that others can subscribe to</p>
+<p><code>providers</code> - list of providers available to this component and its children</p>
+<p><code>queries</code> -  configure queries that can be injected into the component</p>
+<p><code>selector</code> - css selector that identifies this component in a template</p>
+<p><code>styleUrls</code> - list of urls to stylesheets to be applied to this component’s view</p>
+<p><code>styles</code> - inline-defined styles to be applied to this component’s view</p>
+<p><code>template</code> - inline-defined template for the view</p>
+<p><code>templateUrl</code> - url to an external file containing a template for the view</p>
+<p><code>viewProviders</code> - list of providers available to this component and its view children</p>
+<blockquote>
+<p><strong>changeDetection</strong></p>
+</blockquote>
+<p>The <code>changeDetection</code> property defines, whether the change detection will be checked every time or only when the component tells it to do so.</p>
+<p><img src="https://github.com/Leooman/Angular/raw/master/images/changedetection.jpg" alt="changeDetection"></p>
+<blockquote>
+<p><strong>interpolation</strong></p>
+</blockquote>
+<p>Overrides the default encapsulation start and end delimiters (respectively <code></code>)</p>
+<p><img src="https://github.com/Leooman/Angular/raw/master/images/interpolation.jpg" alt="interpolation"></p>
+<blockquote>
+<p><strong>viewProviders</strong></p>
+</blockquote>
+<p>Defines the set of injectable objects that are visible to its view DOM children.</p>
+<p><img src="https://github.com/Leooman/Angular/raw/master/images/viewproviders.jpg" alt="viewProviders"></p>
+<blockquote>
+<p><strong>moduleId</strong></p>
+</blockquote>
+<p>Needed to be able to resolve relative urls for templates and styles.</p>
+<p>In CommonJS, this can always be set to <code>module.id</code>, similarly SystemJS exposes <code>__moduleName</code> variable within each module.</p>
+<pre><code>@Directive({
+  selector: &apos;someDir&apos;,
+  moduleId: module.id
+})
+class SomeDir {
+}
+</code></pre><blockquote>
+<p><strong>templateUrl</strong></p>
+</blockquote>
+<p>Only one of <code>templateUrl</code> or <code>template</code> can be defined per View.</p>
+<blockquote>
+<p><strong>template</strong></p>
+</blockquote>
+<p>Only one of <code>templateUrl</code> or <code>template</code> can be defined per Component.</p>
+<blockquote>
+<p><strong>styleUrls</strong></p>
+</blockquote>
+<p>Specifies stylesheet URLs for an Angular component.</p>
+<blockquote>
+<p><strong>styles</strong></p>
+</blockquote>
+<p>Specifies inline stylesheets for an Angular component.</p>
+<blockquote>
+<p><strong>entryComponents</strong></p>
+</blockquote>
+<p>Defines the components that should be compiled as well when this component is defined. For each components listed here, Angular will create a {@link ComponentFactory} and store it in the {@link ComponentFactoryResolver}.</p>
+<blockquote>
+<p><strong>encapsulation</strong></p>
+</blockquote>
+<p>Specifies how the template and the styles should be encapsulated:</p>
+<ul>
+<li><p>{@link ViewEncapsulation#Native <code>ViewEncapsulation.Native</code>} to use shadow roots ,only works if natively available on the platform,</p>
+</li>
+<li><p>{@link ViewEncapsulation#Emulated <code>ViewEncapsulation.Emulated</code>} to use shimmed CSS that emulates the native behavior,</p>
+</li>
+<li><p>{@link ViewEncapsulation#None <code>ViewEncapsulation.None</code>} to use global CSS without any encapsulation.</p>
+</li>
+</ul>
+<p>When no <code>encapsulation</code> is defined for the component, the default value from the {@link CompilerConfig} is used. The default is <code>ViewEncapsulation.Emulated</code>. Provide a new <code>CompilerConfig</code> to override this value.</p>
+<p>If the encapsulation is set to <code>ViewEncapsulation.Emulated</code> and the component has no <code>styles</code> nor <code>styleUrls</code> the encapsulation will automatically be switched to <code>ViewEncapsulation.None</code>.</p>
+<blockquote>
+<p><strong>animations</strong></p>
+</blockquote>
+<h3 id="DSL-Animation-Functions"><a href="#DSL-Animation-Functions" class="headerlink" title="DSL Animation Functions"></a>DSL Animation Functions</h3><ul>
+<li>{@link trigger trigger()}</li>
+<li>{@link state state()}</li>
+<li>{@link transition transition()}</li>
+<li>{@link group group()}</li>
+<li>{@link sequence sequence()}</li>
+<li>{@link style style()}</li>
+<li>{@link animate animate()}</li>
+<li>{@link keyframes keyframes()}</li>
+</ul>
+<p>For animations to be available for use, animation state changes are placed within {@link trigger animation triggers} which are housed inside of the <code>animations</code> annotation metadata. Within a trigger both {@link state state} and {@link transition transition} entries can be placed.</p>
+<pre><code>@Component({
+  selector: &apos;animation-cmp&apos;,
+  templateUrl: &apos;animation-cmp.html&apos;,
+  animations: [
+    // this here is our animation trigger that
+    // will contain our state change animations.
+    trigger(&apos;myTriggerName&apos;, [
+      // the styles defined for the `on` and `off`
+      // states declared below are persisted on the
+      // element once the animation completes.
+      state(&apos;on&apos;, style({ opacity: 1 }),
+      state(&apos;off&apos;, style({ opacity: 0 }),
+
+      // this here is our animation that kicks off when
+      // this state change jump is true
+      transition(&apos;on =&gt; off&apos;, [
+        animate(&quot;1s&quot;)
+      ])
+    ])
+  ]
+})
+</code></pre><p>When a trigger is created then it can be bound onto an element within the component’s template via a property prefixed by an <code>@</code> symbol followed by trigger name and an expression that is used to determine the state value for that trigger.</p>
+<pre><code>&lt;div @myTriggerName=&quot;expression&quot;&gt;...&lt;/div&gt;
+</code></pre><h3 id="Animation-Example"><a href="#Animation-Example" class="headerlink" title="Animation Example"></a>Animation Example</h3><p><img src="https://github.com/Leooman/Angular/raw/master/images/fadein.jpg" alt="fade-in"></p>
+<p><img src="https://github.com/Leooman/Angular/raw/master/images/flyin.jpg" alt="fly-in"></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Angular </tag>
+            
+        </tags>
+        
+    </entry>
+    
+  
+  
+</search>
