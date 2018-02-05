@@ -3312,6 +3312,7 @@ footer .footer_bottom {
 .duoshuo {
 	width: 66%;
 	margin: auto;
+	margin-bottom: 10px;
 }
 .ds-thread {
 	margin-bottom: 60px;
