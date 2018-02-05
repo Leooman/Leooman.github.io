@@ -25,7 +25,7 @@
     
     <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
     
-
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
     <!--[if IE 8]>
     <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
     <![endif]-->
@@ -57,11 +57,17 @@
 
       <!-- ============================ Off-canvas navigation =========================== -->
 
-    <!-- <div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
-        <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
+    <div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
+        <!-- <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
             <img src="/img/close.png" alt="Close"/>
+        </div> -->
+        <div class="learnmore">
+            <span class="local-search local-search-google local-search-plugin">
+              <input type="search" placeholder="Search" id="local-search-input" class="local-search-input-cls">
+            </span>
         </div>
-        <ul class="sb-menu">
+        <div id="local-search-result" class="local-search-result-cls"></div>
+        <!-- <ul class="sb-menu">
             <li><a href="/" class="animsition-link" title="Home">Home</a></li>
             <li><a href="/archives" class="animsition-link" title="archive">archives</a></li>
       
@@ -77,12 +83,12 @@
                 </ul>
             </li>
             
-        </ul>
-        <ul class="sb-menu secondary">
+        </ul> -->
+        <!-- <ul class="sb-menu secondary">
             <li><a href="/atom.xml" class="animsition-link" title="rss">RSS</a></li>
             <li><a href="/sitemap.xml" class="animsition-link" title="sitemap">SITEMAP</a></li>
-        </ul>
-    </div> -->
+        </ul> -->
+    </div>
     
     <!-- ============================ END Off-canvas navigation =========================== -->
 
@@ -105,27 +111,31 @@
                     <!-- // Nav logo -->
                     <!-- Info-bar -->
                     <nav>
-                        <ul class="nav">
+                        <ul class="nav fa-ul">
                             <li><a href="/" class="animsition-link">Leooman</a></li>
-                            <li class="nolink"><span>QQ </span>351234955</li>
+                            <!-- <li class="nolink"><span>QQ </span>351234955</li> -->
                             
-                            <li><a href="/" title="Home">Home</a></li>
-                            <li><a href="/archives" title="archives">Archives</a></li>
-                            <li><a href="/atom.xml" title="rss">RSS</a></li>
-                            <li><a href="/sitemap.xml" title="sitemap">SITEMAP</a></li>
-                            <li class="nolink"><span>Welcome!</span></li>
+                            <li><a href="/" title="Home"><span class=""><i class="fas fa-home"></i></span>主页</a></li>
+                            <li><a href="/archives" title="archives"><span class=""><i class="fas fa-archive"></i></span>存档</a></li>
+                            <li>
+                            <button type="button" class="navbar-toggle sb-toggle-right" style="display: block;padding: 0px 10px;margin: 0px;color: #151515;border-right: 1px solid #aaa;float: none;font-size: 11px;font-weight: 400;line-height: 14px;" title="More"><span class=""><i class="fas fa-search"></i></span>搜索
+                            </button>
+                            </li>
+                            <li><a href="/atom.xml" title="rss"><span class=""><i class="fas fa-rss-square"></i></span>RSS</a></li>
+                            <!-- <li class="nolink"><span>Welcome!</span></li> -->
+                            <li><a href="https://github.com/Leooman" title="github"><span class=""><i class="fab fa-github"></i></span>github</a></li>
                         </ul>
                     </nav>
                         
                     <!--// Info-bar -->
                 </div>
                 <!-- // .container -->
-                <div class="learnmore sb-toggle-right">
+                <!-- <div class="learnmore sb-toggle-right">
                     <span class="local-search local-search-google local-search-plugin">
                       <input type="search" placeholder="Search" id="local-search-input" class="local-search-input-cls">
                     </span>
                 </div>
-                <div id="local-search-result" class="local-search-result-cls"></div>
+                <div id="local-search-result" class="local-search-result-cls"></div> -->
                 <!-- <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar before"></span>
@@ -141,31 +151,30 @@
 
       <!-- ============================ Hero Image =========================== -->
 
-<section id="hero" class="scrollme">
+<!-- <section id="hero" class="scrollme">
     <div class="container-fluid element-img" style="background: url(/img/bg_img.jpg) no-repeat center center fixed;background-size: cover">
         <div class="row">
             <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
                 <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
                     <div>
                         
-                        <h2>I APPLY TO GET INTO YOUR LIFE.</h2>
+                        <h2></h2>
                         <p></p>
                         
                         <h2></h2>
-                        <p>此时此刻的云，二十来岁的你</p>
+                        <p></p>
                         
 
                     </div>
                 </div>
             </div>
-            <!-- // .col-md-12 -->
         </div>
         <div class="herofade beige-dk"></div>
     </div>
-</section>
+</section> -->
 
 <!-- Height spacing helper -->
-<div class="heightblock"></div>
+<!-- <div class="heightblock"></div> -->
 <!-- // End height spacing helper -->
 
 <!-- ============================ END Hero Image =========================== -->
@@ -413,7 +422,10 @@ Input
                 <p>
                     &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By Leooman. All Rights Reserved.
                 </p>
-                <p>Theme By <a href="//github.com/Leooman" style="color: #767D84">Leooman</a></p>
+                <p>
+                Theme By <a href="//github.com/Leooman" style="color: #767D84">Leooman</a>     
+                <a href="/sitemap.xml" style="color: #767D84" title="sitemap">网站地图</a>
+                </p>
             </div>
             <div class="social">
                 <ul>
