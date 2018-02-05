@@ -3336,3 +3336,4 @@ footer .footer_bottom {
 .icon-sina-weibo:before { content: "\e666"; }
 .icon-github:before { content: "\e636"; }
 /*---------------- END ------------------------*/
+.module-cmt-footer,.module-hot-topic{display: none!important;}
