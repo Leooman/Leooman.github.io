@@ -205,8 +205,8 @@ a.meta,
 	transition: all ease .3s;
 }
 hr {
-  margin-top: 40px;
-  margin-bottom: 40px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 /* Placeholder text color */
 input[placeholder],
@@ -3310,9 +3310,8 @@ footer .footer_bottom {
 	color: #fff;
 }
 .duoshuo {
-	width: 66%;
+	/*width: 66%;*/
 	margin: auto;
-	margin-bottom: 10px;
 }
 .ds-thread {
 	margin-bottom: 60px;
