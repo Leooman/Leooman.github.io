@@ -202,6 +202,36 @@ Header unset Cache-Control
     </entry>
     
     <entry>
+      <title><![CDATA[pipe]]></title>
+      <url>/2018/01/04/pipetransform/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p><strong>PipeTransform</strong></p>
+</blockquote>
+<p>To create a Pipe, you must implement this interface.</p>
+<h4 id="Syntax"><a href="#Syntax" class="headerlink" title="Syntax"></a>Syntax</h4><pre><code>value | pipeName[:arg0[:arg1...]]
+</code></pre><h4 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h4><pre><code>import {Pipe, PipeTransform} from &apos;@angular/core&apos;;
+  @Pipe({name: &apos;repeat&apos;})
+  export class RepeatPipe implements PipeTransform {
+    transform(value: any, times: number) {
+      return value.repeat(times);
+   }
+}
+////{{ 'ok' | repeat:3 }}==&gt;&quot;okokok&quot;
+</code></pre><h4 id="Source-code"><a href="#Source-code" class="headerlink" title="Source code"></a>Source code</h4><pre><code>export interface PipeTransform {
+    transform(value: any, ...args: any[]): any;
+}
+</code></pre>]]></content>
+      
+        
+        <tags>
+            
+            <tag> Angular </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[ChangeDetectionCont]]></title>
       <url>/2017/11/01/ChangeDetectionCont/</url>
       <content type="html"><![CDATA[<h2 id="Change-Detection-Constants-4-21-2017-1-22-43-PM"><a href="#Change-Detection-Constants-4-21-2017-1-22-43-PM" class="headerlink" title="Change Detection Constants 4/21/2017 1:22:43 PM "></a>Change Detection Constants <span style="float:right;font-size:12px;line-height:40px;">4/21/2017 1:22:43 PM </span></h2><h3 id="ChangeDetectionStrategy"><a href="#ChangeDetectionStrategy" class="headerlink" title="ChangeDetectionStrategy"></a>ChangeDetectionStrategy</h3><p>Describes within the change detector which strategy will be used the next time change detection is triggered.</p>
