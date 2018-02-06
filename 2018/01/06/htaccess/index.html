@@ -7,7 +7,7 @@
 <!--<![endif]-->
 
 <head>
-  <title>Leooman</title>
+  <title>.htaccess文件详解 | Leooman</title>
   <!-- Meta data -->
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -51,7 +51,7 @@
 </head>
 
 <!--
-<body class="home-template">
+<body class="post-template">
 -->
 <body id="index" class="lightnav animsition">
 
@@ -149,46 +149,12 @@
         <!-- ============================ Header & Logo bar =========================== -->
 
 
-      <!-- ============================ Hero Image =========================== -->
-
-<!-- <section id="hero" class="scrollme">
-    <div class="container-fluid element-img" style="background: url(/img/bg_img.jpg) no-repeat center center fixed;background-size: cover">
-        <div class="row">
-            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
-                <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
-                    <div>
-                        
-                        <h2></h2>
-                        <p></p>
-                        
-                        <h2></h2>
-                        <p></p>
-                        
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="herofade beige-dk"></div>
-    </div>
-</section> -->
-
-<!-- Height spacing helper -->
-<!-- <div class="heightblock"></div> -->
-<!-- // End height spacing helper -->
-
-<!-- ============================ END Hero Image =========================== -->
-<!-- ============================ Content =========================== -->
-
+      
 <section id="intro">
     <div class="container">
-        
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2 opening-statement">
-                <div class="col-md-4">
-                    <h3><a href="/2018/01/06/htaccess/">.htaccess文件详解</a></h3>
-                    <span>
-                        <span class="post-meta">
+        <div class="row col-md-offset-2">
+            <div class="col-md-8">
+    			<span class="post-meta">
       <time datetime="2018-01-06T13:32:40.000Z" itemprop="datePublished">
           2018-01-06
       </time>
@@ -199,216 +165,227 @@
     
     
 </span>
-                    </span>
-                </div>
-                <div class="col-md-8">
-                    <p class="index-excerpt">
-                      
-                        
-.htaccess的基本作用
-
-.htaccess是一个纯文本文件，它里面存放着Apache服务器配置相关的指令。
-.htaccess主要的作用有：URL重写、自定义错误页面、MIME类型配置以及访问权限控制等。
-主要体现在伪静态的应用、图片防盗链、自定义404错误页面、阻止/允许特定IP/IP段、目录浏览与主页、禁止访问指定文件类型、文件密码保护等。
-.htaccess的用途范围主要针对当前目录。
-
-如何启用.htaccess的配置
-                      
-                    </p>
-                    
-                    <p class="pull-right readMore">
-                        <a href="/2018/01/06/htaccess/">Read More...</a>
-                    </p>
-                    
-                </div>
-                <div class="clearfix"></div>
-                <hr class="nogutter">
+                <h1>.htaccess文件详解</h1>
             </div>
         </div>
-        
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2 opening-statement">
-                <div class="col-md-4">
-                    <h3><a href="/2017/11/01/ChangeDetectionCont/">ChangeDetectionCont</a></h3>
-                    <span>
-                        <span class="post-meta">
-      <time datetime="2017-11-01T00:47:56.000Z" itemprop="datePublished">
-          2017-11-01
-      </time>
-    
-    
-    | 
-    <a href='/tags/Angular/'>Angular</a>
-    
-    
-</span>
-                    </span>
-                </div>
-                <div class="col-md-8">
-                    <p class="index-excerpt">
-                      
-                        Change Detection Constants 4/21/2017 1:22:43 PM ChangeDetectionStrategyDescribes within the change detector which strategy will be used the next time change detection is triggered.
+        <div class="col-md-8 col-md-offset-2">
+      		<blockquote>
+<p><strong>.htaccess的基本作用</strong></p>
+</blockquote>
+<p>.htaccess是一个纯文本文件，它里面存放着Apache服务器配置相关的指令。</p>
+<p>.htaccess主要的作用有：<strong>URL重写、自定义错误页面、MIME类型配置以及访问权限控制等</strong>。</p>
+<p>主要体现在伪静态的应用、图片防盗链、自定义404错误页面、阻止/允许特定IP/IP段、目录浏览与主页、禁止访问指定文件类型、文件密码保护等。</p>
+<p>.htaccess的用途范围主要针对当前目录。</p>
+<blockquote>
+<p><strong>如何启用.htaccess的配置</strong></p>
+</blockquote>
+<p>启用.htaccess，需要修改httpd.conf文件，启用AllowOverride，并可以用AllowOverride限制特定命令的使用。</p>
+<pre><code>&lt;Directory /&gt;
+Options FollowSymLinks
+AllowOverride None
+&lt;/Directory&gt;
+</code></pre><p>改为：</p>
+<pre><code>&lt;Directory /&gt;
+Options FollowSymLinks
+AllowOverride All
+&lt;/Directory&gt;
+</code></pre><p>如果需要使用.htaccess以外的其他文件名，可以用AccessFileName指令来改变。例如，需要使用.config ，则可以在服务器配置文件中按以下方法配置：</p>
+<pre><code>AccessFileName .config
+</code></pre><blockquote>
+<p><strong>.htaccess访问控制</strong></p>
+</blockquote>
+<p>限制用户访问一些关键目录</p>
+<pre><code>&lt;Files  ~ &quot;^.*\.([Ll][Oo][Gg])|([eE][xX][eE])&quot;&gt;
+ Order allow,deny
+ Deny from all
+&lt;/Files&gt;
+</code></pre><ul>
+<li>Files后的波浪线表示启用“正则表达式”</li>
+<li>Order命令：通过Allow,Deny参数，Apache首先找到并应用Allow命令，然后应用Deny命令，以阻止所有访问，也可以使用Deny,Allow</li>
+</ul>
+<blockquote>
+<p><strong>URL重写</strong></p>
+</blockquote>
+<pre><code># 将 RewriteEngine 模式打开 
+RewriteEngine On 
+# Rewrite 系统规则请勿修改 
+RewriteRule ^p/([0-9]+)\.html$ index.php?post_id=$1
+RewriteRule ^u-(username|uid)-(.+)\.html$ space.php?$1=$2
+</code></pre><blockquote>
+<p><strong>配置错误页面</strong></p>
+</blockquote>
+<pre><code># custom error documents
+ErrorDocument 401 /err/401.php
+ErrorDocument 403 /err/403.php
+ErrorDocument 404 /err/404.php
+ErrorDocument 500 /err/500.php
+</code></pre><blockquote>
+<p><strong>常用命令及配置</strong></p>
+</blockquote>
+<ul>
+<li>禁止显示目录列表</li>
+</ul>
+<p>有些时候，由于某种原因，你的目录里没有index文件，这意味着当有人在浏览器地址栏键入了该目录的路径，该目录下所有的文件都会显示出来，这会给你的网站留下安全隐患。</p>
+<p>为避免这种情况（而不必创建一堆的新index文件），你可以在你的.htaccess文档中键入以下命令，用以阻止<br>目录列表的显示：</p>
+<pre><code>Options -Indexes
+</code></pre><ul>
+<li>阻止/允许特定的IP地址</li>
+</ul>
+<p>某些情况下，你可能只想允许某些特定IP的用户可以访问你的网站，或者想封禁某些特定的IP地址（例如：将低级用户隔离于你的信息版面外）。当然，这只在你知道你想拦截的IP地址时才有用，然而现在网上的大多数用户都使用动态IP地址，所以这并不是限制使用的常用方法。</p>
+<p>使用以下命令封禁一个IP地址(只指明了其中的几个，则可以封禁整个网段的地址)：</p>
+<pre><code>deny from 000.000.000.000
+</code></pre><p>使用以下命令允许一个IP地址访问网站(只指明了其中的几个，则可以允许整个网段的地址)：</p>
+<pre><code>allow from 000.000.000.000
+</code></pre><p>阻止所有人访问该目录，则可以使用(并不影响脚本程序使用这个目录下的文档)：</p>
+<pre><code>deny from all
+</code></pre><ul>
+<li>替换index文件</li>
+</ul>
+<p>也许你不想一直使用index.htm或index.html作为目录的索引文件。如果你的站点使用PHP文件，你可能会想使用 index.php来作为该目录的索引文档。当然也不必局限于“index”文档，如果你愿意，使用.htaccess你甚至能够设置 foofoo.balh来作为你的索引文档！</p>
+<p>这些互为替换的索引文件可以排成一个列表，服务器会从左至右进行寻找，检查哪个文档在真实的目录中存在。如果一个也找不到，它将会把目录列表显示出来（除非你已经关闭了显示目录文件列表）。</p>
+<pre><code>DirectoryIndex index.php index.php3 messagebrd.pl index.html index.htm
+</code></pre><ul>
+<li>重定向(rewrite)</li>
+</ul>
+<p>.htaccess 最有用的功能之一就是将请求重定向到同站内或站外的不同文档。这在你改变了一个文件名称，但仍然想让用户用旧地址访问到它时，变的极为有用。另一个应用是重定向到一个长URL。以下是一个重定向文件的例子：</p>
+<pre><code>Redirect /location/from/root/file.ext http:///new/file/location.xyz
+</code></pre><p>你也可以使用.htaccess重定向整个网站的目录。假如你的网站上有一个名为olddirectory的目录，并且你已经在一个新网站http: ///newdirectory/上建立了与上相同的文档，你可以将旧目录下所有的文件做一次重定向而不必一一声明：</p>
+<pre><code>Redirect /olddirectory http:　///newdirectory
+</code></pre><blockquote>
+<p><strong>安全配置</strong></p>
+</blockquote>
+<ul>
+<li>.htaccess链接盗用保护</li>
+</ul>
+<pre><code>RewriteBase /  
+RewriteCond %{HTTP_REFERER} !^$  
+RewriteCond %{HTTP_REFERER} !^http://(www.)?aqee.net/.*$ [NC]  
+RewriteRule .(gif|jpg|swf|flv|png)$ /feed/ [R=302,L] 
+</code></pre><ul>
+<li>防黑客</li>
+</ul>
+<pre><code>RewriteEngine On  
 
-OnPush = 0
+#proc/self/environ
+RewriteCond %{QUERY_STRING} proc/self/environ [OR]  
 
-OnPush means that the chan
-                      
-                    </p>
-                    
-                    <p class="pull-right readMore">
-                        <a href="/2017/11/01/ChangeDetectionCont/">Read More...</a>
-                    </p>
-                    
-                </div>
-                <div class="clearfix"></div>
-                <hr class="nogutter">
-            </div>
+#阻止脚本企图通过URL修改mosConfig值  
+RewriteCond %{QUERY_STRING} mosConfig_[a-zA-Z_]{1,21}(=|%3D) [OR]  
+
+#阻止脚本通过URL传递的base64_encode垃圾信息  
+RewriteCond %{QUERY_STRING} base64_encode.*(.*) [OR]  
+
+#阻止在URL含有&lt;script&gt;标记的脚本  
+RewriteCond %{QUERY_STRING} (&lt;|%3C).*script.*(&gt;|%3E) [NC,OR]  
+
+#阻止企图通过URL设置PHP的GLOBALS变量的脚本  
+RewriteCond %{QUERY_STRING} GLOBALS(=|[|%[0-9A-Z]{0,2}) [OR]  
+
+#阻止企图通过URL设置PHP的_REQUEST变量的脚本  
+RewriteCond %{QUERY_STRING} _REQUEST(=|[|%[0-9A-Z]{0,2})  
+
+#把所有被阻止的请求转向到403禁止提示页面！  
+RewriteRule ^(.*)$ index.php [F,L] 
+</code></pre><ul>
+<li>阻止访问你的 .htaccess 文件或者指定类型的文件</li>
+</ul>
+<pre><code># 保护你的 htaccess 文件  
+&lt;Files .htaccess&gt;  
+order allow,deny  
+deny from all  
+&lt;/Files&gt;  
+
+# 阻止查看指定的文件  
+&lt;Files secretfile.jpg&gt;  
+order allow,deny  
+deny from all  
+&lt;/Files&gt;  
+
+# 多种文件类型  
+&lt;FilesMatch “.(htaccess|htpasswd|ini|phps|fla|psd|log|sh)$”&gt;  
+ Order Allow,Deny  
+Deny from all  
+&lt;/FilesMatch&gt;
+</code></pre><ul>
+<li>禁止脚本执行</li>
+</ul>
+<pre><code># 禁止某些目录里的脚本执行权限  
+AddHandler cgi-script .php .pl .py .jsp .asp .htm .shtml .sh .cgi  
+Options -ExecCGI
+</code></pre><blockquote>
+<p><strong>其他常用配置</strong></p>
+</blockquote>
+<ul>
+<li>屏蔽下载对话框</li>
+</ul>
+<pre><code>AddType application/octet-stream .pdf  
+AddType application/octet-stream .zip  
+AddType application/octet-stream .mov 
+</code></pre><ul>
+<li>省去www前缀</li>
+</ul>
+<pre><code>RewriteEngine On  
+RewriteBase /  
+RewriteCond %{HTTP_HOST} ^www.aqee.net [NC]  
+RewriteRule ^(.*)$ http://aqee.net/$1 [L,R=301]
+</code></pre><ul>
+<li>压缩文件</li>
+</ul>
+<pre><code># 压缩 text, html, javascript, css, xml:  
+AddOutputFilterByType DEFLATE text/plain  
+AddOutputFilterByType DEFLATE text/html  
+AddOutputFilterByType DEFLATE text/xml  
+AddOutputFilterByType DEFLATE text/css  
+AddOutputFilterByType DEFLATE application/xml  
+AddOutputFilterByType DEFLATE application/xhtml+xml  
+AddOutputFilterByType DEFLATE application/rss+xml  
+AddOutputFilterByType DEFLATE application/javascript  
+AddOutputFilterByType DEFLATE application/x-javascript 
+</code></pre><ul>
+<li>缓存文件</li>
+</ul>
+<pre><code>&lt;FilesMatch “.(flv|gif|jpg|jpeg|png|ico|swf|js|css|pdf)$”&gt;  
+Header set Cache-Control “max-age=2592000″  
+&lt;/FilesMatch&gt; 
+</code></pre><ul>
+<li>对某些文件类型禁止使用缓存</li>
+</ul>
+<pre><code># 显式的规定对脚本和其它动态文件禁止使用缓存  
+&lt;FilesMatch “.(pl|php|cgi|spl|scgi|fcgi)$”&gt;  
+Header unset Cache-Control  
+&lt;/FilesMatch&gt; 
+</code></pre>
+            <div class="clearfix"></div>
+            
+        <div class="duoshuo">
+
+
+
+
+
+<div id="SOHUCS"></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cytmhBeB8'; 
+var conf = '1b16caa0c30d67ceaf568c755f151ce7'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("http://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+</div>
+            <hr class="nogutter">
         </div>
-        
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2 opening-statement">
-                <div class="col-md-4">
-                    <h3><a href="/2017/10/31/ChangeDetectorRef/">ChangeDetectorRef</a></h3>
-                    <span>
-                        <span class="post-meta">
-      <time datetime="2017-10-31T09:06:50.000Z" itemprop="datePublished">
-          2017-10-31
-      </time>
-    
-    
-    | 
-    <a href='/tags/Angular/'>Angular</a>
-    
-    
-</span>
-                    </span>
-                </div>
-                <div class="col-md-8">
-                    <p class="index-excerpt">
-                      
-                        ChangeDetectorRef 4/21/2017 12:52:43 AM 
-object method
-
-export class ChangeDetectorRef {
-    markForCheck(): void,
-    detach(): void,
-    detectChanges(): void,
-    checkNoChanges(): void,
-    reattach(): void
-}
-
-markFo
-                      
-                    </p>
-                    
-                    <p class="pull-right readMore">
-                        <a href="/2017/10/31/ChangeDetectorRef/">Read More...</a>
-                    </p>
-                    
-                </div>
-                <div class="clearfix"></div>
-                <hr class="nogutter">
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2 opening-statement">
-                <div class="col-md-4">
-                    <h3><a href="/2017/10/31/Render/">Render</a></h3>
-                    <span>
-                        <span class="post-meta">
-      <time datetime="2017-10-31T09:02:37.000Z" itemprop="datePublished">
-          2017-10-31
-      </time>
-    
-    
-    | 
-    <a href='/tags/Angular/'>Angular</a>
-    
-    
-</span>
-                    </span>
-                </div>
-                <div class="col-md-8">
-                    <p class="index-excerpt">
-                      
-                        Render 4/21/2017 1:22:30 PM RenderComponentTypeexport class RenderComponentType {
-    id: string;
-    templateUrl: string;
-    slotCount: number;
-    encapsulation: ViewEncapsulation;
-    styles: Array&lt;string | any[]&
-                      
-                    </p>
-                    
-                    <p class="pull-right readMore">
-                        <a href="/2017/10/31/Render/">Read More...</a>
-                    </p>
-                    
-                </div>
-                <div class="clearfix"></div>
-                <hr class="nogutter">
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2 opening-statement">
-                <div class="col-md-4">
-                    <h3><a href="/2017/10/30/Directive/">Directive</a></h3>
-                    <span>
-                        <span class="post-meta">
-      <time datetime="2017-10-30T05:00:20.000Z" itemprop="datePublished">
-          2017-10-30
-      </time>
-    
-    
-    | 
-    <a href='/tags/Angular/'>Angular</a>
-    
-    
-</span>
-                    </span>
-                </div>
-                <div class="col-md-8">
-                    <p class="index-excerpt">
-                      
-                        Directive 4/16/2017 4:40:14 PM 
-what it does
-
-Marks a class as an Angular directive and collects directive configuration metadata.
-
-how to use
-
-import { Directive } from &apos;@angular/core&apos;;
-@Directive({
-    select
-                      
-                    </p>
-                    
-                    <p class="pull-right readMore">
-                        <a href="/2017/10/30/Directive/">Read More...</a>
-                    </p>
-                    
-                </div>
-                <div class="clearfix"></div>
-                <hr class="nogutter">
-            </div>
-        </div>
-        
         <nav class="pagination" role="pagination">
-          
-          <a class="pull-right" href="/page/2/">Older Posts →</a>
-        </nav>
+    
+    
+    <a class="pull-right" href="/2017/11/01/ChangeDetectionCont/">
+        ChangeDetectionCont →
+    </a>
+    
+</nav>
+
     </div>
 </section>
-<section id="statement">
-    <div class="container text-center wow fadeInUp" data-wow-delay="0.5s">
-        <div class="row">
-            <p>虽然还没想好写点什么，但是总觉得这里放句话比较厉害。</p>
-        </div>
-    </div>
-</section>
-<!-- ============================ END Content =========================== -->
+
 
       
 <!-- ============================ Footer =========================== -->
