@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2018/02/07/binarytree/</loc>
+    
+    <lastmod>2018-02-07T10:03:39.951Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2018/01/04/pipetransform/</loc>
     
     <lastmod>2018-02-06T15:14:40.772Z</lastmod>

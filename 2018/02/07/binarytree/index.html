@@ -7,7 +7,7 @@
 <!--<![endif]-->
 
 <head>
-  <title>Archives | Leooman</title>
+  <title>javascript实现二叉树遍历 | Leooman</title>
   <!-- Meta data -->
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -50,7 +50,7 @@
 </head>
 
 <!--
-<body class="home-template">
+<body class="post-template">
 -->
 <body id="index" class="lightnav animsition">
 
@@ -147,146 +147,229 @@
 
         <!-- ============================ Header & Logo bar =========================== -->
 
-      <!-- ============================ Hero Image =========================== -->
-
-<!-- <section id="hero" class="scrollme">
-    <div class="container-fluid element-img" style="background: url(/img/bg_img.jpg) no-repeat center center fixed;background-size: cover">
-        <div class="row">
-            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
-                <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
-                    <div>
-                        
-                        <h2></h2>
-                        <p></p>
-                        
-                        <h2></h2>
-                        <p></p>
-                        
-
-                    </div>
-                </div>
+      
+<section id="intro">
+    <div class="container">
+        <div class="row col-md-offset-2">
+            <div class="col-md-8">
+    			<span class="post-meta">
+      <time datetime="2018-02-07T09:13:34.000Z" itemprop="datePublished">
+          2018-02-07
+      </time>
+    
+    
+    | 
+    <a href='/tags/javascript/'>javascript</a>
+    
+    
+</span>
+                <h1>javascript实现二叉树遍历</h1>
             </div>
         </div>
-        <div class="herofade beige-dk"></div>
+        <div class="col-md-8 col-md-offset-2">
+      		<blockquote>
+<p><strong>创建二叉树</strong></p>
+</blockquote>
+<pre><code>function BinaryTree(){
+    var Node=function(key){
+        this.key=key
+        this.left=null
+        this.right=null
+    }
+    var root = null
+    var insertNode=function(node,newNode){
+        if(newNode.key &lt; node.key){
+            if(node.left===null){
+                node.left=newNode
+            }else{
+                insertNode(node.left,newNode)
+            }
+        }else{
+            if(node.right===null){
+                node.right=newNode
+            }else{
+                insertNode(node.right,newNode)
+            }
+        }
+    }
+    // 创建二叉树
+    this.insert=function(key){
+        var node=new Node(key)
+        if(root === null){
+            root=node
+        }else{
+            insertNode(root,node)
+        }
+    }
+}
+</code></pre><blockquote>
+<p><strong>先序遍历 复制二叉树</strong></p>
+</blockquote>
+<p>先序遍历：（1）访问根节点；（2）采用先序递归遍历左子树；（3）采用先序递归遍历右子树</p>
+<pre><code>this.preOrderTraverse=function(callback){
+    preOrderTraverseNode(root,callback)
+}
+var preOrderTraverseNode=function(node,callback){
+    if(node!==null){
+        callback(node.key)
+        preOrderTraverseNode(node.left,callback)
+        preOrderTraverseNode(node.right,callback)
+    }
+}
+</code></pre><blockquote>
+<p><strong>后序遍历</strong></p>
+</blockquote>
+<p>后序遍历：（1）采用后序递归遍历左子树；（2）采用后序递归遍历右子树；（3）访问根节点</p>
+<pre><code>this.postOrderTraverse=function(callback){
+    postOrderTraverseNode(root,callback)
+}
+var postOrderTraverseNode=function(node,callback){
+    if(node!==null){
+        postOrderTraverseNode(node.left,callback)
+        postOrderTraverseNode(node.right,callback)
+        callback(node.key)
+    }
+}
+</code></pre><blockquote>
+<p><strong>中序遍历 升序排列</strong></p>
+</blockquote>
+<p>中序遍历：（1）采用中序遍历左子树；（2）访问根节点；（3）采用中序遍历右子树</p>
+<pre><code>this.inOrderTraverse=function(callback){
+    inOrderTraverseNode(root,callback)
+}
+var inOrderTraverseNode=function(node,callback){
+    if(node!==null){    
+        inOrderTraverseNode(node.left,callback)
+        callback(node.key)
+        inOrderTraverseNode(node.right,callback)
+    }
+}
+</code></pre><blockquote>
+<p><strong>查找最小值</strong></p>
+</blockquote>
+<pre><code>this.min=function(){
+    return minNode(root)
+}
+var minNode=function(node){
+    if(node){
+        while(node &amp;&amp; node.left!==null){
+            node=node.left
+        }
+        return node.key
+    }
+}
+</code></pre><blockquote>
+<p><strong>查找最大值</strong></p>
+</blockquote>
+<pre><code>this.max=function(){
+    return maxNode(root)
+}
+var maxNode=function(node){
+    if(node){
+        while(node &amp;&amp; node.right!==null){
+            node=node.right
+        }
+        return node.key
+    }
+}
+</code></pre><blockquote>
+<p><strong>查找是否存在对应值</strong></p>
+</blockquote>
+<pre><code>this.search=function(key){
+    return searchNode(root,key)
+}
+var searchNode=function(node,key){
+    if(node === null) return false
+    if(key &lt; node.key){
+        return searchNode(node.left,key)
+    }else if(key &gt; node.key){
+        return searchNode(node.right,key)
+    }else{
+        return true
+    }
+}
+</code></pre><blockquote>
+<p><strong>删除节点</strong></p>
+</blockquote>
+<pre><code>this.remove=function(key){
+    root=removeNode(root,key)
+}
+var findMinNode=function(node){
+    if(node){
+        while(node &amp;&amp; node.left!==null){
+            node=node.left
+        }
+        return node
+    }
+}
+var removeNode=function(node,key){
+    if(node===null) return null
+    if(key &lt; node.key){
+        node.left=removeNode(node.left,key)
+        return node
+    }else if(key &gt; node.right){
+        node.right=removeNode(node.right,key)
+        return node
+    }else{
+        // 叶子节点
+        if(node.left === null &amp;&amp; node.right === null){
+            node = null
+            return node
+        }
+        // 只包含右子树
+        if(node.left === null){
+            node=node.right
+            return node
+        }
+        // 只包含左子树
+        if(node.right === null){
+            node=node.left
+            return node
+        }
+        // 包含左右子树(查找右子树的最小节点删除并修改当前节点的key值)
+        var aux=findMinNode(node.right)
+        node.key=aux.key
+        node.right=removeNode(node.right,aux.key)
+        return node
+    }
+}
+</code></pre><blockquote>
+<p><strong>DEMO</strong></p>
+</blockquote>
+<p><a href="https://github.com/Leooman/Leooman.github.io/issues/1" target="_blank" rel="noopener">代码测试地址：https://github.com/Leooman/Leooman.github.io/issues/1</a></p>
+
+            <div class="clearfix"></div>
+            
+        <div class="duoshuo">
+
+
+
+
+
+<div id="SOHUCS"></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cytmhBeB8'; 
+var conf = '1b16caa0c30d67ceaf568c755f151ce7'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("http://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+</div>
+            <hr class="nogutter">
+        </div>
+        <nav class="pagination" role="pagination">
+    
+    
+    <a class="pull-right" href="/2018/01/06/htaccess/">
+        .htaccess文件详解 →
+    </a>
+    
+</nav>
+
     </div>
 </section>
- -->
-<!-- Height spacing helper -->
-<!-- <div class="heightblock"></div> -->
-<!-- // End height spacing helper -->
-
-<!-- ============================ END Hero Image =========================== -->
 
 
-
-
-<section id="services">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-                <div class="row boxes">
-                    
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2018/02/07/binarytree/">javascript实现二叉树遍历</a></h4>
-                            
-                            <p><time datetime="2018-02-07T09:13:34.000Z"><a href="/2018/02/07/binarytree/">2018-02-07</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2018/01/06/htaccess/">.htaccess文件详解</a></h4>
-                            
-                            <p><time datetime="2018-01-06T13:32:40.000Z"><a href="/2018/01/06/htaccess/">2018-01-06</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2018/01/04/pipetransform/">pipe</a></h4>
-                            
-                            <p><time datetime="2018-01-04T15:01:17.000Z"><a href="/2018/01/04/pipetransform/">2018-01-04</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2017/11/01/ChangeDetectionCont/">ChangeDetectionCont</a></h4>
-                            
-                            <p><time datetime="2017-11-01T00:47:56.000Z"><a href="/2017/11/01/ChangeDetectionCont/">2017-11-01</a></time></p>
-                        </div>
-                    
-                        
-                            </div><div class="row boxes">
-                            
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2017/10/31/ChangeDetectorRef/">ChangeDetectorRef</a></h4>
-                            
-                            <p><time datetime="2017-10-31T09:06:50.000Z"><a href="/2017/10/31/ChangeDetectorRef/">2017-10-31</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2017/10/31/Render/">Render</a></h4>
-                            
-                            <p><time datetime="2017-10-31T09:02:37.000Z"><a href="/2017/10/31/Render/">2017-10-31</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2017/10/30/Directive/">Directive</a></h4>
-                            
-                            <p><time datetime="2017-10-30T05:00:20.000Z"><a href="/2017/10/30/Directive/">2017-10-30</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2017/10/30/Communication/">Communication</a></h4>
-                            
-                            <p><time datetime="2017-10-30T04:59:02.000Z"><a href="/2017/10/30/Communication/">2017-10-30</a></time></p>
-                        </div>
-                    
-                        
-                            </div><div class="row boxes">
-                            
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2017/10/30/Component/">Component</a></h4>
-                            
-                            <p><time datetime="2017-10-30T04:45:26.000Z"><a href="/2017/10/30/Component/">2017-10-30</a></time></p>
-                        </div>
-                    
-                </div>
-            </div>    
-        </div>
-    </div>
-</section> 
-
-<section id="statement">
-    <div class="container text-center wow fadeInUp" data-wow-delay="0.5s">
-        <div class="row">
-            <p>虽然还没想好写点什么，但是总觉得这里放句话比较厉害。</p>
-        </div>
-    </div>
-</section>
       
 <!-- ============================ Footer =========================== -->
 
