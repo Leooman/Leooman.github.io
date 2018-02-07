@@ -7,7 +7,7 @@
 <!--<![endif]-->
 
 <head>
-  <title>Render | Leooman</title>
+  <title>Tag: web | Leooman</title>
   <!-- Meta data -->
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -50,7 +50,7 @@
 </head>
 
 <!--
-<body class="post-template">
+<body class="home-template">
 -->
 <body id="index" class="lightnav animsition">
 
@@ -147,184 +147,68 @@
 
         <!-- ============================ Header & Logo bar =========================== -->
 
-      
-<section id="intro">
-    <div class="container">
-        <div class="row col-md-offset-2">
-            <div class="col-md-8">
-    			<span class="post-meta">
-      <time datetime="2017-10-31T09:02:37.000Z" itemprop="datePublished">
-          2017-10-31
-      </time>
-    
-    
-    | 
-    <a href='/tags/Angular/'>Angular</a>
-    
-    
-</span>
-                <h1>Render</h1>
+      <!-- ============================ Hero Image =========================== -->
+
+<!-- <section id="hero" class="scrollme">
+    <div class="container-fluid element-img" style="background: url(/img/bg_img.jpg) no-repeat center center fixed;background-size: cover">
+        <div class="row">
+            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
+                <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
+                    <div>
+                        
+                        <h2></h2>
+                        <p></p>
+                        
+                        <h2></h2>
+                        <p></p>
+                        
+
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-md-8 col-md-offset-2">
-      		<h2 id="Render-4-21-2017-1-22-30-PM"><a href="#Render-4-21-2017-1-22-30-PM" class="headerlink" title="Render 4/21/2017 1:22:30 PM "></a>Render <span style="float:right;font-size:12px;line-height:40px;">4/21/2017 1:22:30 PM </span></h2><h4 id="RenderComponentType"><a href="#RenderComponentType" class="headerlink" title="RenderComponentType"></a>RenderComponentType</h4><pre><code>export class RenderComponentType {
-    id: string;
-    templateUrl: string;
-    slotCount: number;
-    encapsulation: ViewEncapsulation;
-    styles: Array&lt;string | any[]&gt;;
-    animations: {
-        [key: string]: Function;
-    };
-    constructor(id: string, templateUrl: string, slotCount: number, encapsulation: ViewEncapsulation, styles: Array&lt;string | any[]&gt;, animations: {
-        [key: string]: Function;
-    });
-}
-</code></pre><h4 id="RenderDebugInfo"><a href="#RenderDebugInfo" class="headerlink" title="RenderDebugInfo"></a>RenderDebugInfo</h4><pre><code>export class RenderDebugInfo {
-    injector: Injector;
-    component: any;
-    providerTokens: any[];
-    references: {
-        [key: string]: any;
-    };
-    context: any;
-    source: string;
-}
-</code></pre><h4 id="DirectRenderer-Use-the-Renderer2-instead-in-version-4-0"><a href="#DirectRenderer-Use-the-Renderer2-instead-in-version-4-0" class="headerlink" title="DirectRenderer [Use the Renderer2 instead in version 4.0]"></a>DirectRenderer [Use the <code>Renderer2</code> instead in version 4.0]</h4><pre><code>export interface DirectRenderer {
-    remove(node: any): void;
-    appendChild(node: any, parent: any): void;
-    insertBefore(node: any, refNode: any): void;
-    nextSibling(node: any): any;
-    parentElement(node: any): any;
-}
-</code></pre><h4 id="Renderer-Use-the-Renderer2-instead-in-version-4-0"><a href="#Renderer-Use-the-Renderer2-instead-in-version-4-0" class="headerlink" title="Renderer [Use the Renderer2 instead in version 4.0]"></a>Renderer [Use the <code>Renderer2</code> instead in version 4.0]</h4><ul>
-<li><p><code>selectRootElement</code> (selectorOrNode: string | any, debugInfo?: RenderDebugInfo): any</p>
-</li>
-<li><p><code>createElement</code> (parentElement: any, name: string, debugInfo?: RenderDebugInfo): any</p>
-</li>
-<li><p><code>createViewRoot</code> (hostElement: any): any</p>
-</li>
-<li><p><code>createTemplateAnchor</code> (parentElement: any, debugInfo?: RenderDebugInfo): any</p>
-</li>
-<li><p><code>createText</code> (parentElement: any, value: string, debugInfo?: RenderDebugInfo): any</p>
-</li>
-<li><p><code>projectNodes</code> (parentElement: any, nodes: any[]): void</p>
-</li>
-<li><p><code>attachViewAfter</code> (node: any, viewRootNodes: any[]): void</p>
-</li>
-<li><p><code>detachView</code> (viewRootNodes: any[]): void</p>
-</li>
-<li><p><code>destroyView</code> (hostElement: any, viewAllNodes: any[]): void</p>
-</li>
-<li><p><code>listen</code> (renderElement: any, name: string, callback: Function): Function</p>
-</li>
-<li><p><code>listenGlobal</code> (target: string, name: string, callback: Function): Function</p>
-</li>
-<li><p><code>setElementProperty</code> (renderElement: any, propertyName: string, propertyValue: any): void</p>
-</li>
-<li><p><code>setElementAttribute</code> (renderElement: any, attributeName: string, attributeValue: string): void</p>
-</li>
-<li><p><code>setBindingDebugInfo</code> (renderElement: any, propertyName: string, propertyValue: string): void</p>
-</li>
-<li><p><code>setElementClass</code> (renderElement: any, className: string, isAdd: boolean): void</p>
-</li>
-<li><p><code>setElementStyle</code> (renderElement: any, styleName: string, styleValue: string): void</p>
-</li>
-<li><p><code>invokeElementMethod</code> (renderElement: any, methodName: string, args?: any[]): void</p>
-</li>
-<li><p><code>setText</code> (renderNode: any, text: string): void</p>
-</li>
-<li><p><code>animate</code> (element: any, startingStyles: AnimationStyles, keyframes: AnimationKeyframe[], duration: number, delay: number, easing: string): AnimationPlayer</p>
-</li>
-</ul>
-<h4 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h4><p><img src="https://github.com/Leooman/Angular/raw/master/images/renderer.jpg" alt="Renderer"></p>
-<blockquote>
-<p><strong>RootRenderer</strong> [Use <code>RendererFactory2</code> instead in version 4.0]</p>
-</blockquote>
-<p>If you are implementing a custom renderer, you must implement this interface.</p>
-<p>The default Renderer implementation is <code>DomRenderer</code>. Also available is <code>WebWorkerRenderer</code>.</p>
-<pre><code>export declare abstract class RootRenderer {
-    abstract renderComponent(componentType: RenderComponentType): Renderer;
-}
-</code></pre><h2 id="Version-4-0"><a href="#Version-4-0" class="headerlink" title="Version 4.0"></a>Version 4.0</h2><h3 id="RendererType2"><a href="#RendererType2" class="headerlink" title="RendererType2"></a>RendererType2</h3><pre><code>export interface RendererType2 {
-    id: string;
-    encapsulation: ViewEncapsulation;
-    styles: (string | any[])[];
-    data: {
-        [kind: string]: any;
-    };
-}
-</code></pre><h3 id="RendererFactory2"><a href="#RendererFactory2" class="headerlink" title="RendererFactory2"></a>RendererFactory2</h3><pre><code>export class RendererFactory2 {
-    createRenderer(hostElement: any, type: RendererType2 | null): Renderer2;
-}
-</code></pre><h3 id="RendererStyleFlags2"><a href="#RendererStyleFlags2" class="headerlink" title="RendererStyleFlags2"></a>RendererStyleFlags2</h3><pre><code>export declare enum RendererStyleFlags2 {
-    Important = 1,
-    DashCase = 2,
-}
-</code></pre><h3 id="Renderer2"><a href="#Renderer2" class="headerlink" title="Renderer2"></a>Renderer2</h3><p>This field can be used to store arbitrary data on this renderer instance.</p>
-<p>This is useful for renderers that delegate to other renderers.</p>
-<ul>
-<li>[readonly] <code>data</code>: {[key: string]: any}</li>
-<li><code>destroy()</code>: void</li>
-<li><code>createElement</code>(name: string, namespace?: string | null): any</li>
-<li><code>createComment</code>(value: string): any</li>
-<li><code>createText</code>(value: string): any</li>
-<li><code>destroyNode</code>: ((node: any) =&gt; void) | null</li>
-<li><code>appendChild</code>(parent: any, newChild: any): void</li>
-<li><code>insertBefore</code>(parent: any, newChild: any, refChild: any): void</li>
-<li><code>removeChild</code>(parent: any, oldChild: any): void</li>
-<li><code>selectRootElement</code>(selectorOrNode: string | any): any</li>
-<li><p><code>parentNode</code>(node: any): any</p>
-</li>
-<li><p><code>nextSibling</code>(node: any): any</p>
-</li>
-<li><code>setAttribute</code>(el: any, name: string, value: string, namespace?: string | null): void</li>
-<li><code>removeAttribute</code>(el: any, name: string, namespace?: string | null): void</li>
-<li><code>addClass</code>(el: any, name: string): void</li>
-<li><code>removeClass</code>(el: any, name: string): void</li>
-<li><code>setStyle</code>(el: any, style: string, value: any, flags?: RendererStyleFlags2): void</li>
-<li><code>removeStyle</code>(el: any, style: string, flags?: RendererStyleFlags2): void</li>
-<li><code>setProperty</code>(el: any, name: string, value: any): void</li>
-<li><code>setValue</code>(node: any, value: string): void</li>
-<li><code>listen</code>(target: ‘window’ | ‘document’ | ‘body’ | any, eventName: string, callback: (event: any) =&gt; boolean | void): () =&gt; void</li>
-</ul>
-
-            <div class="clearfix"></div>
-            
-        <div class="duoshuo">
-
-
-
-
-
-<div id="SOHUCS"></div> 
-<script type="text/javascript"> 
-(function(){ 
-var appid = 'cytmhBeB8'; 
-var conf = '1b16caa0c30d67ceaf568c755f151ce7'; 
-var width = window.innerWidth || document.documentElement.clientWidth; 
-if (width < 960) { 
-window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("http://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
-</div>
-            <hr class="nogutter">
-        </div>
-        <nav class="pagination" role="pagination">
-    
-    <a class="pull-left" href="/2017/10/31/ChangeDetectorRef/" style="float: left;">
-        ← ChangeDetectorRef
-    </a>
-    
-    
-    <a class="pull-right" href="/2017/10/30/hack/">
-        web前端兼容性问题 →
-    </a>
-    
-</nav>
-
+        <div class="herofade beige-dk"></div>
     </div>
 </section>
+ -->
+<!-- Height spacing helper -->
+<!-- <div class="heightblock"></div> -->
+<!-- // End height spacing helper -->
+
+<!-- ============================ END Hero Image =========================== -->
 
 
+
+
+<section id="services">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="row boxes">
+                    
+                    
+                        
+                        
+                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
+                            
+                              <h4 class="title"><a href="/2017/10/30/hack/">web前端兼容性问题</a></h4>
+                            
+                            <p><time datetime="2017-10-30T13:06:33.000Z"><a href="/2017/10/30/hack/">2017-10-30</a></time></p>
+                        </div>
+                    
+                </div>
+            </div>    
+        </div>
+    </div>
+</section> 
+
+<section id="statement">
+    <div class="container text-center wow fadeInUp" data-wow-delay="0.5s">
+        <div class="row">
+            <p>虽然还没想好写点什么，但是总觉得这里放句话比较厉害。</p>
+        </div>
+    </div>
+</section>
       
 <!-- ============================ Footer =========================== -->
 
