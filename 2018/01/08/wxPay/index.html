@@ -7,7 +7,7 @@
 <!--<![endif]-->
 
 <head>
-  <title>Archives: 2018/1 | Leooman</title>
+  <title>微信企业付款 | Leooman</title>
   <!-- Meta data -->
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -50,7 +50,7 @@
 </head>
 
 <!--
-<body class="home-template">
+<body class="post-template">
 -->
 <body id="index" class="lightnav animsition">
 
@@ -147,95 +147,240 @@
 
         <!-- ============================ Header & Logo bar =========================== -->
 
-      <!-- ============================ Hero Image =========================== -->
-
-<!-- <section id="hero" class="scrollme">
-    <div class="container-fluid element-img" style="background: url(/img/bg_img.jpg) no-repeat center center fixed;background-size: cover">
-        <div class="row">
-            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
-                <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
-                    <div>
-                        
-                        <h2></h2>
-                        <p></p>
-                        
-                        <h2></h2>
-                        <p></p>
-                        
-
-                    </div>
-                </div>
+      
+<section id="intro">
+    <div class="container">
+        <div class="row col-md-offset-2">
+            <div class="col-md-8">
+    			<span class="post-meta">
+      <time datetime="2018-01-08T06:20:04.000Z" itemprop="datePublished">
+          2018-01-08
+      </time>
+    
+    
+    | 
+    <a href='/tags/微信支付/'>微信支付</a>
+    
+    
+</span>
+                <h1>微信企业付款</h1>
             </div>
         </div>
-        <div class="herofade beige-dk"></div>
+        <div class="col-md-8 col-md-offset-2">
+      		<blockquote>
+<p><strong>企业付款至零钱</strong></p>
+</blockquote>
+<pre><code>class wxPay{
+    //=======【证书路径设置】=====================================
+    //证书路径,注意应该填写绝对路径
+    protected $SSLCERT_PATH = &apos;apiclient_cert.pem&apos;;
+    protected $SSLKEY_PATH =  &apos;apiclient_key.pem&apos;;
+    //=======【基本信息设置】=====================================
+    protected $APPID = &apos;&apos;;//填写微信公众号appid
+    protected $MCHID = &apos;&apos;;//支付商户号
+    protected $KEY = &apos;&apos;; //商户支付API密钥
+    protected $APPURL = &apos;https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers&apos;;//JSAPI接口地址
+
+    /**
+     * 微信企业付款
+     * @param  [type] $openid   商户appid下，某用户的openid
+     * @param  [type] $username 收款用户真实姓名。
+     * @param  [type] $desc     企业付款操作说明信息。必填。
+     * @param  [type] $money    企业付款金额，单位为分
+     */
+    function pay($openid=&apos;&apos;, $username=&apos;&apos;, $desc=&apos;&apos;, $money=0){
+        $apiUrl = $this-&gt;APPURL;
+        $Parameters=array();
+        $Parameters[&apos;amount&apos;]           = $money;//企业付款金额，单位为分
+        $Parameters[&apos;check_name&apos;]       = &apos;NO_CHECK&apos;;//NO_CHECK：不校验真实姓名 FORCE_CHECK：强校验真实姓名（未实名认证的用户会校验失败，无法转账） OPTION_CHECK：针对已实名认证的用户才校验真实姓名（未实名认证用户不校验，可以转账成功）
+        $Parameters[&apos;desc&apos;]             = $desc;//企业付款操作说明信息。必填。
+        $Parameters[&apos;mch_appid&apos;]        = $this-&gt;APPID;//微信分配的公众账号ID
+        $Parameters[&apos;mchid&apos;]            = $this-&gt;MCHID;//微信支付分配的商户号
+        $Parameters[&apos;nonce_str&apos;]        = $this-&gt;createNoncestr();//随机字符串，不长于32位
+        $Parameters[&apos;openid&apos;]           = $openid;//商户appid下，某用户的openid
+        $Parameters[&apos;partner_trade_no&apos;] = &apos;Leooman&apos;.time().rand(10000, 99999);//商户订单号，需保持唯一性
+        $Parameters[&apos;re_user_name&apos;]     = $username;//收款用户真实姓名。 如果check_name设置为FORCE_CHECK或OPTION_CHECK，则必填用户真实姓名
+        $Parameters[&apos;spbill_create_ip&apos;] = $_SERVER[&apos;SERVER_ADDR&apos;];//调用接口的机器Ip地址
+        //$Parameters[&apos;spbill_create_ip&apos;] = gethostbyname($_ENV[&apos;COMPUTERNAME&apos;]);//调用接口的机器Ip地址(本地测试调用)
+        $Parameters[&apos;sign&apos;]             = $this-&gt;getSign($Parameters);//签名
+        $xml  = $this-&gt;arrayToXml($Parameters);
+        $res  = $this-&gt;postXmlSSLCurl($xml,$apiUrl);
+        $return = $this-&gt;xmlToArray($res);
+        return $res;
+    }
+
+    /**
+     *  作用：格式化参数，签名过程需要使用
+     */
+    function formatBizQueryParaMap($paraMap, $urlencode)
+    {
+        $buff = &quot;&quot;;
+        ksort($paraMap);
+        foreach ($paraMap as $k =&gt; $v)
+        {
+            if($urlencode)
+            {
+               $v = urlencode($v);
+            }
+            $buff .= $k . &quot;=&quot; . $v . &quot;&amp;&quot;;
+        }
+        $reqPar;
+        if (strlen($buff) &gt; 0) 
+        {
+            $reqPar = substr($buff, 0, strlen($buff)-1);
+        }
+        return $reqPar;
+    }
+
+    /**
+     *  作用：签名生成
+     */
+    function getSign($Obj)
+    {
+        foreach ($Obj as $k =&gt; $v)
+        {
+            $Parameters[$k] = $v;
+        }
+        //签名步骤一：按字典序排序参数
+        ksort($Parameters);
+        $String = $this-&gt;formatBizQueryParaMap($Parameters, false);
+        //签名步骤二：在string后加入KEY
+        $String = $String.&quot;&amp;key=&quot;.$this-&gt;KEY;
+        //签名步骤三：MD5加密
+        $String = md5($String);
+        //签名步骤四：所有字符转为大写
+        $result_ = strtoupper($String);
+        return $result_;
+    }
+
+    /**
+     *  作用：产生随机字符串，不长于32位
+     */
+    function createNoncestr( $length = 32 ) 
+    {
+        $chars = &quot;abcdefghijklmnopqrstuvwxyz0123456789&quot;;  
+        $str =&quot;&quot;;
+        for ( $i = 0; $i &lt; $length; $i++ )  {  
+            $str.= substr($chars, mt_rand(0, strlen($chars)-1), 1);  
+        }  
+        return $str;
+    }
+
+    /**
+     *  作用：array转xml
+     */
+    function arrayToXml($arr)
+    {
+        $xml = &quot;&lt;xml&gt;&quot;;
+        foreach ($arr as $key=&gt;$val)
+        {
+            if (is_numeric($val)){
+                $xml.=&quot;&lt;&quot;.$key.&quot;&gt;&quot;.$val.&quot;&lt;/&quot;.$key.&quot;&gt;&quot;;
+            }else{
+                $xml.=&quot;&lt;&quot;.$key.&quot;&gt;&lt;![CDATA[&quot;.$val.&quot;]]&gt;&lt;/&quot;.$key.&quot;&gt;&quot;;
+            }
+        }
+        $xml.=&quot;&lt;/xml&gt;&quot;;
+        return $xml; 
+    }
+
+    /**
+     *  作用：将xml转为array
+     */
+    function xmlToArray($xml)
+    {        
+        $array_data = json_decode(json_encode(simplexml_load_string($xml, &apos;SimpleXMLElement&apos;, LIBXML_NOCDATA)), true);      
+        return $array_data;
+    }
+
+    /**
+     *  作用：使用证书，以post方式提交xml到对应的接口url
+     */
+    function postXmlSSLCurl($xml,$url,$second=30)
+    {
+        $ch = curl_init();
+        //超时时间
+        curl_setopt($ch,CURLOPT_TIMEOUT,$second);
+        //这里设置代理，如果有的话
+        //curl_setopt($ch,CURLOPT_PROXY, &apos;8.8.8.8&apos;);
+        //curl_setopt($ch,CURLOPT_PROXYPORT, 8080);
+        curl_setopt($ch,CURLOPT_URL, $url);
+        curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,FALSE);
+        curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,FALSE);
+        //设置header
+        curl_setopt($ch,CURLOPT_HEADER,FALSE);
+        //要求结果为字符串且输出到屏幕上
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,TRUE);
+        //设置证书
+        //使用证书：cert 与 key 分别属于两个.pem文件
+        //默认格式为PEM，可以注释
+        curl_setopt($ch,CURLOPT_SSLCERTTYPE,&apos;PEM&apos;);
+        // 自行修改成绝对路径
+        curl_setopt($ch,CURLOPT_SSLCERT, dirname(__FILE__).DIRECTORY_SEPARATOR.&apos;cert&apos;.DIRECTORY_SEPARATOR.$this-&gt;SSLCERT_PATH);
+        //默认格式为PEM，可以注释
+        curl_setopt($ch,CURLOPT_SSLKEYTYPE,&apos;PEM&apos;);
+        // 自行修改成绝对路径
+        curl_setopt($ch,CURLOPT_SSLKEY, dirname(__FILE__).DIRECTORY_SEPARATOR.&apos;cert&apos;.DIRECTORY_SEPARATOR.$this-&gt;SSLKEY_PATH);
+        //post提交方式
+        curl_setopt($ch,CURLOPT_POST, true);
+        curl_setopt($ch,CURLOPT_POSTFIELDS,$xml);
+        $data = curl_exec($ch);
+        //返回结果
+        if($data){
+            curl_close($ch);
+            return $data;
+        }
+        else { 
+            $error = curl_errno($ch);
+            echo &quot;curl出错，错误码:$error&quot;.&quot;&quot;; 
+            curl_close($ch);
+            return false;
+        }
+    }
+}
+</code></pre><blockquote>
+<p><strong>类调用</strong></p>
+</blockquote>
+<pre><code>$wxPay = new wxPay();
+$wxPay-&gt;pay(&apos;用户openid&apos;, &apos;用户名&apos;, &apos;详细信息&apos;, 金额);
+</code></pre><blockquote>
+<p><strong>参考文档</strong></p>
+</blockquote>
+<p><a href="https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=4_3" target="_blank" rel="noopener">微信开发——签名算法</a></p>
+<p><a href="https://pay.weixin.qq.com/wiki/doc/api/tools/mch_pay.php?chapter=14_2" target="_blank" rel="noopener">微信开发——企业付款</a></p>
+
+            <div class="clearfix"></div>
+            
+        <div class="duoshuo">
+
+
+
+
+
+<div id="SOHUCS"></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cytmhBeB8'; 
+var conf = '1b16caa0c30d67ceaf568c755f151ce7'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("http://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+</div>
+            <hr class="nogutter">
+        </div>
+        <nav class="pagination" role="pagination">
+    
+    
+    <a class="pull-right" href="/2018/01/07/binarytree/">
+        javascript实现二叉树遍历 →
+    </a>
+    
+</nav>
+
     </div>
 </section>
- -->
-<!-- Height spacing helper -->
-<!-- <div class="heightblock"></div> -->
-<!-- // End height spacing helper -->
-
-<!-- ============================ END Hero Image =========================== -->
 
 
-
-
-<section id="services">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-                <div class="row boxes">
-                    
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2018/01/08/wxPay/">微信企业付款</a></h4>
-                            
-                            <p><time datetime="2018-01-08T06:20:04.000Z"><a href="/2018/01/08/wxPay/">2018-01-08</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2018/01/07/binarytree/">javascript实现二叉树遍历</a></h4>
-                            
-                            <p><time datetime="2018-01-07T09:13:34.000Z"><a href="/2018/01/07/binarytree/">2018-01-07</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2018/01/06/htaccess/">.htaccess文件详解</a></h4>
-                            
-                            <p><time datetime="2018-01-06T13:32:40.000Z"><a href="/2018/01/06/htaccess/">2018-01-06</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2018/01/04/pipetransform/">pipe</a></h4>
-                            
-                            <p><time datetime="2018-01-04T15:01:17.000Z"><a href="/2018/01/04/pipetransform/">2018-01-04</a></time></p>
-                        </div>
-                    
-                </div>
-            </div>    
-        </div>
-    </div>
-</section> 
-
-<section id="statement">
-    <div class="container text-center wow fadeInUp" data-wow-delay="0.5s">
-        <div class="row">
-            <p>虽然还没想好写点什么，但是总觉得这里放句话比较厉害。</p>
-        </div>
-    </div>
-</section>
       
 <!-- ============================ Footer =========================== -->
 
