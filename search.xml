@@ -625,7 +625,7 @@ Header unset Cache-Control
 </blockquote>
 <p>从各个内置传感器那里获取未经修改的传感数据，并观测或响应设备各种运动和角度变化。这些传感器包括陀螺仪、加速器和磁力仪(罗盘)</p>
 <p>加速器和陀螺仪的数据都是描述沿着设备三个方向轴上的位置，X方向从设备的左边(负)到右边(正)，Y方向则是由设备的底部(-)到顶部(+)，而Z方向为垂直于屏幕由设备的背面(-)到正面(+)</p>
-<p><img src="https://github.com/Leooman/Angular/raw/master/images/rxjs/rxjs_001.jpg" alt="device"></p>
+<p><img src="https://github.com/Leooman/Leooman.github.io/blob/master/img/device.png?raw=true" alt="device"></p>
 <p>DeviceMotionEvent 会在设备发生有意义的摆动(或运动)时产生.事件对象封装有产生的间距值,旋转率,和设备加速度.</p>
 <p>加速度的计算方式是重力和用户产生的两个加速度矢量之和.设备是通过 陀螺仪和加速计来区别这两者的.</p>
 <p>通过DeviceMotion对设备运动状态的判断，则可以帮助我们在网页上就实现“摇一摇”的交互效果。</p>
