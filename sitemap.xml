@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2017/10/18/lazyload/</loc>
+    
+    <lastmod>2018-02-08T12:33:33.088Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2017/11/20/devicemotion/</loc>
     
-    <lastmod>2018-02-08T07:03:36.084Z</lastmod>
+    <lastmod>2018-02-08T07:17:26.639Z</lastmod>
     
   </url>
   
