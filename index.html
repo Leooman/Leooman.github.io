@@ -357,16 +357,16 @@ Exampleimport {Pipe, PipeTransform} from &apos;@angular/core&apos;;
         <div class="row">
             <div class="col-md-8 col-md-offset-2 opening-statement">
                 <div class="col-md-4">
-                    <h3><a href="/2017/11/01/ChangeDetectionCont/">ChangeDetectionCont</a></h3>
+                    <h3><a href="/2017/11/20/devicemotion/">H5实现摇一摇</a></h3>
                     <span>
                         <span class="post-meta">
-      <time datetime="2017-11-01T00:47:56.000Z" itemprop="datePublished">
-          2017-11-01
+      <time datetime="2017-11-20T06:31:40.000Z" itemprop="datePublished">
+          2017-11-20
       </time>
     
     
     | 
-    <a href='/tags/Angular/'>Angular</a>
+    <a href='/tags/HTML5/'>HTML5</a>
     
     
 </span>
@@ -375,16 +375,22 @@ Exampleimport {Pipe, PipeTransform} from &apos;@angular/core&apos;;
                 <div class="col-md-8">
                     <p class="index-excerpt">
                       
-                        Change Detection Constants 4/21/2017 1:22:43 PM ChangeDetectionStrategyDescribes within the change detector which strategy will be used the next time change detection is triggered.
+                        
+关于deviceMotion
 
-OnPush = 0
+html5提供的DOM事件来获得设备物理方向及运动的信息，包括：陀螺仪、罗盘及加速计。
+deviceorientation，其提供设备的物理方向信息，表示为一系列本地坐标系的旋角。
+devicemotion，其提供设备的加速信息，表示为定义在设备上的坐标系中的卡尔迪坐标。其还提供了设备在坐标系中的自转速率。
+compassneedscalibration，其用于使用罗盘信息校准上述事件。
 
-OnPush means that the chan
+实现原理
+
+
                       
                     </p>
                     
                     <p class="pull-right readMore">
-                        <a href="/2017/11/01/ChangeDetectionCont/">Read More...</a>
+                        <a href="/2017/11/20/devicemotion/">Read More...</a>
                     </p>
                     
                 </div>

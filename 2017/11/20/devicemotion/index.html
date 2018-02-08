@@ -7,7 +7,7 @@
 <!--<![endif]-->
 
 <head>
-  <title>Archives | Leooman</title>
+  <title>H5实现摇一摇 | Leooman</title>
   <!-- Meta data -->
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -50,7 +50,7 @@
 </head>
 
 <!--
-<body class="home-template">
+<body class="post-template">
 -->
 <body id="index" class="lightnav animsition">
 
@@ -147,155 +147,119 @@
 
         <!-- ============================ Header & Logo bar =========================== -->
 
-      <!-- ============================ Hero Image =========================== -->
-
-<!-- <section id="hero" class="scrollme">
-    <div class="container-fluid element-img" style="background: url(/img/bg_img.jpg) no-repeat center center fixed;background-size: cover">
-        <div class="row">
-            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
-                <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
-                    <div>
-                        
-                        <h2></h2>
-                        <p></p>
-                        
-                        <h2></h2>
-                        <p></p>
-                        
-
-                    </div>
-                </div>
+      
+<section id="intro">
+    <div class="container">
+        <div class="row col-md-offset-2">
+            <div class="col-md-8">
+    			<span class="post-meta">
+      <time datetime="2017-11-20T06:31:40.000Z" itemprop="datePublished">
+          2017-11-20
+      </time>
+    
+    
+    | 
+    <a href='/tags/HTML5/'>HTML5</a>
+    
+    
+</span>
+                <h1>H5实现摇一摇</h1>
             </div>
         </div>
-        <div class="herofade beige-dk"></div>
+        <div class="col-md-8 col-md-offset-2">
+      		<blockquote>
+<p><strong>关于deviceMotion</strong></p>
+</blockquote>
+<p>html5提供的DOM事件来获得设备物理方向及运动的信息，包括：陀螺仪、罗盘及加速计。</p>
+<p><strong>deviceorientation</strong>，其提供设备的物理方向信息，表示为一系列本地坐标系的旋角。</p>
+<p><strong>devicemotion</strong>，其提供设备的加速信息，表示为定义在设备上的坐标系中的卡尔迪坐标。其还提供了设备在坐标系中的自转速率。</p>
+<p><strong>compassneedscalibration</strong>，其用于使用罗盘信息校准上述事件。</p>
+<blockquote>
+<p><strong>实现原理</strong></p>
+</blockquote>
+<p>从各个内置传感器那里获取未经修改的传感数据，并观测或响应设备各种运动和角度变化。这些传感器包括陀螺仪、加速器和磁力仪(罗盘)</p>
+<p>加速器和陀螺仪的数据都是描述沿着设备三个方向轴上的位置，X方向从设备的左边(负)到右边(正)，Y方向则是由设备的底部(-)到顶部(+)，而Z方向为垂直于屏幕由设备的背面(-)到正面(+)</p>
+<p><img src="https://github.com/Leooman/Angular/raw/master/images/rxjs/rxjs_001.jpg" alt="device"></p>
+<p>DeviceMotionEvent 会在设备发生有意义的摆动(或运动)时产生.事件对象封装有产生的间距值,旋转率,和设备加速度.</p>
+<p>加速度的计算方式是重力和用户产生的两个加速度矢量之和.设备是通过 陀螺仪和加速计来区别这两者的.</p>
+<p>通过DeviceMotion对设备运动状态的判断，则可以帮助我们在网页上就实现“摇一摇”的交互效果。</p>
+<blockquote>
+<p><strong>事件监听</strong></p>
+</blockquote>
+<pre><code>if ((window.DeviceMotionEvent) {
+  window.addEventListener(&apos;devicemotion&apos;, deviceMotionHandler, false);
+} else {
+  document.getElementById(&quot;dmEvent&quot;).innerHTML = &quot;Not supported on your device.&quot;
+}
+</code></pre><blockquote>
+<p><strong>获取重力加速度</strong></p>
+</blockquote>
+<pre><code>var acceleration = eventData.accelerationIncludingGravity;
+</code></pre><blockquote>
+<p><strong>deviceMotionHandler事件</strong></p>
+</blockquote>
+<pre><code>var SHAKE_THRESHOLD = 3000;
+var last_update = 0;
+var x = y = z = last_x = last_y = last_z = 0;      
+function deviceMotionHandler(eventData) {        
+  var acceleration =eventData.accelerationIncludingGravity;
+  var curTime = new Date().getTime();       
+  if ((curTime - last_update)&gt; 300) {                
+      var diffTime = curTime -last_update;
+      last_update = curTime;       
+      x = acceleration.x;
+      y = acceleration.y;
+      z = acceleration.z;       
+      var speed = Math.abs(x +y + z - last_x - last_y - last_z) / diffTime * 10000;          
+      if (speed &gt; SHAKE_THRESHOLD) {
+           alert(&quot;shaked&quot;);
+      }
+      last_x = x;
+      last_y = y;
+      last_z = z;
+    }
+}
+</code></pre><blockquote>
+<p><strong>DEMO</strong></p>
+</blockquote>
+<p><a href="https://github.com/Leooman/Leooman.github.io/issues/2" target="_blank" rel="noopener">代码测试地址：https://github.com/Leooman/Leooman.github.io/issues/2</a> </p>
+
+            <div class="clearfix"></div>
+            
+        <div class="duoshuo">
+
+
+
+
+
+<div id="SOHUCS"></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cytmhBeB8'; 
+var conf = '1b16caa0c30d67ceaf568c755f151ce7'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("http://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+</div>
+            <hr class="nogutter">
+        </div>
+        <nav class="pagination" role="pagination">
+    
+    <a class="pull-left" href="/2018/01/04/pipetransform/" style="float: left;">
+        ← pipe
+    </a>
+    
+    
+    <a class="pull-right" href="/2017/11/01/ChangeDetectionCont/">
+        ChangeDetectionCont →
+    </a>
+    
+</nav>
+
     </div>
 </section>
- -->
-<!-- Height spacing helper -->
-<!-- <div class="heightblock"></div> -->
-<!-- // End height spacing helper -->
-
-<!-- ============================ END Hero Image =========================== -->
 
 
-
-
-<section id="services">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-                <div class="row boxes">
-                    
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2018/01/08/wxPay/">微信企业付款</a></h4>
-                            
-                            <p><time datetime="2018-01-08T06:20:04.000Z"><a href="/2018/01/08/wxPay/">2018-01-08</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2018/01/07/binarytree/">javascript实现二叉树遍历</a></h4>
-                            
-                            <p><time datetime="2018-01-07T09:13:34.000Z"><a href="/2018/01/07/binarytree/">2018-01-07</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2018/01/06/htaccess/">.htaccess文件详解</a></h4>
-                            
-                            <p><time datetime="2018-01-06T13:32:40.000Z"><a href="/2018/01/06/htaccess/">2018-01-06</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2018/01/04/pipetransform/">pipe</a></h4>
-                            
-                            <p><time datetime="2018-01-04T15:01:17.000Z"><a href="/2018/01/04/pipetransform/">2018-01-04</a></time></p>
-                        </div>
-                    
-                        
-                            </div><div class="row boxes">
-                            
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2017/11/20/devicemotion/">H5实现摇一摇</a></h4>
-                            
-                            <p><time datetime="2017-11-20T06:31:40.000Z"><a href="/2017/11/20/devicemotion/">2017-11-20</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2017/11/01/ChangeDetectionCont/">ChangeDetectionCont</a></h4>
-                            
-                            <p><time datetime="2017-11-01T00:47:56.000Z"><a href="/2017/11/01/ChangeDetectionCont/">2017-11-01</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2017/10/31/ChangeDetectorRef/">ChangeDetectorRef</a></h4>
-                            
-                            <p><time datetime="2017-10-31T09:06:50.000Z"><a href="/2017/10/31/ChangeDetectorRef/">2017-10-31</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2017/10/31/Render/">Render</a></h4>
-                            
-                            <p><time datetime="2017-10-31T09:02:37.000Z"><a href="/2017/10/31/Render/">2017-10-31</a></time></p>
-                        </div>
-                    
-                        
-                            </div><div class="row boxes">
-                            
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2017/10/30/hack/">web前端兼容性问题</a></h4>
-                            
-                            <p><time datetime="2017-10-30T13:06:33.000Z"><a href="/2017/10/30/hack/">2017-10-30</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2017/10/30/Directive/">Directive</a></h4>
-                            
-                            <p><time datetime="2017-10-30T05:00:20.000Z"><a href="/2017/10/30/Directive/">2017-10-30</a></time></p>
-                        </div>
-                    
-                </div>
-            </div>    
-        </div>
-    </div>
-</section> 
-
-<section id="statement">
-    <div class="container text-center wow fadeInUp" data-wow-delay="0.5s">
-        <div class="row">
-            <p>虽然还没想好写点什么，但是总觉得这里放句话比较厉害。</p>
-        </div>
-    </div>
-</section>
       
 <!-- ============================ Footer =========================== -->
 
