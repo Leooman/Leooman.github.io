@@ -7,7 +7,7 @@
 <!--<![endif]-->
 
 <head>
-  <title>Archives: 2018/2 | Leooman</title>
+  <title>AVL树 | Leooman</title>
   <!-- Meta data -->
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -50,7 +50,7 @@
 </head>
 
 <!--
-<body class="home-template">
+<body class="post-template">
 -->
 <body id="index" class="lightnav animsition">
 
@@ -147,57 +147,14 @@
 
         <!-- ============================ Header & Logo bar =========================== -->
 
-      <!-- ============================ Hero Image =========================== -->
-
-<!-- <section id="hero" class="scrollme">
-    <div class="container-fluid element-img" style="background: url(/img/bg_img.jpg) no-repeat center center fixed;background-size: cover">
-        <div class="row">
-            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
-                <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
-                    <div>
-                        
-                        <h2></h2>
-                        <p></p>
-                        
-                        <h2></h2>
-                        <p></p>
-                        
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="herofade beige-dk"></div>
-    </div>
-</section>
- -->
-<!-- Height spacing helper -->
-<!-- <div class="heightblock"></div> -->
-<!-- // End height spacing helper -->
-
-<!-- ============================ END Hero Image =========================== -->
-
-
-
-
-<section id="services">
+      
+<section id="intro">
     <div class="container">
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-                <div class="row boxes">
-                    
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2018/02/10/AVL/">AVL树</a></h4>
-                            <!-- 
-                            <p><time datetime="2018-02-10T03:21:58.000Z"><a href="/2018/02/10/AVL/">2018-02-10</a></time></p> -->
-                            <span>
-                                <span class="post-meta">
-      <time datetime="2018-02-10T03:21:58.000Z" itemprop="datePublished">
-          2018-02-10
+        <div class="row col-md-offset-2">
+            <div class="col-md-8">
+    			<span class="post-meta">
+      <time datetime="2018-01-07T03:21:58.000Z" itemprop="datePublished">
+          2018-01-07
       </time>
     
     
@@ -206,26 +163,173 @@
     
     
 </span>
-                            </span>
-                        </div>
-                    
-                </div>
-            </div>    
+                <h1>AVL树</h1>
+            </div>
         </div>
-        <nav class="pagination" style="width: 85%" role="pagination">
-      
-      
-    </nav> 
+        <div class="col-md-8 col-md-offset-2">
+      		<blockquote>
+<p><strong>AVL树定义</strong></p>
+</blockquote>
+<p>AVL树是最先发明的自平衡二叉查找树。为了避免出现二叉排序树的最坏情况，限定在AVL树中每个结点的左右子树的高度之差的绝对值（平衡因子）最多为1，所以它也被称为高度平衡树。</p>
+<p>查找、插入和删除在平均和最坏情况下都是O（log n）。</p>
+<p>增加和删除可能需要通过一次或多次树旋转来重新平衡这个树。</p>
+<p>离插入节点最近的平衡系数的绝对值大于等于二的节点作为根节点所形成的树称为最小非平衡子树（minimum unblanced subtree）</p>
+<blockquote>
+<p><strong>优缺点</strong></p>
+</blockquote>
+<p>在建树的过程中保证了树的高度尽可能的低，相对于一般的二叉排序树来说，提高了查找的效率。</p>
+<p>在增加和删除结点的时候，要考虑树的平衡情况。当出现某个结点不平衡的情况，就要对首先不平衡的结点进行调整旋转的情况。因此，增加了维护树的开销。</p>
+<p>适用于结点多少比较固定，需要较快查询速度的情况。</p>
+<blockquote>
+<p><strong>树旋转</strong></p>
+</blockquote>
+<p>假设由于在二叉排序树上插入结点而失去平衡的最小子树根结点的指针为a（即a是离插入点最近，且平衡因子绝对值超过1的祖先结点），则失去平衡后进行进行的规律可归纳为下列四种情况：</p>
+<ul>
+<li>右单旋平衡处理(非平衡状态均发生在左子树侧：LL)：</li>
+</ul>
+<p>由于在a的左子树根结点的左子树上插入结点，a的平衡因子由1增至2，致使以a为根的子树失去平衡，则需进行一次右旋转操作；</p>
+<p><img src="http://qiniu.leooman.com/AVL/LL.png" alt="右旋转"></p>
+<pre><code>function roateRight(AvlNode) {
+    var node = AvlNode.left; // 保存左子节点
+    AvlNode.left = node.right; // 将node的右子节点连接到AvlNode成为其左子节点
+    node.right = AvlNode; // AvlNode连接到node，成为其右子节点
+    return node; // 返回node连接到AvlNode最初的父节点
+}
+</code></pre><ul>
+<li>左单旋平衡处理(非平衡状态均发生在右子树侧：RR)：</li>
+</ul>
+<p>由于在a的右子树根结点的右子树上插入结点，a的平衡因子由-1变为-2，致使以a为根的子树失去平衡，则需进行一次左旋转操作；</p>
+<p><img src="http://qiniu.leooman.com/AVL/RR.png" alt="左旋转"></p>
+<pre><code>function roateLeft(AvlNode) {
+    var node = AvlNode.right; // 保存右子节点
+    AvlNode.right = node.left; // node的左子节点连接到AvlNode成为其右子节点
+    node.left = AvlNode; // AvlNode连接到node成为其左子节点
+    return node; // 返回node，连接到AvlNode最初的父节点
+}
+</code></pre><ul>
+<li>左-右双旋平衡处理(非平衡状态从上到下先发生在左子树，再发生到整棵树：LR)：</li>
+</ul>
+<p>由于在a的左子树根结点的右子树上插入结点，a的平衡因子由1增至2，致使以a为根的子树失去平衡，则需进行两次旋转（先左旋后右旋）操作。</p>
+<p><img src="http://qiniu.leooman.com/AVL/LR.png" alt="左-右旋转"></p>
+<pre><code>function roateLeftRight(AvlNode) {
+    AvlNode.right = roateLeft(AvlNode.right); // 对右子节点做左单旋
+    return roateRight(AvlNode); // 做右单旋
+}
+</code></pre><ul>
+<li>右-左双旋平衡处理(非平衡状态从上到下先发生在右子树，再发生到整棵树：RL)：</li>
+</ul>
+<p>由于在a的右子树根结点的左子树上插入结点，a的平衡因子由-1变为-2，致使以a为根的子树失去平衡，则需进行两次旋转（先右旋后左旋）操作。</p>
+<pre><code>function roateRightLeft(AvlNode) {
+    AvlNode.left = roateRight(AvlNode.left); // 对左子节点做右单旋
+    return roateLeft(AvlNode); // 做左单旋
+}
+</code></pre><blockquote>
+<p><strong>获取树高度</strong></p>
+</blockquote>
+<pre><code>function getAvlTreeHeight(node) {
+    if (node == null) {
+        // node不存在返回0
+        return 0;
+    } else {
+        var leftHeight = getAvlTreeHeight(node.left);
+        var rightHeight = getAvlTreeHeight(node.right);
+        // 返回左子树、右子树中的最大高度
+        return (leftHeight &gt; rightHeight ? leftHeight : rightHeight) + 1;
+    }
+}
+</code></pre><blockquote>
+<p><strong>实现平衡</strong></p>
+</blockquote>
+<pre><code>function balance(node) {
+    if (node == null) {
+        return node;
+    }
+    // 左子树高度比右子树高度大1以上
+    if (getAvlTreeHeight(node.left) - getAvlTreeHeight(node.right) &gt; 1) {
+        if (getAvlTreeHeight(node.left.left) &gt;= getAvlTreeHeight(node.left.right)) {
+            // 如果左子树的左子树高度大于等于左子树的右子树高度
+            // 直接进行右单旋
+            node = roateRight(node);
+        } else {
+            // 否则需要右-左双旋
+            node = roateRightLeft(node);
+        }
+        // 右子树高度比左子树高度大1以上
+    } else if (getAvlTreeHeight(node.right) - getAvlTreeHeight(node.left) &gt; 1) {
+        if (getAvlTreeHeight(node.right.right) &gt;= getAvlTreeHeight(node.right.left)) {
+            // 如果右子树的右子树高度大于等于右子树的左子树高度
+            // 直接进行左单旋
+            node = roateLeft(node);
+        } else {
+            // 否则需要左-右双旋
+            node = roateLeftRight(node);
+        }
+    }
+    return node;
+}
+</code></pre><blockquote>
+<p><strong>插入节点</strong></p>
+</blockquote>
+<pre><code>var insertNode = function(node, newNode){
+    if (newNode.key &lt; node.key){
+        if (node.left === null){
+            node.left = newNode;
+            // 插入节点后，做树的平衡处理
+            node.left = balance(node.left);
+        } else {
+            insertNode(node.left, newNode);
+        }
+    } else {
+        if (node.right === null){
+            node.right = newNode;
+            // 插入节点后，做树的平衡处理
+            node.right = balance(node.right);
+        } else {
+            insertNode(node.right, newNode);
+        }
+    }
+}
+</code></pre><blockquote>
+<p><strong>完整实现代码</strong></p>
+</blockquote>
+<p><a href="https://github.com/Leooman/Leooman.github.io/issues/3" target="_blank" rel="noopener">https://github.com/Leooman/Leooman.github.io/issues/3</a></p>
+
+            <div class="clearfix"></div>
+            
+        <div class="duoshuo">
+
+
+
+
+
+<div id="SOHUCS"></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cytmhBeB8'; 
+var conf = '1b16caa0c30d67ceaf568c755f151ce7'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("http://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+</div>
+            <hr class="nogutter">
+        </div>
+        <nav class="pagination" role="pagination">
+    
+    <a class="pull-left" href="/2018/01/08/wxPay/" style="float: left;">
+        ← 微信企业付款
+    </a>
+    
+    
+    <a class="pull-right" href="/2018/01/07/binarytree/">
+        排序二叉树 →
+    </a>
+    
+</nav>
+
     </div>
 </section>
 
-<section id="statement">
-    <div class="container text-center wow fadeInUp" data-wow-delay="0.5s">
-        <div class="row">
-            <p>虽然还没想好写点什么，但是总觉得这里放句话比较厉害。</p>
-        </div>
-    </div>
-</section>
+
       
 <!-- ============================ Footer =========================== -->
 
