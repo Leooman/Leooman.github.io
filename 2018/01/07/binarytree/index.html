@@ -7,7 +7,7 @@
 <!--<![endif]-->
 
 <head>
-  <title>javascript实现二叉树遍历 | Leooman</title>
+  <title>javascript实现排序二叉树 | Leooman</title>
   <!-- Meta data -->
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -163,11 +163,25 @@
     
     
 </span>
-                <h1>javascript实现二叉树遍历</h1>
+                <h1>javascript实现排序二叉树</h1>
             </div>
         </div>
         <div class="col-md-8 col-md-offset-2">
       		<blockquote>
+<p><strong>二叉排序树</strong></p>
+</blockquote>
+<p>二叉排序树（Binary Sort Tree），又称二叉查找树（Binary Search Tree），亦称二叉搜索树。</p>
+<p>二叉排序树是一种比较有用的折衷方案。数组的搜索比较方便，可以直接用下标。链表与之相反，删除和插入元素很快，但查找很慢。二叉排序树就既有链表的好处，也有数组的好处。在处理大批量的动态的数据是比较有用。</p>
+<p>二叉排序树或者是一棵空树，或者是具有下列性质的二叉树：</p>
+<ul>
+<li><p>若左子树不空，则左子树上所有结点的值均小于或等于它的根结点的值；</p>
+</li>
+<li><p>若右子树不空，则右子树上所有结点的值均大于或等于它的根结点的值；</p>
+</li>
+<li><p>左、右子树也分别为二叉排序树；</p>
+</li>
+</ul>
+<blockquote>
 <p><strong>创建二叉树</strong></p>
 </blockquote>
 <pre><code>function BinaryTree(){
@@ -337,6 +351,13 @@ var removeNode=function(node,key){
 <p><strong>DEMO</strong></p>
 </blockquote>
 <p><a href="https://github.com/Leooman/Leooman.github.io/issues/1" target="_blank" rel="noopener">代码测试地址：https://github.com/Leooman/Leooman.github.io/issues/1</a></p>
+<blockquote>
+<p><strong>性能分析</strong></p>
+</blockquote>
+<p>每个结点的C(i)查找次数为该结点的层次数。</p>
+<p>最坏情况下，当先后插入的关键字有序时，构成的二叉排序树蜕变为单支树，树的深度为其平均查找长度(n+1)/2(和顺序查找相同）</p>
+<p><img src="http://qiniu.leooman.com/92m2869tjl.jpg" alt="最坏排序树"></p>
+<p>最好的情况是二叉排序树的形态和折半查找的判定树相同，其平均查找长度和log 2 (n)成正比。为了提高二叉排序树的查找效率，需要把树构建得更为平衡，从而不出现左右偏重的情况。<br>这就引出了AVL树和红黑树等平衡二叉树。</p>
 
             <div class="clearfix"></div>
             

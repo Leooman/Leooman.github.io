@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2018/01/07/binarytree/</loc>
+    
+    <lastmod>2018-02-10T01:25:47.554Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2017/10/18/lazyload/</loc>
     
     <lastmod>2018-02-08T13:42:28.212Z</lastmod>
@@ -33,13 +40,6 @@
     <loc>http://yoursite.com/2017/10/30/hack/</loc>
     
     <lastmod>2018-02-07T13:39:41.713Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2018/01/07/binarytree/</loc>
-    
-    <lastmod>2018-02-07T10:14:49.367Z</lastmod>
     
   </url>
   
