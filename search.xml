@@ -389,7 +389,7 @@ var removeNode=function(node,key){
 </blockquote>
 <p>每个结点的C(i)查找次数为该结点的层次数。</p>
 <p>最坏情况下，当先后插入的关键字有序时，构成的二叉排序树蜕变为单支树，树的深度为其平均查找长度(n+1)/2(和顺序查找相同）</p>
-<p><img src="http://qiniu.leooman.com/92m2869tjl.jpg" alt="最坏排序树"></p>
+<p><img src="http://qiniu.leooman.com/zlj4n4iefa.jpg" alt="最坏排序树"></p>
 <p>最好的情况是二叉排序树的形态和折半查找的判定树相同，其平均查找长度和log 2 (n)成正比。为了提高二叉排序树的查找效率，需要把树构建得更为平衡，从而不出现左右偏重的情况。<br>这就引出了AVL树和红黑树等平衡二叉树。</p>
 ]]></content>
       
