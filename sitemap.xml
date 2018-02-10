@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2018/02/10/AVL/</loc>
+    
+    <lastmod>2018-02-10T07:00:33.997Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2018/01/07/binarytree/</loc>
     
-    <lastmod>2018-02-10T03:16:48.155Z</lastmod>
+    <lastmod>2018-02-10T06:26:34.722Z</lastmod>
     
   </url>
   
