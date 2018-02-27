@@ -3,6 +3,296 @@
   
     
     <entry>
+      <title><![CDATA[公众号支付]]></title>
+      <url>/2018/01/27/wxPayService/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p><strong>微信公众号支付类</strong></p>
+</blockquote>
+<pre><code>class WxPayService{
+    //=======【证书路径设置】=====================================
+    //证书路径,注意应该填写绝对路径
+    protected $SSLCERT_PATH = &apos;apiclient_cert.pem&apos;;
+    protected $SSLKEY_PATH =  &apos;apiclient_key.pem&apos;;
+    //=======【基本信息设置】=====================================
+    protected $APPID = &apos;&apos;;//填写微信公众号appid
+    protected $MCHID = &apos;&apos;;//支付商户号
+    protected $KEY = &apos;&apos;; //商户支付API密钥
+    protected $APPURL = &apos;https://api.mch.weixin.qq.com/pay/unifiedorder&apos;;//API请求地址
+
+    /**
+     * 微信公众号支付主函数
+     */
+    function pay($body,$fee,$openid, $notify_url){
+        $Parameters=array();
+          $Parameters[&apos;appid&apos;]=$this-&gt;APPID;
+        $Parameters[&apos;mch_id&apos;]=$this-&gt;MCHID;
+        $Parameters[&apos;spbill_create_ip&apos;]=$_SERVER[&apos;SERVER_ADDR&apos;];
+        $Parameters[&apos;nonce_str&apos;]=$this-&gt;createNonceStr();
+        $Parameters[&apos;body&apos;]=$body;//商品描述
+        $Parameters[&apos;out_trade_no&apos;]=&apos;Leooman&apos;.time().rand(10000, 99999);//自定义订单号，保持唯一性
+        $Parameters[&apos;total_fee&apos;]=$fee;
+        $Parameters[&apos;notify_url&apos;]=$notify_url;//通知地址
+        $Parameters[&apos;trade_type&apos;]=&quot;JSAPI&quot;;//交易类型
+        $Parameters[&apos;openid&apos;]=$openid;//交易类型为JSAPI时此参数必填
+        $Parameters[&apos;sign&apos;]=$this-&gt;getSign($Parameters);
+        //选填参数
+        //$Parameters[&apos;attach&apos;]=&quot;微信支付&quot;;//附加数据
+        //$Parameters[&apos;sub_mch_id&apos;]=&quot;&quot;;//子商户号
+        //$Parameters[&apos;device_info&apos;]=&quot;&quot;;//设备号
+        //$Parameters[&apos;goods_tag&apos;]=&quot;&quot;;//商品标记
+        //$Parameters[&apos;product_id&apos;]=&quot;&quot;;//商品ID
+        //$Parameters[&apos;time_start&apos;]=date(&quot;YmdHis&quot;);//交易起始时间
+        //$Parameters[&apos;time_expire&apos;]=date(&quot;YmdHis&quot;, time() + 600);//交易结束时间
+        $xml=$this-&gt;arrayToXml($Parameters);
+        $response=$this-&gt;postXmlSSLCurl($xml,$this-&gt;APPURL);
+        $result=$this-&gt;xmlToArray($response);
+        $jsApiParameters = $this-&gt;GetJsApiParameters($result);
+        return $jsApiParameters;
+    }
+
+    function GetJsApiParameters($UnifiedOrderResult){
+        $orderParameters[&apos;appId&apos;]=$UnifiedOrderResult[&quot;appid&quot;];
+        $orderParameters[&apos;timeStamp&apos;]=time();
+        $orderParameters[&apos;nonceStr&apos;]=$UnifiedOrderResult[&quot;nonce_str&quot;];
+        $orderParameters[&apos;package&apos;]=&quot;prepay_id=&quot; . $UnifiedOrderResult[&apos;prepay_id&apos;];
+        $orderParameters[&apos;signType&apos;]=&quot;MD5&quot;;
+        $orderParameters[&apos;paySign&apos;]=$this-&gt;getSign($orderParameters);
+        $parameters = json_encode($orderParameters);
+        return $parameters;
+    }
+
+    /**
+     *  作用：格式化参数，签名过程需要使用
+     */
+    function formatBizQueryParaMap($paraMap, $urlencode)
+    {
+        $buff = &quot;&quot;;
+        ksort($paraMap);
+        foreach ($paraMap as $k =&gt; $v)
+        {
+            if($urlencode)
+            {
+               $v = urlencode($v);
+            }
+            $buff .= $k . &quot;=&quot; . $v . &quot;&amp;&quot;;
+        }
+        $reqPar;
+        if (strlen($buff) &gt; 0) 
+        {
+            $reqPar = substr($buff, 0, strlen($buff)-1);
+        }
+        return $reqPar;
+    }
+
+    /**
+     *  作用：签名生成
+     */
+    function getSign($Obj)
+    {
+        foreach ($Obj as $k =&gt; $v)
+        {
+            $Parameters[$k] = $v;
+        }
+        //签名步骤一：按字典序排序参数
+        ksort($Parameters);
+        $String = $this-&gt;formatBizQueryParaMap($Parameters, false);
+        //签名步骤二：在string后加入KEY
+        $String = $String.&quot;&amp;key=&quot;.$this-&gt;KEY;
+        //签名步骤三：MD5加密
+        $String = md5($String);
+        //签名步骤四：所有字符转为大写
+        $result_ = strtoupper($String);
+        return $result_;
+    }
+
+    /**
+     *  作用：产生随机字符串，不长于32位
+     */
+    function createNoncestr( $length = 32 ) 
+    {
+        $chars = &quot;abcdefghijklmnopqrstuvwxyz0123456789&quot;;  
+        $str =&quot;&quot;;
+        for ( $i = 0; $i &lt; $length; $i++ )  {  
+            $str.= substr($chars, mt_rand(0, strlen($chars)-1), 1);  
+        }  
+        return $str;
+    }
+
+    /**
+     *  作用：array转xml
+     */
+    function arrayToXml($arr)
+    {
+        $xml = &quot;&lt;xml&gt;&quot;;
+        foreach ($arr as $key=&gt;$val)
+        {
+            if (is_numeric($val)){
+                $xml.=&quot;&lt;&quot;.$key.&quot;&gt;&quot;.$val.&quot;&lt;/&quot;.$key.&quot;&gt;&quot;;
+            }else{
+                $xml.=&quot;&lt;&quot;.$key.&quot;&gt;&lt;![CDATA[&quot;.$val.&quot;]]&gt;&lt;/&quot;.$key.&quot;&gt;&quot;;
+            }
+        }
+        $xml.=&quot;&lt;/xml&gt;&quot;;
+        return $xml; 
+    }
+
+    /**
+     *  作用：将xml转为array
+     */
+    function xmlToArray($xml)
+    {        
+        $array_data = json_decode(json_encode(simplexml_load_string($xml, &apos;SimpleXMLElement&apos;, LIBXML_NOCDATA)), true);      
+        return $array_data;
+    }
+
+    /**
+     *  作用：使用证书，以post方式提交xml到对应的接口url
+     */
+    function postXmlSSLCurl($xml,$url,$second=30)
+    {
+        $ch = curl_init();
+        //超时时间
+        curl_setopt($ch,CURLOPT_TIMEOUT,$second);
+        //这里设置代理，如果有的话
+        //curl_setopt($ch,CURLOPT_PROXY, &apos;8.8.8.8&apos;);
+        //curl_setopt($ch,CURLOPT_PROXYPORT, 8080);
+        curl_setopt($ch,CURLOPT_URL, $url);
+        curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,FALSE);
+        curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,FALSE);
+        //设置header
+        curl_setopt($ch,CURLOPT_HEADER,FALSE);
+        //要求结果为字符串且输出到屏幕上
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,TRUE);
+        //设置证书
+        //使用证书：cert 与 key 分别属于两个.pem文件
+        //默认格式为PEM，可以注释
+        curl_setopt($ch,CURLOPT_SSLCERTTYPE,&apos;PEM&apos;);
+        // 自行修改成绝对路径
+        curl_setopt($ch,CURLOPT_SSLCERT, dirname(__FILE__).DIRECTORY_SEPARATOR.&apos;cert&apos;.DIRECTORY_SEPARATOR.$this-&gt;SSLCERT_PATH);
+        //默认格式为PEM，可以注释
+        curl_setopt($ch,CURLOPT_SSLKEYTYPE,&apos;PEM&apos;);
+        // 自行修改成绝对路径
+        curl_setopt($ch,CURLOPT_SSLKEY, dirname(__FILE__).DIRECTORY_SEPARATOR.&apos;cert&apos;.DIRECTORY_SEPARATOR.$this-&gt;SSLKEY_PATH);
+        //post提交方式
+        curl_setopt($ch,CURLOPT_POST, true);
+        curl_setopt($ch,CURLOPT_POSTFIELDS,$xml);
+        $data = curl_exec($ch);
+        //返回结果
+        if($data){
+            curl_close($ch);
+            return $data;
+        }
+        else { 
+            $error = curl_errno($ch);
+            echo &quot;curl出错，错误码:$error&quot;.&quot;&quot;; 
+            curl_close($ch);
+            return false;
+        }
+    }
+}
+</code></pre><blockquote>
+<p><strong>调用类</strong></p>
+</blockquote>
+<pre><code>$wxPay = new WxPayService();
+$wxPay-&gt;pay(&apos;商品描述&apos;, 金额, &apos;用户openid&apos;, &apos;通知地址&apos;);
+</code></pre><blockquote>
+<p><strong>以post方式提交到接口url的xml必填数据</strong></p>
+</blockquote>
+<pre><code>&lt;xml&gt;
+  &lt;openid&gt;&lt;![CDATA[用户openid]]&gt;&lt;/openid&gt;
+  &lt;body&gt;&lt;![CDATA[商品描述]]&gt;&lt;/body&gt;
+  &lt;out_trade_no&gt;&lt;![CDATA[Leooman121454512122]]&gt;&lt;/out_trade_no&gt;
+  &lt;total_fee&gt;1&lt;/total_fee&gt;
+  &lt;notify_url&gt;&lt;![CDATA[通知地址]]&gt;&lt;/notify_url&gt;
+  &lt;trade_type&gt;&lt;![CDATA[JSAPI]]&gt;&lt;/trade_type&gt;
+  &lt;appid&gt;&lt;![CDATA[商户appid]]&gt;&lt;/appid&gt;
+  &lt;mch_id&gt;支付商户号&lt;/mch_id&gt;
+  &lt;spbill_create_ip&gt;&lt;![CDATA[客户端ip地址]]&gt;&lt;/spbill_create_ip&gt;
+  &lt;nonce_str&gt;&lt;![CDATA[60uf9sh6nmppr9azveb2bn7arhy79izk]]&gt;&lt;/nonce_str&gt;
+  &lt;sign&gt;&lt;![CDATA[签名]]&gt;&lt;/sign&gt;
+&lt;/xml&gt;
+</code></pre><blockquote>
+<p><strong>从接口url返回的xml数据</strong></p>
+</blockquote>
+<pre><code>&lt;xml&gt;
+  &lt;return_code&gt;&lt;![CDATA[SUCCESS]]&gt;&lt;/return_code&gt;  
+  &lt;return_msg&gt;&lt;![CDATA[OK]]&gt;&lt;/return_msg&gt;  
+  &lt;appid&gt;&lt;![CDATA[商户appid]]&gt;&lt;/appid&gt;  
+  &lt;mch_id&gt;&lt;![CDATA[支付商户号]]&gt;&lt;/mch_id&gt;  
+  &lt;nonce_str&gt;&lt;![CDATA[Be8YX7gjCdtCT7cr]]&gt;&lt;/nonce_str&gt;  
+  &lt;sign&gt;&lt;![CDATA[签名]]&gt;&lt;/sign&gt;  
+  &lt;prepay_id&gt;&lt;![CDATA[预支付ID参数]]&gt;&lt;/prepay_id&gt;  
+  &lt;trade_type&gt;&lt;![CDATA[JSAPI]]&gt;&lt;/trade_type&gt; 
+&lt;/xml&gt;
+</code></pre><blockquote>
+<p><strong>主函数返回json数据</strong></p>
+</blockquote>
+<pre><code>{
+    &quot;appId&quot;: &quot;商户appid&quot;,
+    &quot;timeStamp&quot;: &quot;时间戳&quot;,
+    &quot;nonceStr&quot;: &quot;随机字符串&quot;,
+    &quot;package&quot;: &quot;prepay_id=预支付ID参数&quot;,
+    &quot;signType&quot;: &quot;MD5&quot;,
+    &quot;paySign&quot;: &quot;支付签名&quot;
+}
+</code></pre><blockquote>
+<p><strong>前端调用</strong></p>
+</blockquote>
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+    &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html;charset=utf-8&quot;/&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;/&gt; 
+    &lt;title&gt;微信支付&lt;/title&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
+    function jsApiCall()
+    {
+        WeixinJSBridge.invoke(
+            &apos;getBrandWCPayRequest&apos;,
+            {jsApiParameters},//主函数pay返回的json数据
+            function(res){
+                WeixinJSBridge.log(res.err_msg);
+                alert(res.err_code+res.err_desc+res.err_msg);
+            }
+        );
+    }
+    function callpay()
+    {
+        if (typeof WeixinJSBridge == &quot;undefined&quot;){
+            if( document.addEventListener ){
+                document.addEventListener(&apos;WeixinJSBridgeReady&apos;, jsApiCall, false);
+            }else if (document.attachEvent){
+                document.attachEvent(&apos;WeixinJSBridgeReady&apos;, jsApiCall); 
+                document.attachEvent(&apos;onWeixinJSBridgeReady&apos;, jsApiCall);
+            }
+        }else{
+            jsApiCall();
+        }
+    }
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div align=&quot;center&quot;&gt;
+        &lt;button onclick=&quot;callpay()&quot; &gt;立即支付&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><blockquote>
+<p><strong>参考文档</strong></p>
+</blockquote>
+<p><a href="https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=4_3" target="_blank" rel="noopener">微信开发——签名算法</a></p>
+<p><a href="https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=7_7&amp;index=6" target="_blank" rel="noopener">微信开发——微信内H5调起支付</a></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> 微信支付 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[微信企业付款]]></title>
       <url>/2018/01/08/wxPay/</url>
       <content type="html"><![CDATA[<blockquote>
