@@ -1559,10 +1559,10 @@ addLoadEvent(preloader);
 <blockquote>
 <p><strong>innerText在IE中能正常工作，但在FireFox中却不行</strong></p>
 </blockquote>
-<pre><code>if(navigator.appName.indexOf(&quot;Explorer&quot;)  &gt;   -1){
-   document.getElementById(&apos;element&apos;).innerText   =  &quot;my   text&quot;;
-}   else{
-        document.getElementById(&apos;element&apos;).textContent  =   &quot;my   text&quot;;
+<pre><code>if(navigator.appName.indexOf(&quot;Explorer&quot;)&gt;-1){
+   document.getElementById(&apos;element&apos;).innerText=&quot;my text&quot;;
+}else{
+   document.getElementById(&apos;element&apos;).textContent=&quot;my text&quot;;
 }
 </code></pre><blockquote>
 <p><strong>CSS透明</strong></p>

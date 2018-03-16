@@ -67,8 +67,6 @@ figure.highlight pre {
 figure.highlight table {
   margin-top: 0;
   border-spacing: 0;
-  border: 1px solid #000;
-  border-collapse: collapse;
 }
 figure.highlight .gutter {
   color: color-meta;
@@ -148,4 +146,43 @@ pre .clojure .title {
 }
 pre .deletion {
   color: #dc322f;
+}
+table {
+  line-height: 1.6;
+  word-wrap: break-word;
+  font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
+  color: #333;
+  font-size: 16px;
+  border: 1px solid #808080;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-top: 0;
+  margin-bottom: 16px;
+  overflow: auto;
+  word-break: keep-all;
+}
+table thead {
+  display: table-header-group;
+  vertical-align: middle;
+  border-color: inherit;
+}
+table tbody {
+  display: table-row-group;
+  vertical-align: middle;
+  border-color: inherit;
+}
+table th {
+  padding: 6px 13px;
+  border: 1px solid #ddd;
+}
+table tr {
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+}
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+table td {
+  padding: 6px 13px;
+  border: 1px solid #ddd;
 }
