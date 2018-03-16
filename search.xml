@@ -1656,7 +1656,7 @@ addLoadEvent(preloader);
 </code></pre><blockquote>
 <p><strong>当子元素浮动且未知高度时，父容器适应子元素的高度</strong></p>
 </blockquote>
-<p>父窗口加上 overflow:auto;zoom:1;这两个样式属性，overflow:auto;是让父容器来自适应内部容器的高度，zoom:1;是为了兼容 IE6 而使用的 CSS HACK。zoom:1;通不过 W3C 的验证，这也是遗憾的一点，幸好 IE 支持&lt;!–[if IE]&gt;这种写法，可以专门针对 IE 来写单独的样式，所以可以把这个属性写在页面内的&lt;!–[if IE]&gt;中，这样应该可以通过验证了</p>
+<p>父窗口加上 overflow:auto;zoom:1;这两个样式属性，overflow:auto;是让父容器来自适应内部容器的高度，zoom:1;是为了兼容 IE6 而使用的 CSS HACK。zoom:1;通不过 W3C 的验证，这也是遗憾的一点，幸好 IE 支持<code>&lt;!--[if IE]&gt;</code>这种写法，可以专门针对 IE 来写单独的样式，所以可以把这个属性写在页面内的<code>&lt;!--[if IE]&gt;</code>中，这样应该可以通过验证了</p>
 <blockquote>
 <p><strong>IE无法设置滚动条颜色</strong></p>
 </blockquote>
