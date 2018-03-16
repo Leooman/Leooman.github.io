@@ -3522,6 +3522,8 @@ figure.highlight pre {
 figure.highlight table {
   margin-top: 0;
   border-spacing: 0;
+  border: 1px solid #000;
+  border-collapse: collapse;
 }
 figure.highlight .gutter {
   color: color-meta;
