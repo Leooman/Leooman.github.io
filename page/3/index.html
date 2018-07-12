@@ -202,12 +202,13 @@
                 <div class="col-md-8">
                     <p class="index-excerpt">
                       
-                        Render 4/21/2017 1:22:30 PM RenderComponentTypeexport class RenderComponentType {
+                        RenderRenderComponentTypeexport class RenderComponentType {
     id: string;
     templateUrl: string;
     slotCount: number;
     encapsulation: ViewEncapsulation;
-    styles: Array&lt;string | any[]&
+    styles: Array&lt;string | any[]&gt;;
+    animations: {
                       
                     </p>
                     
@@ -286,7 +287,7 @@ IE下input.type属性为只读；但是Firefox下input.type属性为读写。
                 <div class="col-md-8">
                     <p class="index-excerpt">
                       
-                        Directive 4/16/2017 4:40:14 PM 
+                        Directive
 what it does
 
 Marks a class as an Angular directive and collects directive configuration metadata.
@@ -295,7 +296,8 @@ how to use
 
 import { Directive } from &apos;@angular/core&apos;;
 @Directive({
-    select
+    selector?: string,
+    input
                       
                     </p>
                     
@@ -330,7 +332,7 @@ import { Directive } from &apos;@angular/core&apos;;
                 <div class="col-md-8">
                     <p class="index-excerpt">
                       
-                        Component Communication 4/23/2017 8:58:19 AM 
+                        Component Communication
 Input
 
 @Component({
@@ -341,7 +343,8 @@ Input
     `
   })
   class BankAccount {
-    @Input
+    @Input() bankName: string;
+ 
                       
                     </p>
                     
@@ -376,7 +379,7 @@ Input
                 <div class="col-md-8">
                     <p class="index-excerpt">
                       
-                        Component extends Directive 4/16/2017 5:36:18 PM 
+                        Component extends Directive
 what it does
 
 Marks a class as an Angular component and collects component configurationmetadata.
@@ -384,7 +387,8 @@ Marks a class as an Angular component and collects component configurationmetada
 how to use
 
 import { Component } from &apos;@angular/core&apos;;
-@Compo
+@Component({
+    changeDetec
                       
                     </p>
                     
