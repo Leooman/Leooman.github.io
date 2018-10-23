@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]>
+<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<!--<![endif]-->
+
+<head>
+  <title>变更检测 | Leooman</title>
+  <!-- Meta data -->
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content="Leooman">
+    <meta name="author" content="Leooman">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+
+    <!-- Favicon, (keep icon in root folder) -->
+    <link rel="Shortcut Icon" href="/img/logo.ico" type="image/ico">
+
+    <link rel="alternate" href="/atom.xml" title="Leooman" type="application/atom+xml">
+    <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
+    
+    <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
+    
+    <!--[if IE 8]>
+    <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
+    <![endif]-->
+
+    <!-- jQuery | Load our jQuery, with an alternative source fallback to a local version if request is unavailable -->
+    <script src="/js/jquery-1.11.1.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/jquery-1.11.1.min.js"><\/script>')</script>
+
+    <!-- Load these in the <head> for quicker IE8+ load times -->
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="/js/html5shiv.min.js"></script>
+    <script src="/js/respond.min.js"></script>
+    <![endif]-->
+
+  
+  
+  <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml">
+  
+  
+
+  <style>.col-md-8.col-md-offset-2.opening-statement img{display:none;}</style>
+</head>
+
+<!--
+<body class="post-template">
+-->
+<body id="index" class="lightnav animsition">
+
+      <!-- ============================ Off-canvas navigation =========================== -->
+
+    <div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
+        <!-- <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
+            <img src="/img/close.png" alt="Close"/>
+        </div> -->
+        <div class="learnmore">
+            <span class="local-search local-search-google local-search-plugin">
+              <input type="search" placeholder="Search Content" id="local-search-input" class="local-search-input-cls">
+            </span>
+        </div>
+        <div id="local-search-result" class="local-search-result-cls"></div>
+        <!-- <ul class="sb-menu">
+            <li><a href="/" class="animsition-link" title="Home">Home</a></li>
+            <li><a href="/archives" class="animsition-link" title="archive">archives</a></li>
+      
+			 
+            
+            
+            <li>
+                <a class="sb-toggle-submenu">Links<span class="sb-caret"></span></a>
+                <ul class="sb-submenu">
+                    
+                    <li><a href="https://leooman.github.io/" class="animsition-link">Github</a></li>
+                    
+                </ul>
+            </li>
+            
+        </ul> -->
+        <!-- <ul class="sb-menu secondary">
+            <li><a href="/atom.xml" class="animsition-link" title="rss">RSS</a></li>
+            <li><a href="/sitemap.xml" class="animsition-link" title="sitemap">SITEMAP</a></li>
+        </ul> -->
+    </div>
+    
+    <!-- ============================ END Off-canvas navigation =========================== -->
+
+    <!-- ============================ #sb-site Main Page Wrapper =========================== -->
+
+    <div id="sb-site">
+        <!-- #sb-site - All page content should be contained within this id, except the off-canvas navigation itself -->
+
+        <!-- ============================ Header & Logo bar =========================== -->
+
+        <div id="navigation" class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <!-- Nav logo -->
+                    <div class="logo">
+                        <a href="/" title="Logo" class="animsition-link">
+                         <img src="/img/logo.png" alt="Logo" width="60px;"/> 
+                        </a>
+                    </div>
+                    <!-- // Nav logo -->
+                    <!-- Info-bar -->
+                    <nav>
+                        <ul class="nav fa-ul">
+                            <li><a href="/" class="animsition-link">Leooman</a></li>
+                            <!-- <li class="nolink"><span>QQ </span>351234955</li> -->
+                            
+                            <li><a href="/" title="Home"><i class="icon-home"></i>主页</a></li>
+                            <li><a href="/archives" title="archives"><i class="icon-floppy-disk"></i></span>存档</a></li>
+                            <li>
+                            <button type="button" class="navbar-toggle sb-toggle-right" style="display: block;padding: 0px 10px;margin: 0px;color: #151515;border-right: 1px solid #aaa;float: none;font-size: 11px;font-weight: 400;line-height: 14px;" title="More"><i class="icon-search"></i>搜索
+                            </button>
+                            </li>
+                            <li><a href="/atom.xml" title="rss"><i class="icon-rss2"></i>RSS</a></li>
+                            <!-- <li class="nolink"><span>Welcome!</span></li> -->
+                            <li><a href="https://github.com/Leooman" title="github"><i class="icon-github"></i>github</a></li>
+                        </ul>
+                    </nav>
+                        
+                    <!--// Info-bar -->
+                </div>
+                <!-- // .container -->
+                <!-- <div class="learnmore sb-toggle-right">
+                    <span class="local-search local-search-google local-search-plugin">
+                      <input type="search" placeholder="Search" id="local-search-input" class="local-search-input-cls">
+                    </span>
+                </div>
+                <div id="local-search-result" class="local-search-result-cls"></div> -->
+                <!-- <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar before"></span>
+                <span class="icon-bar main"></span>
+                <span class="icon-bar after"></span>
+                </button> -->
+            </div>
+            <!-- // .navbar-inner -->
+        </div>
+
+        <!-- ============================ Header & Logo bar =========================== -->
+
+      
+<section id="intro">
+    <div class="container">
+        <div class="row col-md-offset-2">
+            <div class="col-md-8">
+    			<span class="post-meta">
+      <time datetime="2018-06-18T12:48:02.000Z" itemprop="datePublished">
+          2018-06-18
+      </time>
+    
+    
+    | 
+    <a href='/tags/Angular6-0/'>Angular6.0</a>
+    
+    
+</span>
+                <h1>变更检测</h1>
+            </div>
+        </div>
+        <div class="col-md-8 col-md-offset-2">
+      		<h2 id="change-detector变化检测器"><a href="#change-detector变化检测器" class="headerlink" title="change detector变化检测器"></a>change detector变化检测器</h2><ul>
+<li>触发时机：基本上所有的异步事件发生（并且回调函数已经执行完毕）以后，都需要触发change detection（因为此时进程的状态可能已经发生改变），如Events ，XHR ，Timers </li>
+<li>单向数据流：沿着组件树进行变化检测，检查完父组件以后再检查子组件，在检查父组件的时候可能会更新子组件中的绑定，但是在检查子组件的时候（此时父组件已经检查完毕）不会更新父组件的数据，只需要执行一次Change Detection，就能使得view与组件中的数据一致。在AngularJS中，由于在检查一个组件的时候可能会改动另一个组件中的数据，因此需要多次检查，直到数据“稳定”下来<br><img src="https://github.com/Leooman/NgAdmin/raw/gh-pages/images/change_detection.png" alt="change_detection"></li>
+<li>专用change detector：每个组件都有一个自己的change detector(Angular compiler为每个component编译生成专门检测它的view的代码)，这使得每个change detector的检测代码非常地简单高效</li>
+</ul>
+<p><em>多态(polymorphic)：通用性往往意味着多态的存在。多态的含义是，一段代码，多次执行，但是每次执行所操作的对象都不是同一个对象，甚至这些对象的shape相差巨大，这种代码难以被优化。大量使用单态（monomorphic）是Angular速度爆炸的重要原因！除了Change Detection方面，Angular在其他地方也使用了单态的优化思想</em></p>
+<h2 id="ChangeDetectionStrategy-变更检测策略"><a href="#ChangeDetectionStrategy-变更检测策略" class="headerlink" title="ChangeDetectionStrategy 变更检测策略"></a>ChangeDetectionStrategy 变更检测策略</h2><ul>
+<li><code>OnPush = 0</code>：若输入属性没有发生变化，组件的变化检测将会被跳过</li>
+<li><code>Default = 1</code>：组件的变更检测一直执行，默认采用此策略，因为即使@Input()对象的引用没有变，其中的属性可能已经发生变化（JavaScript对象的动态性），变化检测需要将这种变化也反映在view和子组件上</li>
+</ul>
+<h2 id="ChangeDetectorStatus-变更检测状态"><a href="#ChangeDetectorStatus-变更检测状态" class="headerlink" title="ChangeDetectorStatus 变更检测状态"></a>ChangeDetectorStatus 变更检测状态</h2><ul>
+<li><code>CheckOnce = 0</code>：检测变化后变更检测器模式切换为<code>Checked</code></li>
+<li><code>Checked = 1</code>：变更检测会被跳过</li>
+<li><code>CheckAlways = 2</code>：检测变化后变更检测器模式保持<code>CheckAlways</code></li>
+<li><code>Detached = 3</code>：已将组件从变更检测树中分离</li>
+<li><code>Errored = 4</code>：绑定检查报错或调用生命周期方法与当前状态不一致，变更检测停止工作</li>
+<li><code>Destroyed = 5</code>：变更检测器销毁</li>
+</ul>
+<h2 id="ChangeDetectorRef-变更检测机制"><a href="#ChangeDetectorRef-变更检测机制" class="headerlink" title="ChangeDetectorRef 变更检测机制"></a>ChangeDetectorRef 变更检测机制</h2><pre><code>export declare abstract class ChangeDetectorRef {
+  markForCheck(): void;
+  detach(): void;
+  detectChanges(): void;
+  checkNoChanges(): void;
+  reattach(): void;
+}
+</code></pre><ul>
+<li><code>markForCheck(): void</code>：标记为脏状态进入变更检测周期的检测</li>
+</ul>
+<pre><code>//=&gt; OnPush策略下的组件会进入checked状态，想要进行变更检测要调用markForCheck()
+@Component({
+  selector: &apos;my-app&apos;,
+  template: `Number of ticks: {{numberOfTicks}}`
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+class AppComponent {
+  numberOfTicks = 0;
+  constructor(private ref: ChangeDetectorRef) {
+    setInterval(() =&gt; {
+      this.numberOfTicks++;
+      this.ref.markForCheck();
+    }, 1000);
+  }
+}
+</code></pre><ul>
+<li><code>detach(): void</code>：将视图从变更检测树中分离不进行检测</li>
+<li><code>detectChanges(): void</code>：该组件到各个子组件执行一次变化检测，可用于自主控制视图更新频率 </li>
+</ul>
+<pre><code>//=&gt; 将组件从变更检测树中分离出去，实时变化的数据改变为每隔5s触发一次变更检测
+//=&gt; data.service.ts
+export class DataService {
+  private arr:number[];
+  get data() {
+      let array:numner[];
+      array=this.arr=this.arr ? this.arr.map(x=&gt;x+=5) : [1,2,3,4,5];
+      return array;
+  }
+}
+
+//=&gt; giantList.component.ts
+@Component({
+  selector: &apos;giant-list&apos;,
+  template: `
+    &lt;li *ngFor=&quot;let d of dataProvider.data&quot;&gt;Data {{d}}&lt;/li&gt;
+  `,
+})
+export class GiantListComponent {
+  constructor(private ref: ChangeDetectorRef, private dataProvider: DataService) {
+    ref.detach();
+    setInterval(() =&gt; {
+      this.ref.detectChanges();
+    }, 5000);
+  }
+}
+
+//=&gt; app.component.ts
+@Component({
+  selector: &apos;app&apos;,
+  providers: [DataService],
+  template: `
+    &lt;giant-list&gt;&lt;giant-list&gt;
+  `,
+})
+class App {
+}
+</code></pre><ul>
+<li><code>reattach(): void</code>：将视图重新附加到变更检测树中进入检测</li>
+</ul>
+<pre><code>//=&gt; 切换视图在变更检测树中的分离或附加状态
+//=&gt; data.service.ts
+export class DataService {
+  data = 1;
+  constructor() {
+    setInterval(() =&gt; {
+      this.data = this.data * 2;
+    }, 500);
+  }
+}
+
+//=&gt; liveData.component.ts
+@Component({
+  selector: &apos;live-data&apos;,
+  inputs: [&apos;live&apos;],
+  template: &apos;Data: {{dataProvider.data}}&apos;
+})
+export class LiveDataComponent {
+  constructor(private ref: ChangeDetectorRef, private dataProvider: DataService) {}
+  set live(value:boolean) {
+    value ? this.ref.reattach() : this.ref.detach()
+  }
+}
+
+//=&gt; app.component.ts
+@Component({
+  selector: &apos;my-app&apos;,
+  providers: [DataProvider],
+  template: `
+    Live Update: &lt;input type=&quot;checkbox&quot; [(ngModel)]=&quot;live&quot;&gt;
+    &lt;live-data [live]=&quot;live&quot;&gt;&lt;live-data&gt;
+  `,
+})
+export class AppComponent {
+  live = true;
+}
+</code></pre><ul>
+<li><code>checkNoChanges(): void</code>：检测组件及其子组件，存在变化则报错。用于开发模式确保变化检测期间没有引进其他变化</li>
+</ul>
+
+            <div class="clearfix"></div>
+            
+        <div class="duoshuo">
+
+
+
+
+
+<div id="SOHUCS"></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cytmhBeB8'; 
+var conf = '1b16caa0c30d67ceaf568c755f151ce7'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("http://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+</div>
+            <hr class="nogutter">
+        </div>
+        <nav class="pagination" role="pagination">
+    
+    
+    <a class="pull-right" href="/2018/05/23/functionProgram/">
+        函数式编程 →
+    </a>
+    
+</nav>
+
+    </div>
+</section>
+
+
+      
+<!-- ============================ Footer =========================== -->
+
+<footer>
+    <div class="container">
+            <div class="copy">
+                <p>
+                     &copy; 2015<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script> Leooman All Rights Reserved 冀ICP备17019382号-2
+                </p>
+                <p>
+                Theme By <a href="//github.com/Leooman" style="color: #767D84">Leooman</a>     
+                <a href="/sitemap.xml" style="color: #767D84" title="sitemap">网站地图</a>
+                </p>
+            </div>
+            <div class="social">
+                <ul>
+                    
+                    <li><a href="https://github.com/Leooman" title="Github" target="_blank"><i class="icon-github"></i></a>&nbsp;</li>
+                    
+                    <!-- 
+                    <li><a href="https://twitter.com/" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>&nbsp;</li> -->
+                    
+                    
+                    <li><a href="https://www.facebook.com/" title="Facebook" target="_blank"><i class="icon-facebook2"></i></a>&nbsp;</li>
+                    
+                    
+                    <li><a href="https://google.com/" title="Google-Plus" target="_blank"><i class="icon-google-plus3"></i></a>&nbsp;</li>
+                    
+                    
+                    <li><a href="http://weibo.com/" title="Sina-Weibo" target="_blank"><i class="icon-sina-weibo"></i></a>&nbsp;</li>
+                    
+                </ul>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+</footer>
+
+<!-- ============================ END Footer =========================== -->
+      <!-- Load our scripts -->
+<!-- Resizable 'on-demand' full-height hero -->
+<script type="text/javascript">
+    var resizeHero = function () {
+        var hero = $(".cover,.heightblock"),
+            window1 = $(window);
+        hero.css({
+            "height": window1.height()
+        });
+    };
+
+    resizeHero();
+
+    $(window).resize(function () {
+        resizeHero();
+    });
+</script>
+<script src="/js/plugins.min.js"></script><!-- Bootstrap core and concatenated plugins always load here -->
+<script src="/js/jquery.flexslider-min.js"></script><!-- Flexslider plugin -->
+<script src="/js/scripts.js"></script><!-- Theme scripts -->
+
+
+<!-- Initiate flexslider plugin -->
+<script type="text/javascript">
+    $(document).ready(function($) {
+      (function(){
+        console.log('font');
+        var getCss = function(path) {
+          var head = document.getElementsByTagName('head')[0];
+          link = document.createElement('link');
+          link.href = path;
+          link.rel = 'stylesheet';
+          link.type = 'text/css';
+          head.appendChild(link);
+        };
+        getCss('https://fonts.googleapis.com/css?family=Montserrat:400,700');
+        getCss('https://fonts.googleapis.com/css?family=Open+Sans:400,600');
+      })();
+      $('.flexslider').flexslider({
+        animation: "fade",
+        prevText: "",
+        nextText: "",
+        directionNav: true
+      });
+    });
+</script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/chitose.model.json"},"display":{"position":"left"}});</script></body>
+</html>

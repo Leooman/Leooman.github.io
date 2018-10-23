@@ -184,16 +184,16 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2 opening-statement">
                 <div class="col-md-4">
-                    <h3><a href="/2017/10/31/Render/">Render</a></h3>
+                    <h3><a href="/2017/11/20/devicemotion/">H5实现摇一摇</a></h3>
                     <span>
                         <span class="post-meta">
-      <time datetime="2017-10-31T09:02:37.000Z" itemprop="datePublished">
-          2017-10-31
+      <time datetime="2017-11-20T06:31:40.000Z" itemprop="datePublished">
+          2017-11-20
       </time>
     
     
     | 
-    <a href='/tags/Angular/'>Angular</a>
+    <a href='/tags/HTML5/'>HTML5</a>
     
     
 </span>
@@ -202,18 +202,67 @@
                 <div class="col-md-8">
                     <p class="index-excerpt">
                       
-                        RenderRenderComponentTypeexport class RenderComponentType {
-    id: string;
-    templateUrl: string;
-    slotCount: number;
-    encapsulation: ViewEncapsulation;
-    styles: Array&lt;string | any[]&gt;;
-    animations: {
+                        
+关于deviceMotion
+
+html5提供的DOM事件来获得设备物理方向及运动的信息，包括：陀螺仪、罗盘及加速计。
+deviceorientation，其提供设备的物理方向信息，表示为一系列本地坐标系的旋角。
+devicemotion，其提供设备的加速信息，表示为定义在设备上的坐标系中的卡尔迪坐标。其还提供了设备在坐标系中的自转速率。
+compassneedscalibration，其用于使用罗盘信息校准上述事件。
+
+实现原理
+
+
                       
                     </p>
                     
                     <p class="pull-right readMore">
-                        <a href="/2017/10/31/Render/">Read More...</a>
+                        <a href="/2017/11/20/devicemotion/">Read More...</a>
+                    </p>
+                    
+                </div>
+                <div class="clearfix"></div>
+                <hr class="nogutter">
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 opening-statement">
+                <div class="col-md-4">
+                    <h3><a href="/2017/10/31/preload/">图片预加载</a></h3>
+                    <span>
+                        <span class="post-meta">
+      <time datetime="2017-10-31T12:35:04.000Z" itemprop="datePublished">
+          2017-10-31
+      </time>
+    
+    
+    | 
+    <a href='/tags/web/'>web</a>
+    
+    
+</span>
+                    </span>
+                </div>
+                <div class="col-md-8">
+                    <p class="index-excerpt">
+                      
+                        
+预加载
+
+图片预先加载到浏览器中，访问者便可顺利地在你的网站上冲浪，并享受到极快的加载速度。这对图片画廊及图片占据很大比例的网站来说十分有利，它保证了图片快速、无缝地发布，也可帮助用户在浏览你网站内容时获得更好的用户体验。
+
+用CSS和JavaScript实现预加载
+
+
+单纯使用CSS，可容易、高效地预加载图片
+
+#preload-01 { background: url(http://domain.tld/image-01.png)
+                      
+                    </p>
+                    
+                    <p class="pull-right readMore">
+                        <a href="/2017/10/31/preload/">Read More...</a>
                     </p>
                     
                 </div>
@@ -269,16 +318,16 @@ IE下input.type属性为只读；但是Firefox下input.type属性为读写。
         <div class="row">
             <div class="col-md-8 col-md-offset-2 opening-statement">
                 <div class="col-md-4">
-                    <h3><a href="/2017/10/30/Directive/">Directive</a></h3>
+                    <h3><a href="/2017/10/18/lazyload/">图片懒加载</a></h3>
                     <span>
                         <span class="post-meta">
-      <time datetime="2017-10-30T05:00:20.000Z" itemprop="datePublished">
-          2017-10-30
+      <time datetime="2017-10-18T11:32:23.000Z" itemprop="datePublished">
+          2017-10-18
       </time>
     
     
     | 
-    <a href='/tags/Angular/'>Angular</a>
+    <a href='/tags/web/'>web</a>
     
     
 </span>
@@ -287,113 +336,20 @@ IE下input.type属性为只读；但是Firefox下input.type属性为读写。
                 <div class="col-md-8">
                     <p class="index-excerpt">
                       
-                        Directive
-what it does
+                        
+场景
 
-Marks a class as an Angular directive and collects directive configuration metadata.
+在实际的项目开发中，我们通常会遇见这样的场景：一个页面有很多图片，而首屏出现的图片大概就一两张，那么我们还要一次性把所有图片都加载出来吗？显然这是愚蠢的，不仅影响页面渲染速度，还浪费带宽。这也就是们通常所说的首屏加载，技术上现实其中要用的技术就是图片懒加载–到可视区域再加载
 
-how to use
+优势
 
-import { Directive } from &apos;@angular/core&apos;;
-@Directive({
-    selector?: string,
-    input
+减少请求数，防止页面一次性向服务器响应大量请求导致服务器响应慢，页面卡顿或崩溃等问题
+页面加载速度快、可以减轻服务器的压力、节约了流量、用户体验
                       
                     </p>
                     
                     <p class="pull-right readMore">
-                        <a href="/2017/10/30/Directive/">Read More...</a>
-                    </p>
-                    
-                </div>
-                <div class="clearfix"></div>
-                <hr class="nogutter">
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2 opening-statement">
-                <div class="col-md-4">
-                    <h3><a href="/2017/10/30/Communication/">Communication</a></h3>
-                    <span>
-                        <span class="post-meta">
-      <time datetime="2017-10-30T04:59:02.000Z" itemprop="datePublished">
-          2017-10-30
-      </time>
-    
-    
-    | 
-    <a href='/tags/Angular/'>Angular</a>
-    
-    
-</span>
-                    </span>
-                </div>
-                <div class="col-md-8">
-                    <p class="index-excerpt">
-                      
-                        Component Communication
-Input
-
-@Component({
-    selector: &apos;bank-account&apos;,
-    template: `
-      Bank Name: {{bankName}}
-      Account Id: {{id}}
-    `
-  })
-  class BankAccount {
-    @Input() bankName: string;
- 
-                      
-                    </p>
-                    
-                    <p class="pull-right readMore">
-                        <a href="/2017/10/30/Communication/">Read More...</a>
-                    </p>
-                    
-                </div>
-                <div class="clearfix"></div>
-                <hr class="nogutter">
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2 opening-statement">
-                <div class="col-md-4">
-                    <h3><a href="/2017/10/30/Component/">Component</a></h3>
-                    <span>
-                        <span class="post-meta">
-      <time datetime="2017-10-30T04:45:26.000Z" itemprop="datePublished">
-          2017-10-30
-      </time>
-    
-    
-    | 
-    <a href='/tags/Angular/'>Angular</a>
-    
-    
-</span>
-                    </span>
-                </div>
-                <div class="col-md-8">
-                    <p class="index-excerpt">
-                      
-                        Component extends Directive
-what it does
-
-Marks a class as an Angular component and collects component configurationmetadata.
-
-how to use
-
-import { Component } from &apos;@angular/core&apos;;
-@Component({
-    changeDetec
-                      
-                    </p>
-                    
-                    <p class="pull-right readMore">
-                        <a href="/2017/10/30/Component/">Read More...</a>
+                        <a href="/2017/10/18/lazyload/">Read More...</a>
                     </p>
                     
                 </div>
@@ -404,7 +360,7 @@ import { Component } from &apos;@angular/core&apos;;
         
         <nav class="pagination" role="pagination">
           <a class="pull-left" href="/page/2/">← Newer Posts</a>
-          <a class="pull-right" href="/page/4/">Older Posts →</a>
+          
         </nav>
     </div>
 </section>
@@ -502,5 +458,5 @@ import { Component } from &apos;@angular/core&apos;;
     });
 </script>
 
-</body>
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/chitose.model.json"},"display":{"position":"left"}});</script></body>
 </html>

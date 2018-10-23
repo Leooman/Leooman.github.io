@@ -184,16 +184,16 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2 opening-statement">
                 <div class="col-md-4">
-                    <h3><a href="/2018/01/04/pipetransform/">pipe</a></h3>
+                    <h3><a href="/2018/01/27/wxPayService/">公众号支付</a></h3>
                     <span>
                         <span class="post-meta">
-      <time datetime="2018-01-04T15:01:17.000Z" itemprop="datePublished">
-          2018-01-04
+      <time datetime="2018-01-27T10:25:23.000Z" itemprop="datePublished">
+          2018-01-27
       </time>
     
     
     | 
-    <a href='/tags/Angular/'>Angular</a>
+    <a href='/tags/微信支付/'>微信支付</a>
     
     
 </span>
@@ -203,18 +203,18 @@
                     <p class="index-excerpt">
                       
                         
-PipeTransform
+微信公众号支付类
 
-To create a Pipe, you must implement this interface.
-Syntaxvalue | pipeName[:arg0[:arg1...]]
-Exampleimport {Pipe, PipeTransform} from &apos;@angular/core&apos;;
-  @Pipe({name: &apos;repeat&apos;})
-  expor
+class WxPayService{
+    //=======【证书路径设置】=====================================
+    //证书路径,注意应该填写绝对路径
+    protected $SSLCERT_PATH = &apos;apiclient_cert.pem&apos;;
+    protected $SSLKEY_PATH =  &apos;apiclient_
                       
                     </p>
                     
                     <p class="pull-right readMore">
-                        <a href="/2018/01/04/pipetransform/">Read More...</a>
+                        <a href="/2018/01/27/wxPayService/">Read More...</a>
                     </p>
                     
                 </div>
@@ -226,16 +226,16 @@ Exampleimport {Pipe, PipeTransform} from &apos;@angular/core&apos;;
         <div class="row">
             <div class="col-md-8 col-md-offset-2 opening-statement">
                 <div class="col-md-4">
-                    <h3><a href="/2017/11/20/devicemotion/">H5实现摇一摇</a></h3>
+                    <h3><a href="/2018/01/08/wxPay/">微信企业付款</a></h3>
                     <span>
                         <span class="post-meta">
-      <time datetime="2017-11-20T06:31:40.000Z" itemprop="datePublished">
-          2017-11-20
+      <time datetime="2018-01-08T06:20:04.000Z" itemprop="datePublished">
+          2018-01-08
       </time>
     
     
     | 
-    <a href='/tags/HTML5/'>HTML5</a>
+    <a href='/tags/微信支付/'>微信支付</a>
     
     
 </span>
@@ -245,21 +245,18 @@ Exampleimport {Pipe, PipeTransform} from &apos;@angular/core&apos;;
                     <p class="index-excerpt">
                       
                         
-关于deviceMotion
+企业付款至零钱
 
-html5提供的DOM事件来获得设备物理方向及运动的信息，包括：陀螺仪、罗盘及加速计。
-deviceorientation，其提供设备的物理方向信息，表示为一系列本地坐标系的旋角。
-devicemotion，其提供设备的加速信息，表示为定义在设备上的坐标系中的卡尔迪坐标。其还提供了设备在坐标系中的自转速率。
-compassneedscalibration，其用于使用罗盘信息校准上述事件。
-
-实现原理
-
-
+class wxPay{
+    //=======【证书路径设置】=====================================
+    //证书路径,注意应该填写绝对路径
+    protected $SSLCERT_PATH = &apos;apiclient_cert.pem&apos;;
+    protected $SSLKEY_PATH =  &apos;apiclient_key.pem&
                       
                     </p>
                     
                     <p class="pull-right readMore">
-                        <a href="/2017/11/20/devicemotion/">Read More...</a>
+                        <a href="/2018/01/08/wxPay/">Read More...</a>
                     </p>
                     
                 </div>
@@ -271,55 +268,16 @@ compassneedscalibration，其用于使用罗盘信息校准上述事件。
         <div class="row">
             <div class="col-md-8 col-md-offset-2 opening-statement">
                 <div class="col-md-4">
-                    <h3><a href="/2017/11/01/ChangeDetectionCont/">ChangeDetectionCont</a></h3>
+                    <h3><a href="/2018/01/07/AVL/">AVL树</a></h3>
                     <span>
                         <span class="post-meta">
-      <time datetime="2017-11-01T00:47:56.000Z" itemprop="datePublished">
-          2017-11-01
+      <time datetime="2018-01-07T03:21:58.000Z" itemprop="datePublished">
+          2018-01-07
       </time>
     
     
     | 
-    <a href='/tags/Angular/'>Angular</a>
-    
-    
-</span>
-                    </span>
-                </div>
-                <div class="col-md-8">
-                    <p class="index-excerpt">
-                      
-                        Change Detection ConstantsChangeDetectionStrategyDescribes within the change detector which strategy will be used the next time change detection is triggered.
-
-OnPush = 0
-
-OnPush means that the change detector’s mode wil
-                      
-                    </p>
-                    
-                    <p class="pull-right readMore">
-                        <a href="/2017/11/01/ChangeDetectionCont/">Read More...</a>
-                    </p>
-                    
-                </div>
-                <div class="clearfix"></div>
-                <hr class="nogutter">
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2 opening-statement">
-                <div class="col-md-4">
-                    <h3><a href="/2017/10/31/preload/">图片预加载</a></h3>
-                    <span>
-                        <span class="post-meta">
-      <time datetime="2017-10-31T12:35:04.000Z" itemprop="datePublished">
-          2017-10-31
-      </time>
-    
-    
-    | 
-    <a href='/tags/web/'>web</a>
+    <a href='/tags/javascript/'>javascript</a>
     
     
 </span>
@@ -329,21 +287,17 @@ OnPush means that the change detector’s mode wil
                     <p class="index-excerpt">
                       
                         
-预加载
+AVL树定义
 
-图片预先加载到浏览器中，访问者便可顺利地在你的网站上冲浪，并享受到极快的加载速度。这对图片画廊及图片占据很大比例的网站来说十分有利，它保证了图片快速、无缝地发布，也可帮助用户在浏览你网站内容时获得更好的用户体验。
-
-用CSS和JavaScript实现预加载
-
-
-单纯使用CSS，可容易、高效地预加载图片
-
-#preload-01 { background: url(http://domain.tld/image-01.png)
+AVL树是最先发明的自平衡二叉查找树。为了避免出现二叉排序树的最坏情况，限定在AVL树中每个结点的左右子树的高度之差的绝对值（平衡因子）最多为1，所以它也被称为高度平衡树。
+查找、插入和删除在平均和最坏情况下都是O（log n）。
+增加和删除可能需要通过一次或多次树旋转来重新平衡这个树。
+离插入节点最近的平衡系数的绝对值大于等于二的节点作为根节点所形成的树称为最小非平衡子树（minimum unblanced subt
                       
                     </p>
                     
                     <p class="pull-right readMore">
-                        <a href="/2017/10/31/preload/">Read More...</a>
+                        <a href="/2018/01/07/AVL/">Read More...</a>
                     </p>
                     
                 </div>
@@ -355,16 +309,16 @@ OnPush means that the change detector’s mode wil
         <div class="row">
             <div class="col-md-8 col-md-offset-2 opening-statement">
                 <div class="col-md-4">
-                    <h3><a href="/2017/10/31/ChangeDetectorRef/">ChangeDetectorRef</a></h3>
+                    <h3><a href="/2018/01/07/binarytree/">排序二叉树</a></h3>
                     <span>
                         <span class="post-meta">
-      <time datetime="2017-10-31T09:06:50.000Z" itemprop="datePublished">
-          2017-10-31
+      <time datetime="2018-01-07T03:13:34.000Z" itemprop="datePublished">
+          2018-01-07
       </time>
     
     
     | 
-    <a href='/tags/Angular/'>Angular</a>
+    <a href='/tags/javascript/'>javascript</a>
     
     
 </span>
@@ -373,25 +327,62 @@ OnPush means that the change detector’s mode wil
                 <div class="col-md-8">
                     <p class="index-excerpt">
                       
-                        ChangeDetectorRef
-object method
+                        
+二叉排序树
 
-export class ChangeDetectorRef {
-    markForCheck(): void,
-    detach(): void,
-    detectChanges(): void,
-    checkNoChanges(): void,
-    reattach(): void
-}
+二叉排序树（Binary Sort Tree），又称二叉查找树（Binary Search Tree），亦称二叉搜索树。
+二叉排序树是一种比较有用的折衷方案。数组的搜索比较方便，可以直接用下标。链表与之相反，删除和插入元素很快，但查找很慢。二叉排序树就既有链表的好处，也有数组的好处。在处理大批量的动态的数据是比较有用。
+二叉排序树或者是一棵空树，或者是具有下列性质的二叉树：
 
-markForCheck
-
-Marks all {@lin
+若左子树不空，则左子树上所有结点的值均小于或
                       
                     </p>
                     
                     <p class="pull-right readMore">
-                        <a href="/2017/10/31/ChangeDetectorRef/">Read More...</a>
+                        <a href="/2018/01/07/binarytree/">Read More...</a>
+                    </p>
+                    
+                </div>
+                <div class="clearfix"></div>
+                <hr class="nogutter">
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 opening-statement">
+                <div class="col-md-4">
+                    <h3><a href="/2018/01/06/htaccess/">.htaccess文件详解</a></h3>
+                    <span>
+                        <span class="post-meta">
+      <time datetime="2018-01-06T13:32:40.000Z" itemprop="datePublished">
+          2018-01-06
+      </time>
+    
+    
+    | 
+    <a href='/tags/服务器/'>服务器</a>
+    
+    
+</span>
+                    </span>
+                </div>
+                <div class="col-md-8">
+                    <p class="index-excerpt">
+                      
+                        
+.htaccess的基本作用
+
+.htaccess是一个纯文本文件，它里面存放着Apache服务器配置相关的指令。
+.htaccess主要的作用有：URL重写、自定义错误页面、MIME类型配置以及访问权限控制等。
+主要体现在伪静态的应用、图片防盗链、自定义404错误页面、阻止/允许特定IP/IP段、目录浏览与主页、禁止访问指定文件类型、文件密码保护等。
+.htaccess的用途范围主要针对当前目录。
+
+如何启用.htaccess的配置
+                      
+                    </p>
+                    
+                    <p class="pull-right readMore">
+                        <a href="/2018/01/06/htaccess/">Read More...</a>
                     </p>
                     
                 </div>
@@ -500,5 +491,5 @@ Marks all {@lin
     });
 </script>
 
-</body>
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/chitose.model.json"},"display":{"position":"left"}});</script></body>
 </html>

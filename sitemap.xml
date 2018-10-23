@@ -2,44 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://yoursite.com/2017/10/31/Render/</loc>
+    <loc>http://yoursite.com/2018/06/18/changeDetection/</loc>
     
-    <lastmod>2018-07-12T13:21:08.134Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2017/10/30/Directive/</loc>
-    
-    <lastmod>2018-07-12T13:20:43.919Z</lastmod>
+    <lastmod>2018-10-23T09:19:51.878Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/2017/10/30/Component/</loc>
+    <loc>http://yoursite.com/2018/05/11/directive/</loc>
     
-    <lastmod>2018-07-12T13:20:32.616Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2017/10/30/Communication/</loc>
-    
-    <lastmod>2018-07-12T13:20:23.614Z</lastmod>
+    <lastmod>2018-10-23T09:16:19.112Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/2017/10/31/ChangeDetectorRef/</loc>
+    <loc>http://yoursite.com/2018/04/20/lifecycle/</loc>
     
-    <lastmod>2018-07-12T13:20:15.202Z</lastmod>
+    <lastmod>2018-10-23T09:07:30.341Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/2017/11/01/ChangeDetectionCont/</loc>
+    <loc>http://yoursite.com/2018/05/12/component/</loc>
     
-    <lastmod>2018-07-12T13:20:06.203Z</lastmod>
+    <lastmod>2018-10-23T09:06:01.023Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2018/05/23/functionProgram/</loc>
+    
+    <lastmod>2018-10-23T08:30:15.646Z</lastmod>
     
   </url>
   
@@ -96,13 +89,6 @@
     <loc>http://yoursite.com/2018/01/08/wxPay/</loc>
     
     <lastmod>2018-02-07T13:54:05.015Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2018/01/04/pipetransform/</loc>
-    
-    <lastmod>2018-02-06T15:14:40.772Z</lastmod>
     
   </url>
   

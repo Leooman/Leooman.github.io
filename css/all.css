@@ -195,7 +195,7 @@ h6 {
 	color: #151515;
 }
 h2 {
-	text-transform: uppercase;
+	/*text-transform: uppercase;*/
 	font-style: normal;
 	font-weight: 400;
 	font-size: 22px;
@@ -3522,6 +3522,7 @@ figure.highlight pre {
 figure.highlight table {
   margin-top: 0;
   border-spacing: 0;
+  width: 100%;
 }
 figure.highlight .gutter {
   color: color-meta;

@@ -67,6 +67,7 @@ figure.highlight pre {
 figure.highlight table {
   margin-top: 0;
   border-spacing: 0;
+  width: 100%;
 }
 figure.highlight .gutter {
   color: color-meta;
