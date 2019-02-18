@@ -180,13 +180,30 @@
 <p>对象与对象之间的关系是面向对象编程首要考虑的问题，而在函数式编程中，所有的数据都是不可变的，不同的函数之间通过数据流来交换信息，<code>函数作为FP中的一等公民</code>，享有跟数据一样的地位，可以作为参数传递给下一个函数，同时也可以作为返回值。 </p>
 <p>在函数式编程中，由于数据全部都是不可变的，所以没有并发编程的问题，是多线程安全的。可以有效降低程序运行中所产生的副作用，对于快速迭代的项目来说，函数式编程可以实现函数与函数之间的热切换而不用担心数据的问题，因为它是以函数作为最小单位的，只要函数与函数之间的关系正确即可保证结果的正确性。</p>
 <h2 id="Why-Ramda"><a href="#Why-Ramda" class="headerlink" title="Why Ramda"></a>Why Ramda</h2><p>Ramda强调一种更纯粹的函数<code>Pure function</code>风格，不可变和无副作用是其设计的核心，当给予function相同的参数，永远返回相同的值，并且没有显著的副作用<code>side effect</code>。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//side effect指一个function做了跟本身运算返回值没有关系的事，比如发送`http request`请求或修改某个全局变量或传入参数的值，甚至是执行`console.log`</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//slice不管执行多少次，返回值都是相同的，并且除了返回value值外，没有做任何事</span></span><br><span class="line"><span class="keyword">var</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line">arr.slice(<span class="number">0</span>, <span class="number">3</span>); <span class="comment">// [1, 2, 3]</span></span><br><span class="line">arr.slice(<span class="number">0</span>, <span class="number">3</span>); <span class="comment">// [1, 2, 3]</span></span><br><span class="line">arr.slice(<span class="number">0</span>, <span class="number">3</span>); <span class="comment">// [1, 2, 3]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//splice没执行一次就影响arr的值，导致每次结果都不同，不符合pure function不可变的原则</span></span><br><span class="line"><span class="keyword">var</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line">arr.splice(<span class="number">0</span>, <span class="number">3</span>); <span class="comment">// [1, 2, 3]</span></span><br><span class="line">arr.splice(<span class="number">0</span>, <span class="number">3</span>); <span class="comment">// [4, 5]</span></span><br><span class="line">arr.slice(<span class="number">0</span>, <span class="number">3</span>); <span class="comment">// []</span></span><br></pre></td></tr></table></figure>
-<p>Ramda所有函数都是自动柯里化的。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">R.add(<span class="number">2</span>, <span class="number">3</span>);       <span class="comment">//=&gt;  5</span></span><br><span class="line">R.add(<span class="number">7</span>)(<span class="number">10</span>);      <span class="comment">//=&gt; 17</span></span><br></pre></td></tr></table></figure>
-<p>Ramda中数据都是作为最后一个参数传入的。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> R = <span class="built_in">require</span>(<span class="string">'ramda'</span>);</span><br><span class="line">R.map(square, [<span class="number">4</span>, <span class="number">8</span>]) <span class="comment">// [16, 64]</span></span><br></pre></td></tr></table></figure>
-<p>不同于underscore和lodash：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> square = <span class="function"><span class="params">n</span> =&gt;</span> n * n;</span><br><span class="line">_.map([<span class="number">4</span>, <span class="number">8</span>], square) <span class="comment">// [16, 64]</span></span><br></pre></td></tr></table></figure>
+<pre><code>//side effect指一个function做了跟本身运算返回值没有关系的事，比如发送`http request`请求或修改某个全局变量或传入参数的值，甚至是执行`console.log`
+
+//slice不管执行多少次，返回值都是相同的，并且除了返回value值外，没有做任何事
+var arr = [1, 2, 3, 4, 5];
+arr.slice(0, 3); // [1, 2, 3]
+arr.slice(0, 3); // [1, 2, 3]
+arr.slice(0, 3); // [1, 2, 3]
+
+//splice没执行一次就影响arr的值，导致每次结果都不同，不符合pure function不可变的原则
+var arr = [1, 2, 3, 4, 5];
+arr.splice(0, 3); // [1, 2, 3]
+arr.splice(0, 3); // [4, 5]
+arr.slice(0, 3); // []
+</code></pre><p>Ramda所有函数都是自动柯里化的。</p>
+<pre><code>R.add(2, 3);       //=&gt;  5
+R.add(7)(10);      //=&gt; 17
+</code></pre><p>Ramda中数据都是作为最后一个参数传入的。</p>
+<pre><code>var R = require(&apos;ramda&apos;);
+R.map(square, [4, 8]) // [16, 64]
+</code></pre><p>不同于underscore和lodash：</p>
+<pre><code>var square = n =&gt; n * n;
+_.map([4, 8], square) // [16, 64]
+</code></pre><h2 id="MORE"><a href="#MORE" class="headerlink" title="MORE"></a>MORE</h2><p><a href="http://leooman.com/ramda/" target="_blank" rel="noopener">Ramda API文档</a></p>
+
             <div class="clearfix"></div>
             
         <div class="duoshuo">
