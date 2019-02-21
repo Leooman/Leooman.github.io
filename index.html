@@ -184,43 +184,6 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2 opening-statement">
                 <div class="col-md-4">
-                    <h3><a href="/2018/07/12/promise/">Promises/A+规范</a></h3>
-                    <span>
-                        <span class="post-meta">
-      <time datetime="2018-07-12T04:26:49.000Z" itemprop="datePublished">
-          2018-07-12
-      </time>
-    
-    
-    | 
-    <a href='/tags/Promises-A/'>Promises/A+</a>
-    
-    
-</span>
-                    </span>
-                </div>
-                <div class="col-md-8">
-                    <p class="index-excerpt">
-                      
-                        
-开源健全可互操作的JavaScript Promise 规范。
-Promise代表着异步操作的最终结果。与promise进行交互的主要方式是通过then方法，该方法通过注册回调以接收promise的最终值或promise未完成的原因。该规范详细说明了then方法的行为，它可以依赖所有符合Promises / A +的promise实现来提供可互操作的基础库。 因此，可以认为规范非常稳定。 尽管Promises / A +组织可能偶尔会
-                      
-                    </p>
-                    
-                    <p class="pull-right readMore">
-                        <a href="/2018/07/12/promise/">Read More...</a>
-                    </p>
-                    
-                </div>
-                <div class="clearfix"></div>
-                <hr class="nogutter">
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2 opening-statement">
-                <div class="col-md-4">
                     <h3><a href="/2018/06/18/changeDetection/">变更检测</a></h3>
                     <span>
                         <span class="post-meta">
@@ -360,6 +323,47 @@ how to useimport { Directive } from &apos;@angular/core&apos;;
                     
                     <p class="pull-right readMore">
                         <a href="/2018/05/11/directive/">Read More...</a>
+                    </p>
+                    
+                </div>
+                <div class="clearfix"></div>
+                <hr class="nogutter">
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 opening-statement">
+                <div class="col-md-4">
+                    <h3><a href="/2018/04/20/lifecycle/">生命周期</a></h3>
+                    <span>
+                        <span class="post-meta">
+      <time datetime="2018-04-20T08:22:44.000Z" itemprop="datePublished">
+          2018-04-20
+      </time>
+    
+    
+    | 
+    <a href='/tags/Angular6-0/'>Angular6.0</a>
+    
+    
+</span>
+                    </span>
+                </div>
+                <div class="col-md-8">
+                    <p class="index-excerpt">
+                      
+                        钩子函数和执行顺序
+ngOnChangesngOnChanges(changes: SimpleChanges): void;
+当指令/组件绑定的输入属性的值发生变化时调用
+该方法接收一个包含当前和先前属性值的SimpleChanges对象
+首次调用发生在ngOnInit()之前，Angular只会在输入属性的值变化时调用这个钩子，非输入属性的值变化不会触发
+export declare class SimpleChange {
+   
+                      
+                    </p>
+                    
+                    <p class="pull-right readMore">
+                        <a href="/2018/04/20/lifecycle/">Read More...</a>
                     </p>
                     
                 </div>
