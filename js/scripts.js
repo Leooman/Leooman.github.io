@@ -11,6 +11,16 @@ $(document).ready(function($) {
         }
     });
 
+    console.log($("#footer_container").outerHeight())
+    console.log($(window).height())
+    if($("#footer_container").offset().top < ($(window).height() - $("#footer_container").outerHeight())){
+    	$("#footer_container").css({
+    		position:'fixed',
+    		bottom:0,
+    		width:"100%"
+    	})
+    }
+
 	$(document).ready(function($) {
 
 		// Slidebars off-canvas menu

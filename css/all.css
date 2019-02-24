@@ -3196,12 +3196,10 @@ button.send{
 * Global footer, (all pages)
 ******************************************************* */
 footer {
-	padding:5% 0 0;
+	padding:1% 0 0;
 	background:#151515;
 	z-index: 9;
-	position: fixed;
-	width: 100%;
-	bottom: 0;
+	position: relative;
 }
 footer p.m_14 {
 	color:#767D84;
