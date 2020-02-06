@@ -4,7 +4,9 @@
 
 *callbackfn* should be a function that takes four arguments. **reduce** calls the callback, as a function, once for each element after the first element present in the array, in ascending order. 
 
-*callbackfn* is called with four arguments: the *previousValue* (value from the previous call to *callbackfn*), the *currentValue* (value of the current element), the *currentIndex*, and the object being traversed. The first time that callback is called, the *previousValue* and *currentValue* can be one of two values. If an *initialValue* was supplied in the call to **reduce**, then *previousValue* will be equal to *initialValue* and *currentValue* will be equal to the first value in the array. If no *initialValue* was supplied, then *previousValue* will be equal to the first value in the array and *currentValue* will be equal to the second. It is a **TypeError** if the array contains no elements and *initialValue* is not provided. 
+*callbackfn* is called with four arguments: the *previousValue* (value from the previous call to *callbackfn*), the *currentValue* (value of the current element), the *currentIndex*, and the object being traversed. 
+
+The first time that callback is called, the *previousValue* and *currentValue* can be one of two values. If an *initialValue* was supplied in the call to **reduce**, then *previousValue* will be equal to *initialValue* and *currentValue* will be equal to the first value in the array. If no *initialValue* was supplied, then *previousValue* will be equal to the first value in the array and *currentValue* will be equal to the second. It is a **TypeError** if the array contains no elements and *initialValue* is not provided. 
 
 **reduce** does not directly mutate the object on which it is called but the object may be mutated by the calls to *callbackfn*. 
 
