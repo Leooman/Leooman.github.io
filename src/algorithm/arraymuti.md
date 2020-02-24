@@ -2,3 +2,26 @@
 
 2/给定一个整数，找出距离最近的$2^n$
 
+```js
+function get(number){
+		function _getMin(n){
+			if(n & n - 1){
+				return _getMin(n - 1)
+			}else{
+				return n
+			}
+		}
+		function _getMax(n){
+			if(n & n + 1){
+				return _getMax(n + 1)
+			}else{
+				return n + 1
+			}
+		}
+		let max = _getMax(number)
+		let min = _getMin(number)
+		return max - number > number - min ? min : max
+}
+console.log(get(24))
+```
+
