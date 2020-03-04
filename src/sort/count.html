@@ -1046,90 +1046,39 @@
     <span class="hljs-keyword">let</span> len = array.length,
         result = [],
         countArr = [],
-        min = (max = array[<span class="hljs-number">0</span>]);
-    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&apos;&#x8BA1;&#x6570;&#x6392;&#x5E8F;&#x8017;&#x65F6;&apos;</span>);
+        min = (max = array[<span class="hljs-number">0</span>])
     <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; len; i++) {
-        <span class="hljs-comment">// &#x83B7;&#x53D6;&#x6700;&#x5C0F;&#xFF0C;&#x6700;&#x5927; &#x503C;</span>
-        min = min &lt;= array[i] ? min : array[i];
-        max = max &gt;= array[i] ? max : array[i];
-        countArr[array[i]] = countArr[array[i]] ? countArr[array[i]] + <span class="hljs-number">1</span> : <span class="hljs-number">1</span>;
+        min = min &lt;= array[i] ? min : array[i]
+        max = max &gt;= array[i] ? max : array[i]
+        countArr[array[i]] = countArr[array[i]] ? countArr[array[i]] + <span class="hljs-number">1</span> : <span class="hljs-number">1</span>
     }
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&apos;countArr :&apos;</span>, countArr);
-    <span class="hljs-comment">// &#x4ECE;&#x6700;&#x5C0F;&#x503C; -&gt; &#x6700;&#x5927;&#x503C;,&#x5C06;&#x8BA1;&#x6570;&#x9010;&#x9879;&#x76F8;&#x52A0;</span>
     <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> j = min; j &lt; max; j++) {
-        countArr[j + <span class="hljs-number">1</span>] = (countArr[j + <span class="hljs-number">1</span>] || <span class="hljs-number">0</span>) + (countArr[j] || <span class="hljs-number">0</span>);
+        countArr[j + <span class="hljs-number">1</span>] = (countArr[j + <span class="hljs-number">1</span>] || <span class="hljs-number">0</span>) + (countArr[j] || <span class="hljs-number">0</span>)
     }
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&apos;countArr 2:&apos;</span>, countArr);
-    <span class="hljs-comment">// countArr &#x4E2D;,&#x4E0B;&#x6807;&#x4E3A; array &#x6570;&#x503C;&#xFF0C;&#x6570;&#x636E;&#x4E3A; array &#x6570;&#x503C;&#x51FA;&#x73B0;&#x6B21;&#x6570;&#xFF1B;&#x53CD;&#x5411;&#x586B;&#x5145;&#x6570;&#x636E;&#x8FDB;&#x5165; result &#x6570;&#x636E;</span>
     <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> k = len - <span class="hljs-number">1</span>; k &gt;= <span class="hljs-number">0</span>; k--) {
-        <span class="hljs-comment">// result[&#x4F4D;&#x7F6E;] = array &#x6570;&#x636E;</span>
-        result[countArr[array[k]] - <span class="hljs-number">1</span>] = array[k];
-        <span class="hljs-comment">// &#x51CF;&#x5C11; countArr &#x6570;&#x7EC4;&#x4E2D;&#x4FDD;&#x5B58;&#x7684;&#x8BA1;&#x6570;</span>
-        countArr[array[k]]--;
-        <span class="hljs-comment">// console.log(&quot;array[k]:&quot;, array[k], &apos;countArr[array[k]] :&apos;, countArr[array[k]],)</span>
-        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&apos;result:&apos;</span>, result);
+        result[countArr[array[k]] - <span class="hljs-number">1</span>] = array[k]
+        countArr[array[k]]--
     }
-    <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&apos;&#x8BA1;&#x6570;&#x6392;&#x5E8F;&#x8017;&#x65F6;&apos;</span>);
-    <span class="hljs-keyword">return</span> result;
-};
+    <span class="hljs-keyword">return</span> result
+}
 </code></pre>
-<p>&#x6D4B;&#x8BD5;</p>
-<pre><code>const array = [2, 2, 3, 8, 7, 1, 2, 2, 2, 7, 3, 9, 8, 2, 1, 4, 2, 4, 6, 9, 2];
-console.log(&apos;&#x539F;&#x59CB; array: &apos;, array);
-const newArr = countingSort(array);
-console.log(&apos;newArr: &apos;, newArr);
-// &#x539F;&#x59CB; array:  [2, 2, 3, 8, 7, 1, 2, 2, 2, 7, 3, 9, 8, 2, 1, 4, 2, 4, 6, 9, 2]
-// &#x8BA1;&#x6570;&#x6392;&#x5E8F;&#x8017;&#x65F6;:   5.6708984375ms
-// newArr:       [1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 6, 7, 7, 8, 8, 9, 9]
-</code></pre><p><a href="https://camo.githubusercontent.com/981ba7661486ed17ea7fb5088239fa715e7d3f91/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f31323839303831392d663235343131343362636436393133382e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430" target="_blank"><img src="https://camo.githubusercontent.com/981ba7661486ed17ea7fb5088239fa715e7d3f91/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f31323839303831392d663235343131343362636436393133382e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430" alt="&#x6D4B;&#x8BD5;&#x7ED3;&#x679C;"></a></p>
-<p>&#x65B9;&#x6CD5;&#x4E8C;&#xFF1A;</p>
-<pre><code class="lang-js"><span class="hljs-keyword">const</span> countingSort2 = (arr, maxValue) =&gt; {
-    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&apos;&#x8BA1;&#x6570;&#x6392;&#x5E8F;&#x8017;&#x65F6;&apos;</span>);
-    maxValue = maxValue || arr.length;
-    <span class="hljs-keyword">let</span> bucket = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Array</span>(maxValue + <span class="hljs-number">1</span>),
-        sortedIndex = <span class="hljs-number">0</span>;
-    (arrLen = arr.length), (bucketLen = maxValue + <span class="hljs-number">1</span>);
-
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; arrLen; i++) {
-        <span class="hljs-keyword">if</span> (!bucket[arr[i]]) {
-            bucket[arr[i]] = <span class="hljs-number">0</span>;
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> countingSort2 = (arr) =&gt; {
+        <span class="hljs-keyword">let</span> len = arr.length,bucket = [],sortedIndex = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; len; i++) {
+            <span class="hljs-keyword">if</span> (!bucket[arr[i]]) bucket[arr[i]] = <span class="hljs-number">0</span>
+            bucket[arr[i]]++
         }
-        bucket[arr[i]]++;
-    }
-
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> j = <span class="hljs-number">0</span>; j &lt; bucketLen; j++) {
-        <span class="hljs-keyword">while</span> (bucket[j] &gt; <span class="hljs-number">0</span>) {
-            arr[sortedIndex++] = j;
-            bucket[j]--;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> j = <span class="hljs-number">0</span>; j &lt; bucket.length; j++) {
+            <span class="hljs-keyword">while</span> (bucket[j] &gt; <span class="hljs-number">0</span>) {
+                arr[sortedIndex++] = j
+                bucket[j]--
+            }
         }
-    }
-    <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&apos;&#x8BA1;&#x6570;&#x6392;&#x5E8F;&#x8017;&#x65F6;&apos;</span>);
-    <span class="hljs-keyword">return</span> arr;
-};
+        <span class="hljs-keyword">return</span> arr
+}
 </code></pre>
-<p>&#x6D4B;&#x8BD5;</p>
-<pre><code>const array2 = [2, 2, 3, 8, 7, 1, 2, 2, 2, 7, 3, 9, 8, 2, 1, 4, 2, 4, 6, 9, 2];
-console.log(&apos;&#x539F;&#x59CB; array2: &apos;, array2);
-const newArr2 = countingSort2(array2, 21);
-console.log(&apos;newArr2: &apos;, newArr2);
-// &#x539F;&#x59CB; array:  [2, 2, 3, 8, 7, 1, 2, 2, 2, 7, 3, 9, 8, 2, 1, 4, 2, 4, 6, 9, 2]
-// &#x8BA1;&#x6570;&#x6392;&#x5E8F;&#x8017;&#x65F6;:   0.043212890625ms
-// newArr:       [1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 6, 7, 7, 8, 8, 9, 9]
-</code></pre><p>&#x53EF;&#x4EE5;&#x8BA4;&#x4E3A;&#xFF0C;<strong>&#x8BA1;&#x6570;&#x6392;&#x5E8F;&#x5176;&#x5B9E;&#x662F;&#x6876;&#x6392;&#x5E8F;&#x7684;&#x4E00;&#x79CD;&#x7279;&#x6B8A;&#x60C5;&#x51B5;</strong></p>
-<p>&#x5F53;&#x8981;&#x6392;&#x5E8F;&#x7684; n &#x4E2A;&#x6570;&#x636E;&#xFF0C;&#x6240;&#x5904;&#x7684;&#x8303;&#x56F4;&#x5E76;&#x4E0D;&#x5927;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x6BD4;&#x5982;&#x6700;&#x5927;&#x503C;&#x662F; k&#xFF0C;&#x6211;&#x4EEC;&#x5C31;&#x53EF;&#x4EE5;&#x628A;&#x6570;&#x636E;&#x5212;&#x5206;&#x6210; k &#x4E2A;&#x6876;&#x3002;&#x6BCF;&#x4E2A;&#x6876;&#x5185;&#x7684;&#x6570;&#x636E;&#x503C;&#x90FD;&#x662F;&#x76F8;&#x540C;&#x7684;&#xFF0C;&#x7701;&#x6389;&#x4E86;&#x6876;&#x5185;&#x6392;&#x5E8F;&#x7684;&#x65F6;&#x95F4;</p>
-<ul>
-<li>&#x8BA1;&#x6570;&#x6392;&#x5E8F;&#x662F;&#x539F;&#x5730;&#x6392;&#x5E8F;&#x7B97;&#x6CD5;&#x5417; &#xFF1F;
-&#x56E0;&#x4E3A;&#x8BA1;&#x6570;&#x6392;&#x5E8F;&#x7684;&#x7A7A;&#x95F4;&#x590D;&#x6742;&#x5EA6;&#x4E3A; O(k)&#xFF0C;k &#x6876;&#x7684;&#x4E2A;&#x6570;&#xFF0C;&#x6240;&#x4EE5;&#x4E0D;&#x662F;&#x539F;&#x5730;&#x6392;&#x5E8F;&#x7B97;&#x6CD5;</li>
-<li>&#x8BA1;&#x6570;&#x6392;&#x5E8F;&#x662F;&#x7A33;&#x5B9A;&#x7684;&#x6392;&#x5E8F;&#x7B97;&#x6CD5;&#x5417; &#xFF1F;
-&#x8BA1;&#x6570;&#x6392;&#x5E8F;&#x4E0D;&#x6539;&#x53D8;&#x76F8;&#x540C;&#x5143;&#x7D20;&#x4E4B;&#x95F4;&#x539F;&#x672C;&#x76F8;&#x5BF9;&#x7684;&#x987A;&#x5E8F;&#xFF0C;&#x56E0;&#x6B64;&#x5B83;&#x662F;&#x7A33;&#x5B9A;&#x7684;&#x6392;&#x5E8F;&#x7B97;&#x6CD5;</li>
-<li>&#x8BA1;&#x6570;&#x6392;&#x5E8F;&#x7684;&#x65F6;&#x95F4;&#x590D;&#x6742;&#x5EA6;&#x662F;&#x591A;&#x5C11; &#xFF1F;
-&#x6700;&#x4F73;&#x60C5;&#x51B5;&#xFF1A;T(n) = O(n + k)
-&#x6700;&#x5DEE;&#x60C5;&#x51B5;&#xFF1A;T(n) = O(n + k)
-&#x5E73;&#x5747;&#x60C5;&#x51B5;&#xFF1A;T(n) = O(n + k)
-k &#x662F;&#x5F85;&#x6392;&#x5E8F;&#x5217;&#x6700;&#x5927;&#x503C;</li>
-</ul>
 <footer class="page-footer"><span class="copyright">Copyright &#xA9; leooman.com 2018 all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">&#x6587;&#x4EF6;&#x6700;&#x65B0;&#x53D1;&#x5E03;&#x65F6;&#x95F4;&#xFF1A;
-2019-11-13 22:47:48
+2020-03-04 21:15:07
 </span></footer>
                                 
                                 </section>
@@ -1173,7 +1122,7 @@ k &#x662F;&#x5F85;&#x6392;&#x5E8F;&#x5217;&#x6700;&#x5927;&#x503C;</li>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"计数排序","level":"1.8.9","depth":2,"next":{"title":"基数排序","level":"1.8.10","depth":2,"path":"src/sort/radix.md","ref":"src/sort/radix.md","articles":[]},"previous":{"title":"桶排序","level":"1.8.8","depth":2,"path":"src/sort/bucket.md","ref":"src/sort/bucket.md","articles":[]},"dir":"ltr"},"config":{"plugins":["simple-page-toc@^0.1.1","github@^2.0.0","splitter@^0.0.8","tbfed-pagefooter@^0.0.1","anchor-navigation-ex@0.1.8","-sharing","sharing-plus@^0.0.2","expandable-chapters-small","chapter-fold"],"root":".","styles":{"website":"styles/website.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright © leooman.com 2018","modify_label":"文件最新发布时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"chapter-fold":{},"github":{"url":"https://github.com/Leooman"},"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"splitter":{},"search":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"serif","size":2},"highlight":{},"anchor-navigation-ex":{"isRewritePageTitle":true,"tocLevel1Icon":"fa fa-hand-o-right","tocLevel2Icon":"fa fa-hand-o-right","tocLevel3Icon":"fa fa-hand-o-right"},"expandable-chapters-small":{},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon","qq","qzone"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Leooman","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"","language":"zh-hans","links":{"sidebar":{}},"gitbook":"3.2.3","description":""},"file":{"path":"src/sort/count.md","mtime":"2019-11-13T14:47:48.561Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-03-04T11:45:27.061Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"计数排序","level":"1.8.9","depth":2,"next":{"title":"基数排序","level":"1.8.10","depth":2,"path":"src/sort/radix.md","ref":"src/sort/radix.md","articles":[]},"previous":{"title":"桶排序","level":"1.8.8","depth":2,"path":"src/sort/bucket.md","ref":"src/sort/bucket.md","articles":[]},"dir":"ltr"},"config":{"plugins":["simple-page-toc@^0.1.1","github@^2.0.0","splitter@^0.0.8","tbfed-pagefooter@^0.0.1","anchor-navigation-ex@0.1.8","-sharing","sharing-plus@^0.0.2","expandable-chapters-small","chapter-fold"],"root":".","styles":{"website":"styles/website.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright © leooman.com 2018","modify_label":"文件最新发布时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"chapter-fold":{},"github":{"url":"https://github.com/Leooman"},"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"splitter":{},"search":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"serif","size":2},"highlight":{},"anchor-navigation-ex":{"isRewritePageTitle":true,"tocLevel1Icon":"fa fa-hand-o-right","tocLevel2Icon":"fa fa-hand-o-right","tocLevel3Icon":"fa fa-hand-o-right"},"expandable-chapters-small":{},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon","qq","qzone"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Leooman","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"","language":"zh-hans","links":{"sidebar":{}},"gitbook":"3.2.3","description":""},"file":{"path":"src/sort/count.md","mtime":"2020-03-04T13:15:07.344Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-03-04T13:57:00.588Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
