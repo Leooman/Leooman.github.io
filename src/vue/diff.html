@@ -72,7 +72,7 @@
     <link rel="next" href="key.html" />
     
     
-    <link rel="prev" href="mvvm.html" />
+    <link rel="prev" href="VNode.html" />
     
 
     </head>
@@ -428,12 +428,12 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.4.1" data-path="mvvm.html">
+        <li class="chapter " data-level="1.4.1" data-path="VNode.html">
             
-                <a href="mvvm.html">
+                <a href="VNode.html">
             
                     
-                    实现MVVM
+                    VNode
             
                 </a>
             
@@ -1061,461 +1061,336 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <p>Angular&#x4E2D;&#x7684;&#x662F;&#x810F;&#x503C;&#x68C0;&#x67E5;&#xFF0C;React&#x9996;&#x5148;&#x63D0;&#x51FA;&#x4E86;Virtual Dom&#xFF0C;Vue2.0&#x4E5F;&#x52A0;&#x5165;&#x4E86;Virtual Dom&#xFF0C;&#x4E0E;React&#x7C7B;&#x4F3C;&#x3002;</p>
-<p>&#x672C;&#x6587;&#x5C06;&#x5BF9;&#x4E8E;Vue 2.5.3&#x7248;&#x672C;&#x4E2D;&#x4F7F;&#x7528;&#x7684;Virtual Dom&#x8FDB;&#x884C;&#x5206;&#x6790;&#x3002;</p>
-<p>updataChildren&#x662F;Diff&#x7B97;&#x6CD5;&#x7684;&#x6838;&#x5FC3;&#xFF0C;&#x6240;&#x4EE5;&#x672C;&#x6587;&#x5BF9;updataChildren&#x8FDB;&#x884C;&#x4E86;&#x56FE;&#x6587;&#x7684;&#x5206;&#x6790;&#x3002;</p>
-<h2 id="1vnode&#x5BF9;&#x8C61;"><a name="1vnode&#x5BF9;&#x8C61;" class="anchor-navigation-ex-anchor" href="#1vnode&#x5BF9;&#x8C61;"><i class="fa fa-link" aria-hidden="true"></i></a>1.VNode&#x5BF9;&#x8C61;</h2>
-<hr>
-<p>&#x4E00;&#x4E2A;VNode&#x7684;&#x5B9E;&#x4F8B;&#x5305;&#x542B;&#x4E86;&#x4EE5;&#x4E0B;&#x5C5E;&#x6027;&#xFF0C;&#x8FD9;&#x90E8;&#x5206;&#x4EE3;&#x7801;&#x5728;src/core/vdom/vnode.js&#x91CC;</p>
-<pre><code class="lang-js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">VNode</span> </span>{
-  tag: string | <span class="hljs-keyword">void</span>;                                 <span class="hljs-comment">//&#x5F53;&#x524D;&#x8282;&#x70B9;&#x7684;&#x6807;&#x7B7E;&#x540D;</span>
-  data: VNodeData | <span class="hljs-keyword">void</span>;                             <span class="hljs-comment">//&#x5F53;&#x524D;&#x8282;&#x70B9;&#x7684;&#x6570;&#x636E;&#x5BF9;&#x8C61;[types/vnode.d.ts]</span>
-  children: ?<span class="hljs-built_in">Array</span>&lt;VNode&gt;;                            <span class="hljs-comment">//&#x6570;&#x7EC4;&#x7C7B;&#x578B;&#xFF0C;&#x5305;&#x542B;&#x5F53;&#x524D;&#x8282;&#x70B9;&#x7684;&#x5B50;&#x8282;&#x70B9;</span>
-  text: string | <span class="hljs-keyword">void</span>;                                <span class="hljs-comment">//&#x5F53;&#x524D;&#x8282;&#x70B9;&#x7684;&#x6587;&#x672C;&#xFF0C;&#x4E00;&#x822C;&#x6587;&#x672C;&#x8282;&#x70B9;/&#x6CE8;&#x91CA;&#x8282;&#x70B9;&#x4F1A;&#x6709;&#x8BE5;&#x5C5E;&#x6027;</span>
-  elm: Node | <span class="hljs-keyword">void</span>;                                   <span class="hljs-comment">//&#x5F53;&#x524D;&#x865A;&#x62DF;&#x8282;&#x70B9;&#x5BF9;&#x5E94;&#x7684;&#x771F;&#x5B9E;&#x7684;dom&#x8282;&#x70B9;</span>
-  ns: string | <span class="hljs-keyword">void</span>;                                  <span class="hljs-comment">//&#x8282;&#x70B9;&#x7684;namespace</span>
-  context: Component | <span class="hljs-keyword">void</span>;                          <span class="hljs-comment">//&#x7F16;&#x8BD1;&#x4F5C;&#x7528;&#x57DF;</span>
-  key: string | number | <span class="hljs-keyword">void</span>;                        <span class="hljs-comment">//&#x8282;&#x70B9;&#x7684;key&#x5C5E;&#x6027;,&#x7528;&#x4E8E;&#x4F5C;&#x4E3A;&#x8282;&#x70B9;&#x7684;&#x6807;&#x8BC6;,&#x5229;&#x4E8E;patch&#x4F18;&#x5316;</span>
-  componentOptions: VNodeComponentOptions | <span class="hljs-keyword">void</span>;     <span class="hljs-comment">//&#x521B;&#x5EFA;&#x7EC4;&#x4EF6;&#x5B9E;&#x4F8B;&#x65F6;&#x7684;&#x9009;&#x9879;&#x4FE1;&#x606F;</span>
-  componentInstance: Component | <span class="hljs-keyword">void</span>;                <span class="hljs-comment">// component instance</span>
-  parent: VNode | <span class="hljs-keyword">void</span>;                               <span class="hljs-comment">// &#x7EC4;&#x4EF6;&#x7684;&#x5360;&#x4F4D;&#x8282;&#x70B9;</span>
-
-  <span class="hljs-comment">// strictly internal</span>
-  raw: boolean;                                       <span class="hljs-comment">// contains raw HTML? (server only)</span>
-  isStatic: boolean;                                  <span class="hljs-comment">// &#x662F;&#x5426;&#x4E3A;&#x9759;&#x6001;&#x8282;&#x70B9;</span>
-  isRootInsert: boolean;                              <span class="hljs-comment">// &#x662F;&#x5426;&#x4E3A;&#x6839;&#x8282;&#x70B9;,necessary for enter transition check</span>
-  isComment: boolean;                                 <span class="hljs-comment">//&#x5F53;&#x524D;&#x8282;&#x70B9;&#x662F;&#x5426;&#x662F;&#x6CE8;&#x91CA;&#x8282;&#x70B9;</span>
-  isCloned: boolean;                                  <span class="hljs-comment">//&#x5F53;&#x524D;&#x8282;&#x70B9;&#x662F;&#x5426;&#x4E3A;&#x514B;&#x9686;&#x8282;&#x70B9;</span>
-  isOnce: boolean;                                    <span class="hljs-comment">//&#x5F53;&#x524D;&#x8282;&#x70B9;&#x662F;&#x5426;&#x6709;v-once&#x6307;&#x4EE4;</span>
-  asyncFactory: <span class="hljs-built_in">Function</span> | <span class="hljs-keyword">void</span>; <span class="hljs-comment">// async component factory function</span>
-  asyncMeta: <span class="hljs-built_in">Object</span> | <span class="hljs-keyword">void</span>;
-  isAsyncPlaceholder: boolean;
-  ssrContext: <span class="hljs-built_in">Object</span> | <span class="hljs-keyword">void</span>;
-  functionalContext: Component | <span class="hljs-keyword">void</span>; <span class="hljs-comment">// real context vm for functional nodes&#x51FD;&#x6570;&#x5316;&#x7EC4;&#x4EF6;&#x7684;&#x4F5C;&#x7528;&#x57DF;</span>
-  functionalOptions: ?ComponentOptions; <span class="hljs-comment">// for SSR caching</span>
-  functionalScopeId: ?string; <span class="hljs-comment">// functioanl scope id support</span>
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><a href="#samevnode"><b>1. </b>sameVnode</a></li><li><a href="#patch"><b>2. </b>Patch</a></li><li><a href="#patchvnode"><b>3. </b>patchVnode</a></li><li><a href="#updatechildren"><b>4. </b>updateChildren</a></li></ul></div><a href="#samevnode" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="samevnode"><a name="samevnode" class="anchor-navigation-ex-anchor" href="#samevnode"><i class="fa fa-link" aria-hidden="true"></i></a>1. sameVnode</h1>
+<pre><code class="lang-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">sameVnode</span> (<span class="hljs-params">a, b</span>) </span>{
+  <span class="hljs-keyword">return</span> (
+    a.key === b.key &amp;&amp; (
+      (
+        a.tag === b.tag &amp;&amp;
+        a.isComment === b.isComment &amp;&amp;
+        isDef(a.data) === isDef(b.data) &amp;&amp;
+        sameInputType(a, b)
+      ) || (
+        isTrue(a.isAsyncPlaceholder) &amp;&amp;
+        a.asyncFactory === b.asyncFactory &amp;&amp;
+        isUndef(b.asyncFactory.error)
+      )
+    )
+  )
+}
 </code></pre>
-<h2 id="2vnode&#x7684;&#x5206;&#x7C7B;"><a name="2vnode&#x7684;&#x5206;&#x7C7B;" class="anchor-navigation-ex-anchor" href="#2vnode&#x7684;&#x5206;&#x7C7B;"><i class="fa fa-link" aria-hidden="true"></i></a>2.VNode&#x7684;&#x5206;&#x7C7B;</h2>
-<hr>
-<p>VNode&#x53EF;&#x4EE5;&#x7406;&#x89E3;&#x4E3A;VueVirtual Dom&#x7684;&#x4E00;&#x4E2A;&#x57FA;&#x7C7B;&#xFF0C;&#x901A;&#x8FC7;VNode&#x6784;&#x9020;&#x51FD;&#x6570;&#x751F;&#x6210;&#x7684;VNnode&#x5B9E;&#x4F8B;&#x53EF;&#x4E3A;&#x5982;&#x4E0B;&#x51E0;&#x7C7B;&#xFF1A;</p>
-<ul>
-<li>EmptyVNode: &#x6CA1;&#x6709;&#x5185;&#x5BB9;&#x7684;&#x6CE8;&#x91CA;&#x8282;&#x70B9;</li>
-<li>TextVNode: &#x6587;&#x672C;&#x8282;&#x70B9;</li>
-<li>ElementVNode: &#x666E;&#x901A;&#x5143;&#x7D20;&#x8282;&#x70B9;</li>
-<li>ComponentVNode: &#x7EC4;&#x4EF6;&#x8282;&#x70B9;</li>
-<li>CloneVNode: &#x514B;&#x9686;&#x8282;&#x70B9;&#xFF0C;&#x53EF;&#x4EE5;&#x662F;&#x4EE5;&#x4E0A;&#x4EFB;&#x610F;&#x7C7B;&#x578B;&#x7684;&#x8282;&#x70B9;&#xFF0C;&#x552F;&#x4E00;&#x7684;&#x533A;&#x522B;&#x5728;&#x4E8E;isCloned&#x5C5E;&#x6027;&#x4E3A;true</li>
-</ul>
-<h2 id="3create-element&#x6E90;&#x7801;&#x89E3;&#x6790;"><a name="3create-element&#x6E90;&#x7801;&#x89E3;&#x6790;" class="anchor-navigation-ex-anchor" href="#3create-element&#x6E90;&#x7801;&#x89E3;&#x6790;"><i class="fa fa-link" aria-hidden="true"></i></a>3.Create-Element&#x6E90;&#x7801;&#x89E3;&#x6790;</h2>
-<hr>
-<p>&#x8FD9;&#x90E8;&#x5206;&#x4EE3;&#x7801;&#x5728;src/core/vdom/create-element.js&#x91CC;&#xFF0C;&#x6211;&#x5C31;&#x76F4;&#x63A5;&#x7C98;&#x4EE3;&#x7801;&#x52A0;&#x4E0A;&#x6211;&#x7684;&#x6CE8;&#x91CA;&#x4E86;</p>
-<pre><code>export function createElement (
-  context: Component,
-  tag: any,
-  data: any,
-  children: any,
-  normalizationType: any,
-  alwaysNormalize: boolean
-): VNode {
-  // &#x517C;&#x5BB9;&#x4E0D;&#x4F20;data&#x7684;&#x60C5;&#x51B5;
-  if (Array.isArray(data) || isPrimitive(data)) {
-    normalizationType = children
-    children = data
-    data = undefined
-  }
-  // &#x5982;&#x679C;alwaysNormalize&#x662F;true
-  // &#x90A3;&#x4E48;normalizationType&#x5E94;&#x8BE5;&#x8BBE;&#x7F6E;&#x4E3A;&#x5E38;&#x91CF;ALWAYS_NORMALIZE&#x7684;&#x503C;
-  if (isTrue(alwaysNormalize)) {
-    normalizationType = ALWAYS_NORMALIZE
-  }
-  // &#x8C03;&#x7528;_createElement&#x521B;&#x5EFA;&#x865A;&#x62DF;&#x8282;&#x70B9;
-  return _createElement(context, tag, data, children, normalizationType)
-}
-
-export function _createElement (
-  context: Component,
-  tag?: string | Class&lt;Component&gt; | Function | Object,
-  data?: VNodeData,
-  children?: any,
-  normalizationType?: number
-): VNode {
-
-  /**
-   * &#x5982;&#x679C;&#x5B58;&#x5728;data.__ob__&#xFF0C;&#x8BF4;&#x660E;data&#x662F;&#x88AB;Observer&#x89C2;&#x5BDF;&#x7684;&#x6570;&#x636E;
-   * &#x4E0D;&#x80FD;&#x7528;&#x4F5C;&#x865A;&#x62DF;&#x8282;&#x70B9;&#x7684;data
-   * &#x9700;&#x8981;&#x629B;&#x51FA;&#x8B66;&#x544A;&#xFF0C;&#x5E76;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x7A7A;&#x8282;&#x70B9;
-   *
-   * &#x88AB;&#x76D1;&#x63A7;&#x7684;data&#x4E0D;&#x80FD;&#x88AB;&#x7528;&#x4F5C;vnode&#x6E32;&#x67D3;&#x7684;&#x6570;&#x636E;&#x7684;&#x539F;&#x56E0;&#x662F;&#xFF1A;
-   * data&#x5728;vnode&#x6E32;&#x67D3;&#x8FC7;&#x7A0B;&#x4E2D;&#x53EF;&#x80FD;&#x4F1A;&#x88AB;&#x6539;&#x53D8;&#xFF0C;&#x8FD9;&#x6837;&#x4F1A;&#x89E6;&#x53D1;&#x76D1;&#x63A7;&#xFF0C;&#x5BFC;&#x81F4;&#x4E0D;&#x7B26;&#x5408;&#x9884;&#x671F;&#x7684;&#x64CD;&#x4F5C;
-   */
-  if (isDef(data) &amp;&amp; isDef((data: any).__ob__)) {
-    process.env.NODE_ENV !== &apos;production&apos; &amp;&amp; warn(
-      `Avoid using observed data object as vnode data: ${JSON.stringify(data)}\n` +
-      &apos;Always create fresh vnode data objects in each render!&apos;,
-      context
-    )
-    return createEmptyVNode()
-  }
-  // object syntax in v-bind
-  if (isDef(data) &amp;&amp; isDef(data.is)) {
-    tag = data.is
-  }
-  if (!tag) {
-    // &#x5F53;&#x7EC4;&#x4EF6;&#x7684;is&#x5C5E;&#x6027;&#x88AB;&#x8BBE;&#x7F6E;&#x4E3A;&#x4E00;&#x4E2A;falsy&#x7684;&#x503C;
-    // Vue&#x5C06;&#x4E0D;&#x4F1A;&#x77E5;&#x9053;&#x8981;&#x628A;&#x8FD9;&#x4E2A;&#x7EC4;&#x4EF6;&#x6E32;&#x67D3;&#x6210;&#x4EC0;&#x4E48;
-    // &#x6240;&#x4EE5;&#x6E32;&#x67D3;&#x4E00;&#x4E2A;&#x7A7A;&#x8282;&#x70B9;
-    // in case of component :is set to falsy value
-    return createEmptyVNode()
-  }
-  // key&#x4E3A;&#x975E;&#x539F;&#x59CB;&#x503C;&#x8B66;&#x544A;
-  // warn against non-primitive key
-  if (process.env.NODE_ENV !== &apos;production&apos; &amp;&amp;
-    isDef(data) &amp;&amp; isDef(data.key) &amp;&amp; !isPrimitive(data.key)
-  ) {
-    warn(
-      &apos;Avoid using non-primitive value as key, &apos; +
-      &apos;use string/number value instead.&apos;,
-      context
-    )
-  }
-  // &#x4F5C;&#x7528;&#x57DF;&#x63D2;&#x69FD;
-  // support single function children as default scoped slot
-  if (Array.isArray(children) &amp;&amp;
-    typeof children[0] === &apos;function&apos;
-  ) {
-    data = data || {}
-    data.scopedSlots = { default: children[0] }
-    children.length = 0
-  }
-  // &#x6839;&#x636E;normalizationType&#x7684;&#x503C;&#xFF0C;&#x9009;&#x62E9;&#x4E0D;&#x540C;&#x7684;&#x5904;&#x7406;&#x65B9;&#x6CD5;
-  if (normalizationType === ALWAYS_NORMALIZE) {
-    children = normalizeChildren(children)
-  } else if (normalizationType === SIMPLE_NORMALIZE) {
-    children = simpleNormalizeChildren(children)
-  }
-  let vnode, ns
-  // &#x5982;&#x679C;&#x6807;&#x7B7E;&#x540D;&#x662F;&#x5B57;&#x7B26;&#x4E32;&#x7C7B;&#x578B;
-  if (typeof tag === &apos;string&apos;) {
-    let Ctor
-    // &#x83B7;&#x53D6;&#x6807;&#x7B7E;&#x7684;&#x547D;&#x540D;&#x7A7A;&#x95F4;
-    ns = (context.$vnode &amp;&amp; context.$vnode.ns) || config.getTagNamespace(tag)
-    // &#x5982;&#x679C;&#x662F;&#x4FDD;&#x7559;&#x6807;&#x7B7E;
-    if (config.isReservedTag(tag)) {
-      // platform built-in elements
-      // &#x5C31;&#x521B;&#x5EFA;&#x8FD9;&#x6837;&#x4E00;&#x4E2A;vnode
-      vnode = new VNode(
-        config.parsePlatformTagName(tag), data, children,
-        undefined, undefined, context
-      )
-      // &#x5982;&#x679C;&#x4E0D;&#x662F;&#x4FDD;&#x7559;&#x5B57;&#x6807;&#x7B7E;&#xFF0C;&#x5C1D;&#x8BD5;&#x4ECE;vm&#x7684;components&#x4E0A;&#x67E5;&#x627E;&#x662F;&#x5426;&#x6709;&#x8FD9;&#x4E2A;&#x6807;&#x7B7E;&#x7684;&#x5B9A;&#x4E49;
-    } else if (isDef(Ctor = resolveAsset(context.$options, &apos;components&apos;, tag))) {
-      // component
-      // &#x5982;&#x679C;&#x627E;&#x5230;&#xFF0C;&#x5C31;&#x521B;&#x5EFA;&#x865A;&#x62DF;&#x7EC4;&#x4EF6;&#x8282;&#x70B9;
-      vnode = createComponent(Ctor, data, context, children, tag)
-    } else {
-      // unknown or unlisted namespaced elements
-      // check at runtime because it may get assigned a namespace when its
-      // parent normalizes children
-      // &#x515C;&#x5E95;&#x65B9;&#x6848;&#xFF0C;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x6B63;&#x5E38;&#x7684;vnode
-      vnode = new VNode(
-        tag, data, children,
-        undefined, undefined, context
-      )
+<h1 id="patch"><a name="patch" class="anchor-navigation-ex-anchor" href="#patch"><i class="fa fa-link" aria-hidden="true"></i></a>2. Patch</h1>
+<pre><code class="lang-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">patch</span> (<span class="hljs-params">oldVnode, vnode, hydrating, removeOnly</span>) </span>{
+    <span class="hljs-keyword">if</span> (isUndef(vnode)) {
+      <span class="hljs-keyword">if</span> (isDef(oldVnode)) invokeDestroyHook(oldVnode)
+      <span class="hljs-keyword">return</span>
     }
-  } else {
-    // &#x5F53;tag&#x4E0D;&#x662F;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x6211;&#x4EEC;&#x8BA4;&#x4E3A;tag&#x662F;&#x7EC4;&#x4EF6;&#x7684;&#x6784;&#x9020;&#x7C7B;
-    // &#x6240;&#x4EE5;&#x76F4;&#x63A5;&#x521B;&#x5EFA;
-    // direct component options / constructor
-    vnode = createComponent(tag, data, context, children)
-  }
-  if (isDef(vnode)) {
-    // &#x5E94;&#x7528;&#x547D;&#x540D;&#x7A7A;&#x95F4;
-    if (ns) applyNS(vnode, ns)
-    return vnode
-  } else {
-    // &#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x7A7A;&#x8282;&#x70B9;
-    return createEmptyVNode()
-  }
-}
 
-function applyNS (vnode, ns, force) {
-  vnode.ns = ns
-  if (vnode.tag === &apos;foreignObject&apos;) {
-    // use default namespace inside foreignObject
-    ns = undefined
-    force = true
-  }
-  if (isDef(vnode.children)) {
-    for (let i = 0, l = vnode.children.length; i &lt; l; i++) {
-      const child = vnode.children[i]
-      if (isDef(child.tag) &amp;&amp; (isUndef(child.ns) || isTrue(force))) {
-        applyNS(child, ns, force)
+    <span class="hljs-keyword">let</span> isInitialPatch = <span class="hljs-literal">false</span>
+    <span class="hljs-keyword">const</span> insertedVnodeQueue = []
+
+    <span class="hljs-keyword">if</span> (isUndef(oldVnode)) {
+      <span class="hljs-comment">// empty mount (likely as component), create new root element</span>
+      isInitialPatch = <span class="hljs-literal">true</span>
+      createElm(vnode, insertedVnodeQueue)
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">const</span> isRealElement = isDef(oldVnode.nodeType)
+      <span class="hljs-keyword">if</span> (!isRealElement &amp;&amp; sameVnode(oldVnode, vnode)) {
+        <span class="hljs-comment">// patch existing root node</span>
+        patchVnode(oldVnode, vnode, insertedVnodeQueue, <span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>, removeOnly)
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">if</span> (isRealElement) {
+          <span class="hljs-comment">// mounting to a real element</span>
+          <span class="hljs-comment">// check if this is server-rendered content and if we can perform</span>
+          <span class="hljs-comment">// a successful hydration.</span>
+          <span class="hljs-keyword">if</span> (oldVnode.nodeType === <span class="hljs-number">1</span> &amp;&amp; oldVnode.hasAttribute(SSR_ATTR)) {
+            oldVnode.removeAttribute(SSR_ATTR)
+            hydrating = <span class="hljs-literal">true</span>
+          }
+          <span class="hljs-keyword">if</span> (isTrue(hydrating)) {
+            <span class="hljs-keyword">if</span> (hydrate(oldVnode, vnode, insertedVnodeQueue)) {
+              invokeInsertHook(vnode, insertedVnodeQueue, <span class="hljs-literal">true</span>)
+              <span class="hljs-keyword">return</span> oldVnode
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (process.env.NODE_ENV !== <span class="hljs-string">&apos;production&apos;</span>) {
+              warn(
+                <span class="hljs-string">&apos;The client-side rendered virtual DOM tree is not matching &apos;</span> +
+                <span class="hljs-string">&apos;server-rendered content. This is likely caused by incorrect &apos;</span> +
+                <span class="hljs-string">&apos;HTML markup, for example nesting block-level elements inside &apos;</span> +
+                <span class="hljs-string">&apos;&lt;p&gt;, or missing &lt;tbody&gt;. Bailing hydration and performing &apos;</span> +
+                <span class="hljs-string">&apos;full client-side render.&apos;</span>
+              )
+            }
+          }
+          <span class="hljs-comment">// either not server-rendered, or hydration failed.</span>
+          <span class="hljs-comment">// create an empty node and replace it</span>
+          oldVnode = emptyNodeAt(oldVnode)
+        }
+
+        <span class="hljs-comment">// replacing existing element</span>
+        <span class="hljs-keyword">const</span> oldElm = oldVnode.elm
+        <span class="hljs-keyword">const</span> parentElm = nodeOps.parentNode(oldElm)
+
+        <span class="hljs-comment">// create new node</span>
+        createElm(
+          vnode,
+          insertedVnodeQueue,
+          <span class="hljs-comment">// extremely rare edge case: do not insert if old element is in a</span>
+          <span class="hljs-comment">// leaving transition. Only happens when combining transition +</span>
+          <span class="hljs-comment">// keep-alive + HOCs. (#4590)</span>
+          oldElm._leaveCb ? <span class="hljs-literal">null</span> : parentElm,
+          nodeOps.nextSibling(oldElm)
+        )
+
+        <span class="hljs-comment">// update parent placeholder node element, recursively</span>
+        <span class="hljs-keyword">if</span> (isDef(vnode.parent)) {
+          <span class="hljs-keyword">let</span> ancestor = vnode.parent
+          <span class="hljs-keyword">const</span> patchable = isPatchable(vnode)
+          <span class="hljs-keyword">while</span> (ancestor) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; cbs.destroy.length; ++i) {
+              cbs.destroy[i](ancestor)
+            }
+            ancestor.elm = vnode.elm
+            <span class="hljs-keyword">if</span> (patchable) {
+              <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; cbs.create.length; ++i) {
+                cbs.create[i](emptyNode, ancestor)
+              }
+              <span class="hljs-comment">// #6513</span>
+              <span class="hljs-comment">// invoke insert hooks that may have been merged by create hooks.</span>
+              <span class="hljs-comment">// e.g. for directives that uses the &quot;inserted&quot; hook.</span>
+              <span class="hljs-keyword">const</span> insert = ancestor.data.hook.insert
+              <span class="hljs-keyword">if</span> (insert.merged) {
+                <span class="hljs-comment">// start at index 1 to avoid re-invoking component mounted hook</span>
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">1</span>; i &lt; insert.fns.length; i++) {
+                  insert.fns[i]()
+                }
+              }
+            } <span class="hljs-keyword">else</span> {
+              registerRef(ancestor)
+            }
+            ancestor = ancestor.parent
+          }
+        }
+
+        <span class="hljs-comment">// destroy old node</span>
+        <span class="hljs-keyword">if</span> (isDef(parentElm)) {
+          removeVnodes(parentElm, [oldVnode], <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (isDef(oldVnode.tag)) {
+          invokeDestroyHook(oldVnode)
+        }
       }
     }
+
+    invokeInsertHook(vnode, insertedVnodeQueue, isInitialPatch)
+    <span class="hljs-keyword">return</span> vnode.elm
   }
-}
-</code></pre><h2 id="4patch&#x539F;&#x7406;"><a name="4patch&#x539F;&#x7406;" class="anchor-navigation-ex-anchor" href="#4patch&#x539F;&#x7406;"><i class="fa fa-link" aria-hidden="true"></i></a>4.Patch&#x539F;&#x7406;</h2>
-<hr>
-<p>patch&#x51FD;&#x6570;&#x7684;&#x5B9A;&#x4E49;&#x5728;src/core/vdom/patch.js&#x4E2D;&#xFF0C;patch&#x903B;&#x8F91;&#x6BD4;&#x8F83;&#x7B80;&#x5355;&#xFF0C;&#x5C31;&#x4E0D;&#x7C98;&#x4EE3;&#x7801;&#x4E86;</p>
-<p>patch&#x51FD;&#x6570;&#x63A5;&#x6536;6&#x4E2A;&#x53C2;&#x6570;&#xFF1A;</p>
-<ul>
-<li>oldVnode: &#x65E7;&#x7684;&#x865A;&#x62DF;&#x8282;&#x70B9;&#x6216;&#x65E7;&#x7684;&#x771F;&#x5B9E;dom&#x8282;&#x70B9;</li>
-<li>vnode: &#x65B0;&#x7684;&#x865A;&#x62DF;&#x8282;&#x70B9;</li>
-<li>hydrating: &#x662F;&#x5426;&#x8981;&#x8DDF;&#x771F;&#x662F;dom&#x6DF7;&#x5408;</li>
-<li>removeOnly: &#x7279;&#x6B8A;flag&#xFF0C;&#x7528;&#x4E8E;&#x7EC4;&#x4EF6;</li>
-<li>parentElm: &#x7236;&#x8282;&#x70B9;</li>
-<li>refElm: &#x65B0;&#x8282;&#x70B9;&#x5C06;&#x63D2;&#x5165;&#x5230;refElm&#x4E4B;&#x524D;</li>
-</ul>
-<h3 id="patch&#x7684;&#x903B;&#x8F91;&#x662F;&#xFF1A;"><a name="patch&#x7684;&#x903B;&#x8F91;&#x662F;&#xFF1A;" class="anchor-navigation-ex-anchor" href="#patch&#x7684;&#x903B;&#x8F91;&#x662F;&#xFF1A;"><i class="fa fa-link" aria-hidden="true"></i></a>patch&#x7684;&#x903B;&#x8F91;&#x662F;&#xFF1A;</h3>
+</code></pre>
 <ol>
-<li>if vnode&#x4E0D;&#x5B58;&#x5728;&#x4F46;&#x662F;oldVnode&#x5B58;&#x5728;&#xFF0C;&#x8BF4;&#x660E;&#x610F;&#x56FE;&#x662F;&#x8981;&#x9500;&#x6BC1;&#x8001;&#x8282;&#x70B9;&#xFF0C;&#x90A3;&#x4E48;&#x5C31;&#x8C03;&#x7528;invokeDestroyHook(oldVnode)&#x6765;&#x8FDB;&#x884C;&#x9500;</li>
-<li>if oldVnode&#x4E0D;&#x5B58;&#x5728;&#x4F46;&#x662F;vnode&#x5B58;&#x5728;&#xFF0C;&#x8BF4;&#x660E;&#x610F;&#x56FE;&#x662F;&#x8981;&#x521B;&#x5EFA;&#x65B0;&#x8282;&#x70B9;&#xFF0C;&#x90A3;&#x4E48;&#x5C31;&#x8C03;&#x7528;createElm&#x6765;&#x521B;&#x5EFA;&#x65B0;&#x8282;&#x70B9;</li>
-<li>else &#x5F53;vnode&#x548C;oldVnode&#x90FD;&#x5B58;&#x5728;&#x65F6;<ul>
-<li>if oldVnode&#x548C;vnode&#x662F;&#x540C;&#x4E00;&#x4E2A;&#x8282;&#x70B9;&#xFF0C;&#x5C31;&#x8C03;&#x7528;patchVnode&#x6765;&#x8FDB;&#x884C;patch</li>
-<li>&#x5F53;vnode&#x548C;oldVnode&#x4E0D;&#x662F;&#x540C;&#x4E00;&#x4E2A;&#x8282;&#x70B9;&#x65F6;&#xFF0C;&#x5982;&#x679C;oldVnode&#x662F;&#x771F;&#x5B9E;dom&#x8282;&#x70B9;&#x6216;hydrating&#x8BBE;&#x7F6E;&#x4E3A;true&#xFF0C;&#x9700;&#x8981;&#x7528;hydrate&#x51FD;&#x6570;&#x5C06;&#x865A;&#x62DF;dom&#x548C;&#x771F;&#x662F;dom&#x8FDB;&#x884C;&#x6620;&#x5C04;&#xFF0C;&#x7136;&#x540E;&#x5C06;oldVnode&#x8BBE;&#x7F6E;&#x4E3A;&#x5BF9;&#x5E94;&#x7684;&#x865A;&#x62DF;dom&#xFF0C;&#x627E;&#x5230;oldVnode.elm&#x7684;&#x7236;&#x8282;&#x70B9;&#xFF0C;&#x6839;&#x636E;vnode&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x771F;&#x5B9E;dom&#x8282;&#x70B9;&#x5E76;&#x63D2;&#x5165;&#x5230;&#x8BE5;&#x7236;&#x8282;&#x70B9;&#x4E2D;oldVnode.elm&#x7684;&#x4F4D;&#x7F6E;</li>
+<li>&#x5982;&#x679C; vnode&#x4E0D;&#x5B58;&#x5728;&#x4F46;&#x662F;oldVnode&#x5B58;&#x5728;&#xFF0C;&#x8C03;&#x7528;invokeDestroyHook(oldVnode)&#x9500;&#x6BC1;&#x65E7;&#x8282;&#x70B9;</li>
+<li>&#x5982;&#x679C; oldVnode&#x4E0D;&#x5B58;&#x5728;&#x4F46;&#x662F;vnode&#x5B58;&#x5728;&#xFF0C;&#x8C03;&#x7528;createElm&#x521B;&#x5EFA;&#x65B0;&#x8282;&#x70B9;</li>
+<li>&#x5F53;vnode&#x548C;oldVnode&#x90FD;&#x5B58;&#x5728;&#x65F6;<ul>
+<li>&#x5982;&#x679C;oldVnode&#x548C;vnode&#x662F;&#x540C;&#x4E00;&#x4E2A;&#x8282;&#x70B9;&#xFF0C;&#x8C03;&#x7528;patchVnode</li>
+<li>&#x5F53;vnode&#x548C;oldVnode&#x4E0D;&#x662F;&#x540C;&#x4E00;&#x4E2A;&#x8282;&#x70B9;&#x65F6;&#xFF0C;&#x5982;&#x679C;oldVnode&#x662F;&#x771F;&#x5B9E;dom&#x8282;&#x70B9;&#x6216;hydrating&#x8BBE;&#x7F6E;&#x4E3A;true&#xFF0C;&#x9700;&#x8981;&#x7528;hydrate&#x51FD;&#x6570;&#x5C06;&#x865A;&#x62DF;dom&#x548C;&#x771F;&#x5B9E;dom&#x8FDB;&#x884C;&#x6620;&#x5C04;&#xFF0C;&#x7136;&#x540E;&#x5C06;oldVnode&#x8BBE;&#x7F6E;&#x4E3A;&#x5BF9;&#x5E94;&#x7684;&#x865A;&#x62DF;dom&#xFF0C;&#x627E;&#x5230;oldVnode.elm&#x7684;&#x7236;&#x8282;&#x70B9;&#xFF0C;&#x6839;&#x636E;vnode&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x771F;&#x5B9E;dom&#x8282;&#x70B9;&#x5E76;&#x63D2;&#x5165;&#x5230;&#x8BE5;&#x7236;&#x8282;&#x70B9;&#x4E2D;oldVnode.elm&#x7684;&#x4F4D;&#x7F6E;</li>
 </ul>
 </li>
 </ol>
-<h3 id="patchvnode&#x7684;&#x903B;&#x8F91;&#x662F;&#xFF1A;"><a name="patchvnode&#x7684;&#x903B;&#x8F91;&#x662F;&#xFF1A;" class="anchor-navigation-ex-anchor" href="#patchvnode&#x7684;&#x903B;&#x8F91;&#x662F;&#xFF1A;"><i class="fa fa-link" aria-hidden="true"></i></a>patchVnode&#x7684;&#x903B;&#x8F91;&#x662F;&#xFF1A;</h3>
-<ol>
-<li>&#x5982;&#x679C;oldVnode&#x8DDF;vnode&#x5B8C;&#x5168;&#x4E00;&#x81F4;&#xFF0C;&#x90A3;&#x4E48;&#x4E0D;&#x9700;&#x8981;&#x505A;&#x4EFB;&#x4F55;&#x4E8B;&#x60C5;</li>
-<li>&#x5982;&#x679C;oldVnode&#x8DDF;vnode&#x90FD;&#x662F;&#x9759;&#x6001;&#x8282;&#x70B9;&#xFF0C;&#x4E14;&#x5177;&#x6709;&#x76F8;&#x540C;&#x7684;key&#xFF0C;&#x5F53;vnode&#x662F;&#x514B;&#x9686;&#x8282;&#x70B9;&#x6216;&#x662F;v-once&#x6307;&#x4EE4;&#x63A7;&#x5236;&#x7684;&#x8282;&#x70B9;&#x65F6;&#xFF0C;&#x53EA;&#x9700;&#x8981;&#x628A;oldVnode.elm&#x548C;oldVnode.child&#x90FD;&#x590D;&#x5236;&#x5230;vnode&#x4E0A;&#xFF0C;&#x4E5F;&#x4E0D;&#x7528;&#x518D;&#x6709;&#x5176;&#x4ED6;&#x64CD;&#x4F5C;</li>
-<li>&#x5426;&#x5219;&#xFF0C;&#x5982;&#x679C;vnode&#x4E0D;&#x662F;&#x6587;&#x672C;&#x8282;&#x70B9;&#x6216;&#x6CE8;&#x91CA;&#x8282;&#x70B9;<ul>
-<li>&#x5982;&#x679C;oldVnode&#x548C;vnode&#x90FD;&#x6709;&#x5B50;&#x8282;&#x70B9;&#xFF0C;&#x4E14;2&#x65B9;&#x7684;&#x5B50;&#x8282;&#x70B9;&#x4E0D;&#x5B8C;&#x5168;&#x4E00;&#x81F4;&#xFF0C;&#x5C31;&#x6267;&#x884C;updateChildren</li>
-<li>&#x5982;&#x679C;&#x53EA;&#x6709;oldVnode&#x6709;&#x5B50;&#x8282;&#x70B9;&#xFF0C;&#x90A3;&#x5C31;&#x628A;&#x8FD9;&#x4E9B;&#x8282;&#x70B9;&#x90FD;&#x5220;&#x9664;</li>
-<li>&#x5982;&#x679C;&#x53EA;&#x6709;vnode&#x6709;&#x5B50;&#x8282;&#x70B9;&#xFF0C;&#x90A3;&#x5C31;&#x521B;&#x5EFA;&#x8FD9;&#x4E9B;&#x5B50;&#x8282;&#x70B9;</li>
-<li>&#x5982;&#x679C;oldVnode&#x548C;vnode&#x90FD;&#x6CA1;&#x6709;&#x5B50;&#x8282;&#x70B9;&#xFF0C;&#x4F46;&#x662F;oldVnode&#x662F;&#x6587;&#x672C;&#x8282;&#x70B9;&#x6216;&#x6CE8;&#x91CA;&#x8282;&#x70B9;&#xFF0C;&#x5C31;&#x628A;vnode.elm&#x7684;&#x6587;&#x672C;&#x8BBE;&#x7F6E;&#x4E3A;&#x7A7A;&#x5B57;&#x7B26;&#x4E32;</li>
-</ul>
-</li>
-<li>&#x5982;&#x679C;vnode&#x662F;&#x6587;&#x672C;&#x8282;&#x70B9;&#x6216;&#x6CE8;&#x91CA;&#x8282;&#x70B9;&#xFF0C;&#x4F46;&#x662F;vnode.text != oldVnode.text&#x65F6;&#xFF0C;&#x53EA;&#x9700;&#x8981;&#x66F4;&#x65B0;vnode.elm&#x7684;&#x6587;&#x672C;&#x5185;&#x5BB9;&#x5C31;&#x53EF;&#x4EE5;</li>
-</ol>
-<p>&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#xFF1A;</p>
-<pre><code>  function patchVnode (oldVnode, vnode, insertedVnodeQueue, removeOnly) {
-    // &#x5982;&#x679C;&#x65B0;&#x65E7;&#x8282;&#x70B9;&#x4E00;&#x81F4;&#xFF0C;&#x4EC0;&#x4E48;&#x90FD;&#x4E0D;&#x505A;
-    if (oldVnode === vnode) {
-      return
+<h1 id="patchvnode"><a name="patchvnode" class="anchor-navigation-ex-anchor" href="#patchvnode"><i class="fa fa-link" aria-hidden="true"></i></a>3. patchVnode</h1>
+<pre><code class="lang-js">  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">patchVnode</span> (<span class="hljs-params">
+    oldVnode,
+    vnode,
+    insertedVnodeQueue,
+    ownerArray,
+    index,
+    removeOnly
+  </span>) </span>{
+    <span class="hljs-keyword">if</span> (oldVnode === vnode) {
+      <span class="hljs-keyword">return</span>
     }
 
-    // &#x8BA9;vnode.el&#x5F15;&#x7528;&#x5230;&#x73B0;&#x5728;&#x7684;&#x771F;&#x5B9E;dom&#xFF0C;&#x5F53;el&#x4FEE;&#x6539;&#x65F6;&#xFF0C;vnode.el&#x4F1A;&#x540C;&#x6B65;&#x53D8;&#x5316;
-    const elm = vnode.elm = oldVnode.elm
+    <span class="hljs-keyword">if</span> (isDef(vnode.elm) &amp;&amp; isDef(ownerArray)) {
+      <span class="hljs-comment">// clone reused vnode</span>
+      vnode = ownerArray[index] = cloneVNode(vnode)
+    }
 
-    // &#x5F02;&#x6B65;&#x5360;&#x4F4D;&#x7B26;
-    if (isTrue(oldVnode.isAsyncPlaceholder)) {
-      if (isDef(vnode.asyncFactory.resolved)) {
+    <span class="hljs-keyword">const</span> elm = vnode.elm = oldVnode.elm
+
+    <span class="hljs-keyword">if</span> (isTrue(oldVnode.isAsyncPlaceholder)) {
+      <span class="hljs-keyword">if</span> (isDef(vnode.asyncFactory.resolved)) {
         hydrate(oldVnode.elm, vnode, insertedVnodeQueue)
-      } else {
-        vnode.isAsyncPlaceholder = true
+      } <span class="hljs-keyword">else</span> {
+        vnode.isAsyncPlaceholder = <span class="hljs-literal">true</span>
       }
-      return
+      <span class="hljs-keyword">return</span>
     }
 
-    // reuse element for static trees.
-    // note we only do this if the vnode is cloned -
-    // if the new node is not cloned it means the render functions have been
-    // reset by the hot-reload-api and we need to do a proper re-render.
-    // &#x5982;&#x679C;&#x65B0;&#x65E7;&#x90FD;&#x662F;&#x9759;&#x6001;&#x8282;&#x70B9;&#xFF0C;&#x5E76;&#x4E14;&#x5177;&#x6709;&#x76F8;&#x540C;&#x7684;key
-    // &#x5F53;vnode&#x662F;&#x514B;&#x9686;&#x8282;&#x70B9;&#x6216;&#x662F;v-once&#x6307;&#x4EE4;&#x63A7;&#x5236;&#x7684;&#x8282;&#x70B9;&#x65F6;&#xFF0C;&#x53EA;&#x9700;&#x8981;&#x628A;oldVnode.elm&#x548C;oldVnode.child&#x90FD;&#x590D;&#x5236;&#x5230;vnode&#x4E0A;
-    // &#x4E5F;&#x4E0D;&#x7528;&#x518D;&#x6709;&#x5176;&#x4ED6;&#x64CD;&#x4F5C;
-    if (isTrue(vnode.isStatic) &amp;&amp;
+    <span class="hljs-comment">// reuse element for static trees.</span>
+    <span class="hljs-comment">// note we only do this if the vnode is cloned -</span>
+    <span class="hljs-comment">// if the new node is not cloned it means the render functions have been</span>
+    <span class="hljs-comment">// reset by the hot-reload-api and we need to do a proper re-render.</span>
+    <span class="hljs-keyword">if</span> (isTrue(vnode.isStatic) &amp;&amp;
       isTrue(oldVnode.isStatic) &amp;&amp;
       vnode.key === oldVnode.key &amp;&amp;
       (isTrue(vnode.isCloned) || isTrue(vnode.isOnce))
     ) {
       vnode.componentInstance = oldVnode.componentInstance
-      return
+      <span class="hljs-keyword">return</span>
     }
 
-    let i
-    const data = vnode.data
-    if (isDef(data) &amp;&amp; isDef(i = data.hook) &amp;&amp; isDef(i = i.prepatch)) {
+    <span class="hljs-keyword">let</span> i
+    <span class="hljs-keyword">const</span> data = vnode.data
+    <span class="hljs-keyword">if</span> (isDef(data) &amp;&amp; isDef(i = data.hook) &amp;&amp; isDef(i = i.prepatch)) {
       i(oldVnode, vnode)
     }
 
-    const oldCh = oldVnode.children
-    const ch = vnode.children
-    if (isDef(data) &amp;&amp; isPatchable(vnode)) {
-      for (i = 0; i &lt; cbs.update.length; ++i) cbs.update[i](oldVnode, vnode)
-      if (isDef(i = data.hook) &amp;&amp; isDef(i = i.update)) i(oldVnode, vnode)
+    <span class="hljs-keyword">const</span> oldCh = oldVnode.children
+    <span class="hljs-keyword">const</span> ch = vnode.children
+    <span class="hljs-keyword">if</span> (isDef(data) &amp;&amp; isPatchable(vnode)) {
+      <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; cbs.update.length; ++i) cbs.update[i](oldVnode, vnode)
+      <span class="hljs-keyword">if</span> (isDef(i = data.hook) &amp;&amp; isDef(i = i.update)) i(oldVnode, vnode)
     }
-    // &#x5982;&#x679C;vnode&#x4E0D;&#x662F;&#x6587;&#x672C;&#x8282;&#x70B9;&#x6216;&#x8005;&#x6CE8;&#x91CA;&#x8282;&#x70B9;
-    if (isUndef(vnode.text)) {
-      // &#x5E76;&#x4E14;&#x90FD;&#x6709;&#x5B50;&#x8282;&#x70B9;
-      if (isDef(oldCh) &amp;&amp; isDef(ch)) {
-        // &#x5E76;&#x4E14;&#x5B50;&#x8282;&#x70B9;&#x4E0D;&#x5B8C;&#x5168;&#x4E00;&#x81F4;&#xFF0C;&#x5219;&#x8C03;&#x7528;updateChildren
-        if (oldCh !== ch) updateChildren(elm, oldCh, ch, insertedVnodeQueue, removeOnly)
-
-        // &#x5982;&#x679C;&#x53EA;&#x6709;&#x65B0;&#x7684;vnode&#x6709;&#x5B50;&#x8282;&#x70B9;
-      } else if (isDef(ch)) {
-        if (isDef(oldVnode.text)) nodeOps.setTextContent(elm, &apos;&apos;)
-        // elm&#x5DF2;&#x7ECF;&#x5F15;&#x7528;&#x4E86;&#x8001;&#x7684;dom&#x8282;&#x70B9;&#xFF0C;&#x5728;&#x8001;&#x7684;dom&#x8282;&#x70B9;&#x4E0A;&#x6DFB;&#x52A0;&#x5B50;&#x8282;&#x70B9;
-        addVnodes(elm, null, ch, 0, ch.length - 1, insertedVnodeQueue)
-
-        // &#x5982;&#x679C;&#x65B0;vnode&#x6CA1;&#x6709;&#x5B50;&#x8282;&#x70B9;&#xFF0C;&#x800C;vnode&#x6709;&#x5B50;&#x8282;&#x70B9;&#xFF0C;&#x76F4;&#x63A5;&#x5220;&#x9664;&#x8001;&#x7684;oldCh
-      } else if (isDef(oldCh)) {
-        removeVnodes(elm, oldCh, 0, oldCh.length - 1)
-
-        // &#x5982;&#x679C;&#x8001;&#x8282;&#x70B9;&#x662F;&#x6587;&#x672C;&#x8282;&#x70B9;
-      } else if (isDef(oldVnode.text)) {
-        nodeOps.setTextContent(elm, &apos;&apos;)
+    <span class="hljs-keyword">if</span> (isUndef(vnode.text)) {
+      <span class="hljs-keyword">if</span> (isDef(oldCh) &amp;&amp; isDef(ch)) {
+        <span class="hljs-keyword">if</span> (oldCh !== ch) updateChildren(elm, oldCh, ch, insertedVnodeQueue, removeOnly)
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (isDef(ch)) {
+        <span class="hljs-keyword">if</span> (process.env.NODE_ENV !== <span class="hljs-string">&apos;production&apos;</span>) {
+          checkDuplicateKeys(ch)
+        }
+        <span class="hljs-keyword">if</span> (isDef(oldVnode.text)) nodeOps.setTextContent(elm, <span class="hljs-string">&apos;&apos;</span>)
+        addVnodes(elm, <span class="hljs-literal">null</span>, ch, <span class="hljs-number">0</span>, ch.length - <span class="hljs-number">1</span>, insertedVnodeQueue)
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (isDef(oldCh)) {
+        removeVnodes(elm, oldCh, <span class="hljs-number">0</span>, oldCh.length - <span class="hljs-number">1</span>)
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (isDef(oldVnode.text)) {
+        nodeOps.setTextContent(elm, <span class="hljs-string">&apos;&apos;</span>)
       }
-
-      // &#x5982;&#x679C;&#x65B0;vnode&#x548C;&#x8001;vnode&#x662F;&#x6587;&#x672C;&#x8282;&#x70B9;&#x6216;&#x6CE8;&#x91CA;&#x8282;&#x70B9;
-      // &#x4F46;&#x662F;vnode.text != oldVnode.text&#x65F6;&#xFF0C;&#x53EA;&#x9700;&#x8981;&#x66F4;&#x65B0;vnode.elm&#x7684;&#x6587;&#x672C;&#x5185;&#x5BB9;&#x5C31;&#x53EF;&#x4EE5;
-    } else if (oldVnode.text !== vnode.text) {
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (oldVnode.text !== vnode.text) {
       nodeOps.setTextContent(elm, vnode.text)
     }
-    if (isDef(data)) {
-      if (isDef(i = data.hook) &amp;&amp; isDef(i = i.postpatch)) i(oldVnode, vnode)
+    <span class="hljs-keyword">if</span> (isDef(data)) {
+      <span class="hljs-keyword">if</span> (isDef(i = data.hook) &amp;&amp; isDef(i = i.postpatch)) i(oldVnode, vnode)
     }
   }
-</code></pre><h2 id="5updatachildren&#x539F;&#x7406;"><a name="5updatachildren&#x539F;&#x7406;" class="anchor-navigation-ex-anchor" href="#5updatachildren&#x539F;&#x7406;"><i class="fa fa-link" aria-hidden="true"></i></a>5.updataChildren&#x539F;&#x7406;</h2>
-<hr>
-<h3 id="updatechildren&#x7684;&#x903B;&#x8F91;&#x662F;&#xFF1A;"><a name="updatechildren&#x7684;&#x903B;&#x8F91;&#x662F;&#xFF1A;" class="anchor-navigation-ex-anchor" href="#updatechildren&#x7684;&#x903B;&#x8F91;&#x662F;&#xFF1A;"><i class="fa fa-link" aria-hidden="true"></i></a>updateChildren&#x7684;&#x903B;&#x8F91;&#x662F;&#xFF1A;</h3>
+</code></pre>
 <ol>
-<li>&#x5206;&#x522B;&#x83B7;&#x53D6;oldVnode&#x548C;vnode&#x7684;firstChild&#x3001;lastChild&#xFF0C;&#x8D4B;&#x503C;&#x7ED9;oldStartVnode&#x3001;oldEndVnode&#x3001;newStartVnode&#x3001;newEndVnode</li>
-<li>&#x5982;&#x679C;oldStartVnode&#x548C;newStartVnode&#x662F;&#x540C;&#x4E00;&#x8282;&#x70B9;&#xFF0C;&#x8C03;&#x7528;patchVnode&#x8FDB;&#x884C;patch&#xFF0C;&#x7136;&#x540E;&#x5C06;oldStartVnode&#x548C;newStartVnode&#x90FD;&#x8BBE;&#x7F6E;&#x4E3A;&#x4E0B;&#x4E00;&#x4E2A;&#x5B50;&#x8282;&#x70B9;&#xFF0C;&#x91CD;&#x590D;&#x4E0A;&#x8FF0;&#x6D41;&#x7A0B;
-<img src="https://images2018.cnblogs.com/blog/1272362/201711/1272362-20171128161117472-1355681854.png" alt="img"></li>
-<li>&#x5982;&#x679C;oldEndVnode&#x548C;newEndVnode&#x662F;&#x540C;&#x4E00;&#x8282;&#x70B9;&#xFF0C;&#x8C03;&#x7528;patchVnode&#x8FDB;&#x884C;patch&#xFF0C;&#x7136;&#x540E;&#x5C06;oldEndVnode&#x548C;newEndVnode&#x90FD;&#x8BBE;&#x7F6E;&#x4E3A;&#x4E0A;&#x4E00;&#x4E2A;&#x5B50;&#x8282;&#x70B9;&#xFF0C;&#x91CD;&#x590D;&#x4E0A;&#x8FF0;&#x6D41;&#x7A0B;
-<img src="https://images2018.cnblogs.com/blog/1272362/201711/1272362-20171128161513456-35774165.png" alt="img"></li>
-<li>&#x5982;&#x679C;oldStartVnode&#x548C;newEndVnode&#x662F;&#x540C;&#x4E00;&#x8282;&#x70B9;&#xFF0C;&#x8C03;&#x7528;patchVnode&#x8FDB;&#x884C;patch&#xFF0C;&#x5982;&#x679C;removeOnly&#x662F;false&#xFF0C;&#x90A3;&#x4E48;&#x53EF;&#x4EE5;&#x628A;oldStartVnode.elm&#x79FB;&#x52A8;&#x5230;oldEndVnode.elm&#x4E4B;&#x540E;&#xFF0C;&#x7136;&#x540E;&#x628A;oldStartVnode&#x8BBE;&#x7F6E;&#x4E3A;&#x4E0B;&#x4E00;&#x4E2A;&#x8282;&#x70B9;&#xFF0C;newEndVnode&#x8BBE;&#x7F6E;&#x4E3A;&#x4E0A;&#x4E00;&#x4E2A;&#x8282;&#x70B9;&#xFF0C;&#x91CD;&#x590D;&#x4E0A;&#x8FF0;&#x6D41;&#x7A0B;
-<img src="https://images2018.cnblogs.com/blog/1272362/201711/1272362-20171128161959690-1680308559.png" alt="img"></li>
-<li>&#x5982;&#x679C;newStartVnode&#x548C;oldEndVnode&#x662F;&#x540C;&#x4E00;&#x8282;&#x70B9;&#xFF0C;&#x8C03;&#x7528;patchVnode&#x8FDB;&#x884C;patch&#xFF0C;&#x5982;&#x679C;removeOnly&#x662F;false&#xFF0C;&#x90A3;&#x4E48;&#x53EF;&#x4EE5;&#x628A;oldEndVnode.elm&#x79FB;&#x52A8;&#x5230;oldStartVnode.elm&#x4E4B;&#x524D;&#xFF0C;&#x7136;&#x540E;&#x628A;newStartVnode&#x8BBE;&#x7F6E;&#x4E3A;&#x4E0B;&#x4E00;&#x4E2A;&#x8282;&#x70B9;&#xFF0C;oldEndVnode&#x8BBE;&#x7F6E;&#x4E3A;&#x4E0A;&#x4E00;&#x4E2A;&#x8282;&#x70B9;&#xFF0C;&#x91CD;&#x590D;&#x4E0A;&#x8FF0;&#x6D41;&#x7A0B;
-<img src="https://images2018.cnblogs.com/blog/1272362/201711/1272362-20171128162402050-1780204197.png" alt="img"></li>
-<li>&#x5982;&#x679C;&#x4EE5;&#x4E0A;&#x90FD;&#x4E0D;&#x5339;&#x914D;&#xFF0C;&#x5C31;&#x5C1D;&#x8BD5;&#x5728;oldChildren&#x4E2D;&#x5BFB;&#x627E;&#x8DDF;newStartVnode&#x5177;&#x6709;&#x76F8;&#x540C;key&#x7684;&#x8282;&#x70B9;&#xFF0C;&#x5982;&#x679C;&#x627E;&#x4E0D;&#x5230;&#x76F8;&#x540C;key&#x7684;&#x8282;&#x70B9;&#xFF0C;&#x8BF4;&#x660E;newStartVnode&#x662F;&#x4E00;&#x4E2A;&#x65B0;&#x8282;&#x70B9;&#xFF0C;&#x5C31;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#xFF0C;&#x7136;&#x540E;&#x628A;newStartVnode&#x8BBE;&#x7F6E;&#x4E3A;&#x4E0B;&#x4E00;&#x4E2A;&#x8282;&#x70B9;</li>
-<li>&#x5982;&#x679C;&#x4E0A;&#x4E00;&#x6B65;&#x627E;&#x5230;&#x4E86;&#x8DDF;newStartVnode&#x76F8;&#x540C;key&#x7684;&#x8282;&#x70B9;&#xFF0C;&#x90A3;&#x4E48;&#x901A;&#x8FC7;&#x5176;&#x4ED6;&#x5C5E;&#x6027;&#x7684;&#x6BD4;&#x8F83;&#x6765;&#x5224;&#x65AD;&#x8FD9;2&#x4E2A;&#x8282;&#x70B9;&#x662F;&#x5426;&#x662F;&#x540C;&#x4E00;&#x4E2A;&#x8282;&#x70B9;&#xFF0C;&#x5982;&#x679C;&#x662F;&#xFF0C;&#x5C31;&#x8C03;&#x7528;patchVnode&#x8FDB;&#x884C;patch&#xFF0C;&#x5982;&#x679C;removeOnly&#x662F;false&#xFF0C;&#x5C31;&#x628A;newStartVnode.elm&#x63D2;&#x5165;&#x5230;oldStartVnode.elm&#x4E4B;&#x524D;&#xFF0C;&#x628A;newStartVnode&#x8BBE;&#x7F6E;&#x4E3A;&#x4E0B;&#x4E00;&#x4E2A;&#x8282;&#x70B9;&#xFF0C;&#x91CD;&#x590D;&#x4E0A;&#x8FF0;&#x6D41;&#x7A0B;
-<img src="https://images2018.cnblogs.com/blog/1272362/201711/1272362-20171128162610253-1637696428.png" alt="img"></li>
-<li>&#x5982;&#x679C;&#x5728;oldChildren&#x4E2D;&#x6CA1;&#x6709;&#x5BFB;&#x627E;&#x5230;newStartVnode&#x7684;&#x540C;&#x4E00;&#x8282;&#x70B9;&#xFF0C;&#x90A3;&#x5C31;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x65B0;&#x8282;&#x70B9;&#xFF0C;&#x628A;newStartVnode&#x8BBE;&#x7F6E;&#x4E3A;&#x4E0B;&#x4E00;&#x4E2A;&#x8282;&#x70B9;&#xFF0C;&#x91CD;&#x590D;&#x4E0A;&#x8FF0;&#x6D41;&#x7A0B;</li>
-<li>&#x5982;&#x679C;oldStartVnode&#x8DDF;oldEndVnode&#x91CD;&#x5408;&#x4E86;&#xFF0C;&#x5E76;&#x4E14;newStartVnode&#x8DDF;newEndVnode&#x4E5F;&#x91CD;&#x5408;&#x4E86;&#xFF0C;&#x8FD9;&#x4E2A;&#x5FAA;&#x73AF;&#x5C31;&#x7ED3;&#x675F;&#x4E86;</li>
+<li>&#x5982;&#x679C;oldVnode&#x8DDF;vnode&#x5B8C;&#x5168;&#x4E00;&#x81F4;&#xFF0C;return</li>
+<li>&#x5982;&#x679C;oldVnode&#x8DDF;vnode&#x90FD;&#x662F;&#x9759;&#x6001;&#x8282;&#x70B9;&#xFF0C;&#x4E14;&#x5177;&#x6709;&#x76F8;&#x540C;&#x7684;key&#xFF0C;&#x5F53;vnode&#x662F;&#x514B;&#x9686;&#x8282;&#x70B9;&#x6216;&#x662F;v-once&#x6307;&#x4EE4;&#x63A7;&#x5236;&#x7684;&#x8282;&#x70B9;&#x65F6;&#xFF0C;&#x53EA;&#x9700;&#x8981;&#x628A;oldVnode.elm&#x548C;oldVnode.child&#x90FD;&#x590D;&#x5236;&#x5230;vnode&#x4E0A;&#xFF0C;&#x4E0D;&#x518D;&#x6709;&#x5176;&#x4ED6;&#x64CD;&#x4F5C;</li>
+<li>&#x5982;&#x679C;vnode&#x4E0D;&#x662F;&#x6587;&#x672C;&#x8282;&#x70B9;&#x6216;&#x6CE8;&#x91CA;&#x8282;&#x70B9;<ul>
+<li>&#x5982;&#x679C;oldVnode&#x548C;vnode&#x90FD;&#x6709;&#x5B50;&#x8282;&#x70B9;&#xFF0C;&#x4E14;&#x53CC;&#x65B9;&#x7684;&#x5B50;&#x8282;&#x70B9;&#x4E0D;&#x5B8C;&#x5168;&#x4E00;&#x81F4;&#xFF0C;&#x6267;&#x884C;updateChildren</li>
+<li>&#x5982;&#x679C;&#x53EA;&#x6709;vnode&#x6709;&#x5B50;&#x8282;&#x70B9;&#xFF0C;&#x521B;&#x5EFA;&#x8FD9;&#x4E9B;&#x5B50;&#x8282;&#x70B9;</li>
+<li>&#x5982;&#x679C;&#x53EA;&#x6709;oldVnode&#x6709;&#x5B50;&#x8282;&#x70B9;&#xFF0C;&#x628A;&#x8FD9;&#x4E9B;&#x8282;&#x70B9;&#x90FD;&#x5220;&#x9664;</li>
+<li>&#x5982;&#x679C;oldVnode&#x548C;vnode&#x90FD;&#x6CA1;&#x6709;&#x5B50;&#x8282;&#x70B9;&#xFF0C;&#x4F46;&#x662F;oldVnode&#x662F;&#x6587;&#x672C;&#x8282;&#x70B9;&#x6216;&#x6CE8;&#x91CA;&#x8282;&#x70B9;&#xFF0C;&#x628A;vnode.elm&#x7684;&#x6587;&#x672C;&#x8BBE;&#x7F6E;&#x4E3A;&#x7A7A;&#x5B57;&#x7B26;&#x4E32;</li>
+</ul>
+</li>
+<li>&#x5982;&#x679C;vnode&#x662F;&#x6587;&#x672C;&#x8282;&#x70B9;&#x6216;&#x6CE8;&#x91CA;&#x8282;&#x70B9;&#xFF0C;&#x4F46;&#x662F;vnode.text != oldVnode.text&#x65F6;&#xFF0C;&#x53EA;&#x9700;&#x8981;&#x66F4;&#x65B0;vnode.elm&#x7684;&#x6587;&#x672C;&#x5185;&#x5BB9;</li>
 </ol>
-<p>&#x5177;&#x4F53;&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#xFF1A;</p>
-<pre><code>  function updateChildren (parentElm, oldCh, newCh, insertedVnodeQueue, removeOnly) {
-    let oldStartIdx = 0 // &#x65E7;&#x5934;&#x7D22;&#x5F15;
-    let newStartIdx = 0 // &#x65B0;&#x5934;&#x7D22;&#x5F15;
-    let oldEndIdx = oldCh.length - 1 // &#x65E7;&#x5C3E;&#x7D22;&#x5F15;
-    let newEndIdx = newCh.length - 1 // &#x65B0;&#x5C3E;&#x7D22;&#x5F15;
-    let oldStartVnode = oldCh[0] // oldVnode&#x7684;&#x7B2C;&#x4E00;&#x4E2A;child
-    let oldEndVnode = oldCh[oldEndIdx] // oldVnode&#x7684;&#x6700;&#x540E;&#x4E00;&#x4E2A;child
-    let newStartVnode = newCh[0] // newVnode&#x7684;&#x7B2C;&#x4E00;&#x4E2A;child
-    let newEndVnode = newCh[newEndIdx] // newVnode&#x7684;&#x6700;&#x540E;&#x4E00;&#x4E2A;child
-    let oldKeyToIdx, idxInOld, vnodeToMove, refElm
+<h1 id="updatechildren"><a name="updatechildren" class="anchor-navigation-ex-anchor" href="#updatechildren"><i class="fa fa-link" aria-hidden="true"></i></a>4. updateChildren</h1>
+<pre><code class="lang-js">  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">updateChildren</span> (<span class="hljs-params">parentElm, oldCh, newCh, insertedVnodeQueue, removeOnly</span>) </span>{
+    <span class="hljs-keyword">let</span> oldStartIdx = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">let</span> newStartIdx = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">let</span> oldEndIdx = oldCh.length - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">let</span> oldStartVnode = oldCh[<span class="hljs-number">0</span>]
+    <span class="hljs-keyword">let</span> oldEndVnode = oldCh[oldEndIdx]
+    <span class="hljs-keyword">let</span> newEndIdx = newCh.length - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">let</span> newStartVnode = newCh[<span class="hljs-number">0</span>]
+    <span class="hljs-keyword">let</span> newEndVnode = newCh[newEndIdx]
+    <span class="hljs-keyword">let</span> oldKeyToIdx, idxInOld, vnodeToMove, refElm
 
-    // removeOnly is a special flag used only by &lt;transition-group&gt;
-    // to ensure removed elements stay in correct relative positions
-    // during leaving transitions
-    const canMove = !removeOnly
+    <span class="hljs-comment">// removeOnly is a special flag used only by &lt;transition-group&gt;</span>
+    <span class="hljs-comment">// to ensure removed elements stay in correct relative positions</span>
+    <span class="hljs-comment">// during leaving transitions</span>
+    <span class="hljs-keyword">const</span> canMove = !removeOnly
 
-    // &#x5982;&#x679C;oldStartVnode&#x548C;oldEndVnode&#x91CD;&#x5408;&#xFF0C;&#x5E76;&#x4E14;&#x65B0;&#x7684;&#x4E5F;&#x90FD;&#x91CD;&#x5408;&#x4E86;&#xFF0C;&#x8BC1;&#x660E;diff&#x5B8C;&#x4E86;&#xFF0C;&#x5FAA;&#x73AF;&#x7ED3;&#x675F;
-    while (oldStartIdx &lt;= oldEndIdx &amp;&amp; newStartIdx &lt;= newEndIdx) {
-      // &#x5982;&#x679C;oldVnode&#x7684;&#x7B2C;&#x4E00;&#x4E2A;child&#x4E0D;&#x5B58;&#x5728;
-      if (isUndef(oldStartVnode)) {
-        // oldStart&#x7D22;&#x5F15;&#x53F3;&#x79FB;
-        oldStartVnode = oldCh[++oldStartIdx] // Vnode has been moved left
+    <span class="hljs-keyword">if</span> (process.env.NODE_ENV !== <span class="hljs-string">&apos;production&apos;</span>) {
+      checkDuplicateKeys(newCh)
+    }
 
-      // &#x5982;&#x679C;oldVnode&#x7684;&#x6700;&#x540E;&#x4E00;&#x4E2A;child&#x4E0D;&#x5B58;&#x5728;
-      } else if (isUndef(oldEndVnode)) {
-        // oldEnd&#x7D22;&#x5F15;&#x5DE6;&#x79FB;
+    <span class="hljs-keyword">while</span> (oldStartIdx &lt;= oldEndIdx &amp;&amp; newStartIdx &lt;= newEndIdx) {
+      <span class="hljs-keyword">if</span> (isUndef(oldStartVnode)) {
+        oldStartVnode = oldCh[++oldStartIdx] <span class="hljs-comment">// Vnode has been moved left</span>
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (isUndef(oldEndVnode)) {
         oldEndVnode = oldCh[--oldEndIdx]
-
-      // oldStartVnode&#x548C;newStartVnode&#x662F;&#x540C;&#x4E00;&#x4E2A;&#x8282;&#x70B9;
-      } else if (sameVnode(oldStartVnode, newStartVnode)) {
-        // patch oldStartVnode&#x548C;newStartVnode&#xFF0C; &#x7D22;&#x5F15;&#x5DE6;&#x79FB;&#xFF0C;&#x7EE7;&#x7EED;&#x5FAA;&#x73AF;
-        patchVnode(oldStartVnode, newStartVnode, insertedVnodeQueue)
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sameVnode(oldStartVnode, newStartVnode)) {
+        patchVnode(oldStartVnode, newStartVnode, insertedVnodeQueue, newCh, newStartIdx)
         oldStartVnode = oldCh[++oldStartIdx]
         newStartVnode = newCh[++newStartIdx]
-
-      // oldEndVnode&#x548C;newEndVnode&#x662F;&#x540C;&#x4E00;&#x4E2A;&#x8282;&#x70B9;
-      } else if (sameVnode(oldEndVnode, newEndVnode)) {
-        // patch oldEndVnode&#x548C;newEndVnode&#xFF0C;&#x7D22;&#x5F15;&#x53F3;&#x79FB;&#xFF0C;&#x7EE7;&#x7EED;&#x5FAA;&#x73AF;
-        patchVnode(oldEndVnode, newEndVnode, insertedVnodeQueue)
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sameVnode(oldEndVnode, newEndVnode)) {
+        patchVnode(oldEndVnode, newEndVnode, insertedVnodeQueue, newCh, newEndIdx)
         oldEndVnode = oldCh[--oldEndIdx]
         newEndVnode = newCh[--newEndIdx]
-
-      // oldStartVnode&#x548C;newEndVnode&#x662F;&#x540C;&#x4E00;&#x4E2A;&#x8282;&#x70B9;
-      } else if (sameVnode(oldStartVnode, newEndVnode)) { // Vnode moved right
-        // patch oldStartVnode&#x548C;newEndVnode
-        patchVnode(oldStartVnode, newEndVnode, insertedVnodeQueue)
-        // &#x5982;&#x679C;removeOnly&#x662F;false&#xFF0C;&#x5219;&#x5C06;oldStartVnode.eml&#x79FB;&#x52A8;&#x5230;oldEndVnode.elm&#x4E4B;&#x540E;
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sameVnode(oldStartVnode, newEndVnode)) { <span class="hljs-comment">// Vnode moved right</span>
+        patchVnode(oldStartVnode, newEndVnode, insertedVnodeQueue, newCh, newEndIdx)
         canMove &amp;&amp; nodeOps.insertBefore(parentElm, oldStartVnode.elm, nodeOps.nextSibling(oldEndVnode.elm))
-        // oldStart&#x7D22;&#x5F15;&#x53F3;&#x79FB;&#xFF0C;newEnd&#x7D22;&#x5F15;&#x5DE6;&#x79FB;
         oldStartVnode = oldCh[++oldStartIdx]
         newEndVnode = newCh[--newEndIdx]
-
-      // &#x5982;&#x679C;oldEndVnode&#x548C;newStartVnode&#x662F;&#x540C;&#x4E00;&#x4E2A;&#x8282;&#x70B9;
-      } else if (sameVnode(oldEndVnode, newStartVnode)) { // Vnode moved left
-        // patch oldEndVnode&#x548C;newStartVnode
-        patchVnode(oldEndVnode, newStartVnode, insertedVnodeQueue)
-        // &#x5982;&#x679C;removeOnly&#x662F;false&#xFF0C;&#x5219;&#x5C06;oldEndVnode.elm&#x79FB;&#x52A8;&#x5230;oldStartVnode.elm&#x4E4B;&#x524D;
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sameVnode(oldEndVnode, newStartVnode)) { <span class="hljs-comment">// Vnode moved left</span>
+        patchVnode(oldEndVnode, newStartVnode, insertedVnodeQueue, newCh, newStartIdx)
         canMove &amp;&amp; nodeOps.insertBefore(parentElm, oldEndVnode.elm, oldStartVnode.elm)
-        // oldEnd&#x7D22;&#x5F15;&#x5DE6;&#x79FB;&#xFF0C;newStart&#x7D22;&#x5F15;&#x53F3;&#x79FB;
         oldEndVnode = oldCh[--oldEndIdx]
         newStartVnode = newCh[++newStartIdx]
-
-      // &#x5982;&#x679C;&#x90FD;&#x4E0D;&#x5339;&#x914D;
-      } else {
-        if (isUndef(oldKeyToIdx)) oldKeyToIdx = createKeyToOldIdx(oldCh, oldStartIdx, oldEndIdx)
-
-        // &#x5C1D;&#x8BD5;&#x5728;oldChildren&#x4E2D;&#x5BFB;&#x627E;&#x548C;newStartVnode&#x7684;&#x5177;&#x6709;&#x76F8;&#x540C;&#x7684;key&#x7684;Vnode
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">if</span> (isUndef(oldKeyToIdx)) oldKeyToIdx = createKeyToOldIdx(oldCh, oldStartIdx, oldEndIdx)
         idxInOld = isDef(newStartVnode.key)
           ? oldKeyToIdx[newStartVnode.key]
           : findIdxInOld(newStartVnode, oldCh, oldStartIdx, oldEndIdx)
-
-        // &#x5982;&#x679C;&#x672A;&#x627E;&#x5230;&#xFF0C;&#x8BF4;&#x660E;newStartVnode&#x662F;&#x4E00;&#x4E2A;&#x65B0;&#x7684;&#x8282;&#x70B9;
-        if (isUndef(idxInOld)) { // New element
-          // &#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x65B0;Vnode
-          createElm(newStartVnode, insertedVnodeQueue, parentElm, oldStartVnode.elm)
-
-        // &#x5982;&#x679C;&#x627E;&#x5230;&#x4E86;&#x548C;newStartVnodej&#x5177;&#x6709;&#x76F8;&#x540C;&#x7684;key&#x7684;Vnode&#xFF0C;&#x53EB;vnodeToMove
-        } else {
+        <span class="hljs-keyword">if</span> (isUndef(idxInOld)) { <span class="hljs-comment">// New element</span>
+          createElm(newStartVnode, insertedVnodeQueue, parentElm, oldStartVnode.elm, <span class="hljs-literal">false</span>, newCh, newStartIdx)
+        } <span class="hljs-keyword">else</span> {
           vnodeToMove = oldCh[idxInOld]
-          /* istanbul ignore if */
-          if (process.env.NODE_ENV !== &apos;production&apos; &amp;&amp; !vnodeToMove) {
-            warn(
-              &apos;It seems there are duplicate keys that is causing an update error. &apos; +
-              &apos;Make sure each v-for item has a unique key.&apos;
-            )
-          }
-
-          // &#x6BD4;&#x8F83;&#x4E24;&#x4E2A;&#x5177;&#x6709;&#x76F8;&#x540C;&#x7684;key&#x7684;&#x65B0;&#x8282;&#x70B9;&#x662F;&#x5426;&#x662F;&#x540C;&#x4E00;&#x4E2A;&#x8282;&#x70B9;
-          //&#x4E0D;&#x8BBE;key&#xFF0C;newCh&#x548C;oldCh&#x53EA;&#x4F1A;&#x8FDB;&#x884C;&#x5934;&#x5C3E;&#x4E24;&#x7AEF;&#x7684;&#x76F8;&#x4E92;&#x6BD4;&#x8F83;&#xFF0C;&#x8BBE;key&#x540E;&#xFF0C;&#x9664;&#x4E86;&#x5934;&#x5C3E;&#x4E24;&#x7AEF;&#x7684;&#x6BD4;&#x8F83;&#x5916;&#xFF0C;&#x8FD8;&#x4F1A;&#x4ECE;&#x7528;key&#x751F;&#x6210;&#x7684;&#x5BF9;&#x8C61;oldKeyToIdx&#x4E2D;&#x67E5;&#x627E;&#x5339;&#x914D;&#x7684;&#x8282;&#x70B9;&#xFF0C;&#x6240;&#x4EE5;&#x4E3A;&#x8282;&#x70B9;&#x8BBE;&#x7F6E;key&#x53EF;&#x4EE5;&#x66F4;&#x9AD8;&#x6548;&#x7684;&#x5229;&#x7528;dom&#x3002;
-          if (sameVnode(vnodeToMove, newStartVnode)) {
-            // patch vnodeToMove&#x548C;newStartVnode
-            patchVnode(vnodeToMove, newStartVnode, insertedVnodeQueue)
-            // &#x6E05;&#x9664;
-            oldCh[idxInOld] = undefined
-            // &#x5982;&#x679C;removeOnly&#x662F;false&#xFF0C;&#x5219;&#x5C06;&#x627E;&#x5230;&#x7684;&#x548C;newStartVnodej&#x5177;&#x6709;&#x76F8;&#x540C;&#x7684;key&#x7684;Vnode&#xFF0C;&#x53EB;vnodeToMove.elm
-            // &#x79FB;&#x52A8;&#x5230;oldStartVnode.elm&#x4E4B;&#x524D;
+          <span class="hljs-keyword">if</span> (sameVnode(vnodeToMove, newStartVnode)) {
+            patchVnode(vnodeToMove, newStartVnode, insertedVnodeQueue, newCh, newStartIdx)
+            oldCh[idxInOld] = <span class="hljs-literal">undefined</span>
             canMove &amp;&amp; nodeOps.insertBefore(parentElm, vnodeToMove.elm, oldStartVnode.elm)
-
-          // &#x5982;&#x679C;key&#x76F8;&#x540C;&#xFF0C;&#x4F46;&#x662F;&#x8282;&#x70B9;&#x4E0D;&#x76F8;&#x540C;&#xFF0C;&#x5219;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x65B0;&#x7684;&#x8282;&#x70B9;
-          } else {
-            // same key but different element. treat as new element
-            createElm(newStartVnode, insertedVnodeQueue, parentElm, oldStartVnode.elm)
+          } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// same key but different element. treat as new element</span>
+            createElm(newStartVnode, insertedVnodeQueue, parentElm, oldStartVnode.elm, <span class="hljs-literal">false</span>, newCh, newStartIdx)
           }
         }
-
-        // &#x53F3;&#x79FB;
         newStartVnode = newCh[++newStartIdx]
       }
     }
-</code></pre><h2 id="6&#x5177;&#x4F53;&#x7684;diff&#x5206;&#x6790;"><a name="6&#x5177;&#x4F53;&#x7684;diff&#x5206;&#x6790;" class="anchor-navigation-ex-anchor" href="#6&#x5177;&#x4F53;&#x7684;diff&#x5206;&#x6790;"><i class="fa fa-link" aria-hidden="true"></i></a>6.&#x5177;&#x4F53;&#x7684;Diff&#x5206;&#x6790;</h2>
-<hr>
-<p>&#x4E0D;&#x8BBE;key&#xFF0C;newCh&#x548C;oldCh&#x53EA;&#x4F1A;&#x8FDB;&#x884C;&#x5934;&#x5C3E;&#x4E24;&#x7AEF;&#x7684;&#x76F8;&#x4E92;&#x6BD4;&#x8F83;&#xFF0C;&#x8BBE;key&#x540E;&#xFF0C;&#x9664;&#x4E86;&#x5934;&#x5C3E;&#x4E24;&#x7AEF;&#x7684;&#x6BD4;&#x8F83;&#x5916;&#xFF0C;&#x8FD8;&#x4F1A;&#x4ECE;&#x7528;key&#x751F;&#x6210;&#x7684;&#x5BF9;&#x8C61;oldKeyToIdx&#x4E2D;&#x67E5;&#x627E;&#x5339;&#x914D;&#x7684;&#x8282;&#x70B9;&#xFF0C;&#x6240;&#x4EE5;&#x4E3A;&#x8282;&#x70B9;&#x8BBE;&#x7F6E;key&#x53EF;&#x4EE5;&#x66F4;&#x9AD8;&#x6548;&#x7684;&#x5229;&#x7528;dom&#x3002;</p>
-<p>diff&#x7684;&#x904D;&#x5386;&#x8FC7;&#x7A0B;&#x4E2D;&#xFF0C;&#x53EA;&#x8981;&#x662F;&#x5BF9;dom&#x8FDB;&#x884C;&#x7684;&#x64CD;&#x4F5C;&#x90FD;&#x8C03;&#x7528;api.insertBefore&#xFF0C;api.insertBefore&#x53EA;&#x662F;&#x539F;&#x751F;insertBefore&#x7684;&#x7B80;&#x5355;&#x5C01;&#x88C5;&#x3002;
-&#x6BD4;&#x8F83;&#x5206;&#x4E3A;&#x4E24;&#x79CD;&#xFF0C;&#x4E00;&#x79CD;&#x662F;&#x6709;vnode.key&#x7684;&#xFF0C;&#x4E00;&#x79CD;&#x662F;&#x6CA1;&#x6709;&#x7684;&#x3002;&#x4F46;&#x8FD9;&#x4E24;&#x79CD;&#x6BD4;&#x8F83;&#x5BF9;&#x771F;&#x5B9E;dom&#x7684;&#x64CD;&#x4F5C;&#x662F;&#x4E00;&#x81F4;&#x7684;&#x3002;</p>
-<p>&#x5BF9;&#x4E8E;&#x4E0E;sameVnode(oldStartVnode, newStartVnode)&#x548C;sameVnode(oldEndVnode,newEndVnode)&#x4E3A;true&#x7684;&#x60C5;&#x51B5;&#xFF0C;&#x4E0D;&#x9700;&#x8981;&#x5BF9;dom&#x8FDB;&#x884C;&#x79FB;&#x52A8;&#x3002;</p>
-<p>&#x603B;&#x7ED3;&#x904D;&#x5386;&#x8FC7;&#x7A0B;&#xFF0C;&#x6709;3&#x79CD;dom&#x64CD;&#x4F5C;&#xFF1A;&#x4E0A;&#x8FF0;&#x56FE;&#x4E2D;&#x90FD;&#x6709;</p>
+    <span class="hljs-keyword">if</span> (oldStartIdx &gt; oldEndIdx) {
+      refElm = isUndef(newCh[newEndIdx + <span class="hljs-number">1</span>]) ? <span class="hljs-literal">null</span> : newCh[newEndIdx + <span class="hljs-number">1</span>].elm
+      addVnodes(parentElm, refElm, newCh, newStartIdx, newEndIdx, insertedVnodeQueue)
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (newStartIdx &gt; newEndIdx) {
+      removeVnodes(parentElm, oldCh, oldStartIdx, oldEndIdx)
+    }
+  }
+</code></pre>
 <ol>
-<li>&#x5F53;oldStartVnode&#xFF0C;newEndVnode&#x503C;&#x5F97;&#x6BD4;&#x8F83;&#xFF0C;&#x8BF4;&#x660E;oldStartVnode.el&#x8DD1;&#x5230;oldEndVnode.el&#x7684;&#x540E;&#x8FB9;&#x4E86;&#x3002;</li>
-<li>&#x5F53;oldEndVnode&#xFF0C;newStartVnode&#x503C;&#x5F97;&#x6BD4;&#x8F83;&#xFF0C;oldEndVnode.el&#x8DD1;&#x5230;&#x4E86;oldStartVnode.el&#x7684;&#x524D;&#x8FB9;&#xFF0C;&#x51C6;&#x786E;&#x7684;&#x8BF4;&#x5E94;&#x8BE5;&#x662F;oldEndVnode.el&#x9700;&#x8981;&#x79FB;&#x52A8;&#x5230;oldStartVnode.el&#x7684;&#x524D;&#x8FB9;&#x201D;&#x3002;</li>
-<li>newCh&#x4E2D;&#x7684;&#x8282;&#x70B9;oldCh&#x91CC;&#x6CA1;&#x6709;&#xFF0C; &#x5C06;&#x65B0;&#x8282;&#x70B9;&#x63D2;&#x5165;&#x5230;oldStartVnode.el&#x7684;&#x524D;&#x8FB9;</li>
-</ol>
-<p>&#x5728;&#x7ED3;&#x675F;&#x65F6;&#xFF0C;&#x5206;&#x4E3A;&#x4E24;&#x79CD;&#x60C5;&#x51B5;&#xFF1A;</p>
-<ol>
-<li>oldStartIdx &gt; oldEndIdx&#xFF0C;&#x53EF;&#x4EE5;&#x8BA4;&#x4E3A;oldCh&#x5148;&#x904D;&#x5386;&#x5B8C;&#x3002;&#x5F53;&#x7136;&#x4E5F;&#x6709;&#x53EF;&#x80FD;newCh&#x6B64;&#x65F6;&#x4E5F;&#x6B63;&#x597D;&#x5B8C;&#x6210;&#x4E86;&#x904D;&#x5386;&#xFF0C;&#x7EDF;&#x4E00;&#x90FD;&#x5F52;&#x4E3A;&#x6B64;&#x7C7B;&#x3002;&#x6B64;&#x65F6;newStartIdx&#x548C;newEndIdx&#x4E4B;&#x95F4;&#x7684;vnode&#x662F;&#x65B0;&#x589E;&#x7684;&#xFF0C;&#x8C03;&#x7528;addVnodes&#xFF0C;&#x628A;&#x4ED6;&#x4EEC;&#x5168;&#x90E8;&#x63D2;&#x8FDB;before&#x7684;&#x540E;&#x8FB9;&#xFF0C;before&#x5F88;&#x591A;&#x65F6;&#x5019;&#x662F;&#x4E3A;null&#x7684;&#x3002;addVnodes&#x8C03;&#x7528;&#x7684;&#x662F;insertBefore&#x64CD;&#x4F5C;dom&#x8282;&#x70B9;&#xFF0C;&#x6211;&#x4EEC;&#x770B;&#x770B;insertBefore&#x7684;&#x6587;&#x6863;&#xFF1A;parentElement.insertBefore(newElement, referenceElement)
-&#x5982;&#x679C;referenceElement&#x4E3A;null&#x5219;newElement&#x5C06;&#x88AB;&#x63D2;&#x5165;&#x5230;&#x5B50;&#x8282;&#x70B9;&#x7684;&#x672B;&#x5C3E;&#x3002;&#x5982;&#x679C;newElement&#x5DF2;&#x7ECF;&#x5728;DOM&#x6811;&#x4E2D;&#xFF0C;newElement&#x9996;&#x5148;&#x4F1A;&#x4ECE;DOM&#x6811;&#x4E2D;&#x79FB;&#x9664;&#x3002;&#x6240;&#x4EE5;before&#x4E3A;null&#xFF0C;newElement&#x5C06;&#x88AB;&#x63D2;&#x5165;&#x5230;&#x5B50;&#x8282;&#x70B9;&#x7684;&#x672B;&#x5C3E;&#x3002;</li>
-<li>newStartIdx &gt; newEndIdx&#xFF0C;&#x53EF;&#x4EE5;&#x8BA4;&#x4E3A;newCh&#x5148;&#x904D;&#x5386;&#x5B8C;&#x3002;&#x6B64;&#x65F6;oldStartIdx&#x548C;oldEndIdx&#x4E4B;&#x95F4;&#x7684;vnode&#x5728;&#x65B0;&#x7684;&#x5B50;&#x8282;&#x70B9;&#x91CC;&#x5DF2;&#x7ECF;&#x4E0D;&#x5B58;&#x5728;&#x4E86;&#xFF0C;&#x8C03;&#x7528;removeVnodes&#x5C06;&#x5B83;&#x4EEC;&#x4ECE;dom&#x91CC;&#x5220;&#x9664; </li>
+<li><p>&#x5206;&#x522B;&#x83B7;&#x53D6;oldVnode&#x548C;vnode&#x7684;firstChild&#x3001;lastChild&#xFF0C;&#x8D4B;&#x503C;&#x7ED9;oldStartVnode&#x3001;oldEndVnode&#x3001;newStartVnode&#x3001;newEndVnode</p>
+</li>
+<li><p>&#x5982;&#x679C;oldStartVnode&#x548C;newStartVnode&#x662F;&#x540C;&#x4E00;&#x8282;&#x70B9;&#xFF0C;&#x8C03;&#x7528;patchVnode&#x8FDB;&#x884C;patch&#xFF0C;&#x7136;&#x540E;&#x5C06;oldStartVnode&#x548C;newStartVnode&#x90FD;&#x8BBE;&#x7F6E;&#x4E3A;&#x4E0B;&#x4E00;&#x4E2A;&#x5B50;&#x8282;&#x70B9;&#xFF0C;&#x91CD;&#x590D;&#x4E0A;&#x8FF0;&#x6D41;&#x7A0B;
+<img src="../../image/vue/diff-1.png" alt="img"></p>
+</li>
+<li><p>&#x5982;&#x679C;oldEndVnode&#x548C;newEndVnode&#x662F;&#x540C;&#x4E00;&#x8282;&#x70B9;&#xFF0C;&#x8C03;&#x7528;patchVnode&#x8FDB;&#x884C;patch&#xFF0C;&#x7136;&#x540E;&#x5C06;oldEndVnode&#x548C;newEndVnode&#x90FD;&#x8BBE;&#x7F6E;&#x4E3A;&#x4E0A;&#x4E00;&#x4E2A;&#x5B50;&#x8282;&#x70B9;&#xFF0C;&#x91CD;&#x590D;&#x4E0A;&#x8FF0;&#x6D41;&#x7A0B;
+<img src="../../image/vue/diff-2.png" alt="img"></p>
+</li>
+<li><p>&#x5982;&#x679C;oldStartVnode&#x548C;newEndVnode&#x662F;&#x540C;&#x4E00;&#x8282;&#x70B9;&#xFF0C;&#x8C03;&#x7528;patchVnode&#x8FDB;&#x884C;patch&#xFF0C;&#x5982;&#x679C;removeOnly&#x662F;false&#xFF0C;&#x90A3;&#x4E48;&#x53EF;&#x4EE5;&#x628A;oldStartVnode.elm&#x79FB;&#x52A8;&#x5230;oldEndVnode.elm&#x4E4B;&#x540E;&#xFF0C;&#x7136;&#x540E;&#x628A;oldStartVnode&#x8BBE;&#x7F6E;&#x4E3A;&#x4E0B;&#x4E00;&#x4E2A;&#x8282;&#x70B9;&#xFF0C;newEndVnode&#x8BBE;&#x7F6E;&#x4E3A;&#x4E0A;&#x4E00;&#x4E2A;&#x8282;&#x70B9;&#xFF0C;&#x91CD;&#x590D;&#x4E0A;&#x8FF0;&#x6D41;&#x7A0B;
+<img src="../../image/vue/diff-3.png" alt="img"></p>
+</li>
+<li><p>&#x5982;&#x679C;newStartVnode&#x548C;oldEndVnode&#x662F;&#x540C;&#x4E00;&#x8282;&#x70B9;&#xFF0C;&#x8C03;&#x7528;patchVnode&#x8FDB;&#x884C;patch&#xFF0C;&#x5982;&#x679C;removeOnly&#x662F;false&#xFF0C;&#x90A3;&#x4E48;&#x53EF;&#x4EE5;&#x628A;oldEndVnode.elm&#x79FB;&#x52A8;&#x5230;oldStartVnode.elm&#x4E4B;&#x524D;&#xFF0C;&#x7136;&#x540E;&#x628A;newStartVnode&#x8BBE;&#x7F6E;&#x4E3A;&#x4E0B;&#x4E00;&#x4E2A;&#x8282;&#x70B9;&#xFF0C;oldEndVnode&#x8BBE;&#x7F6E;&#x4E3A;&#x4E0A;&#x4E00;&#x4E2A;&#x8282;&#x70B9;&#xFF0C;&#x91CD;&#x590D;&#x4E0A;&#x8FF0;&#x6D41;&#x7A0B;
+<img src="../../image/vue/diff-4.png" alt="img"></p>
+</li>
+<li><p>&#x5982;&#x679C;&#x4EE5;&#x4E0A;&#x90FD;&#x4E0D;&#x5339;&#x914D;&#xFF0C;&#x5C31;&#x5C1D;&#x8BD5;&#x5728;oldChildren&#x4E2D;&#x5BFB;&#x627E;&#x8DDF;newStartVnode&#x5177;&#x6709;&#x76F8;&#x540C;key&#x7684;&#x8282;&#x70B9;&#xFF0C;&#x5982;&#x679C;&#x627E;&#x4E0D;&#x5230;&#x76F8;&#x540C;key&#x7684;&#x8282;&#x70B9;&#xFF0C;&#x8BF4;&#x660E;newStartVnode&#x662F;&#x4E00;&#x4E2A;&#x65B0;&#x8282;&#x70B9;&#xFF0C;&#x5C31;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#xFF0C;&#x7136;&#x540E;&#x628A;newStartVnode&#x8BBE;&#x7F6E;&#x4E3A;&#x4E0B;&#x4E00;&#x4E2A;&#x8282;&#x70B9;</p>
+</li>
+<li><p>&#x5982;&#x679C;&#x4E0A;&#x4E00;&#x6B65;&#x627E;&#x5230;&#x4E86;&#x8DDF;newStartVnode&#x76F8;&#x540C;key&#x7684;&#x8282;&#x70B9;&#xFF0C;&#x901A;&#x8FC7;&#x5176;&#x4ED6;&#x5C5E;&#x6027;&#x7684;&#x6BD4;&#x8F83;&#x6765;&#x5224;&#x65AD;&#x8FD9;&#x4E24;&#x4E2A;&#x8282;&#x70B9;&#x662F;&#x5426;&#x662F;&#x540C;&#x4E00;&#x4E2A;&#x8282;&#x70B9;</p>
+<ul>
+<li>&#x5982;&#x679C;&#x662F;&#xFF0C;&#x8C03;&#x7528;patchVnode&#x8FDB;&#x884C;patch&#xFF0C;&#x5982;&#x679C;removeOnly&#x662F;false&#xFF0C;&#x5C31;&#x628A;newStartVnode.elm&#x63D2;&#x5165;&#x5230;oldStartVnode.elm&#x4E4B;&#x524D;&#xFF0C;&#x628A;newStartVnode&#x8BBE;&#x7F6E;&#x4E3A;&#x4E0B;&#x4E00;&#x4E2A;&#x8282;&#x70B9;&#xFF0C;&#x91CD;&#x590D;&#x4E0A;&#x8FF0;&#x6D41;&#x7A0B;</li>
+</ul>
+<p><img src="../../image/vue/diff-5.png" alt="img"></p>
+<ul>
+<li>&#x5982;&#x679C;key&#x76F8;&#x540C;&#x4F46;&#x4E0D;&#x662F;&#x540C;&#x4E00;&#x8282;&#x70B9;&#xFF0C;&#x521B;&#x5EFA;&#x65B0;&#x8282;&#x70B9;&#x63D2;&#x5165;&#x5230;oldStartVnode.elm&#x4E4B;&#x524D;</li>
+</ul>
+</li>
+<li><p>&#x5982;&#x679C;&#x5728;oldChildren&#x4E2D;&#x6CA1;&#x6709;&#x627E;&#x5230;newStartVnode&#x7684;&#x540C;&#x4E00;&#x8282;&#x70B9;&#xFF0C;&#x521B;&#x5EFA;&#x65B0;&#x8282;&#x70B9;&#x63D2;&#x5165;&#x5230;oldStartVnode.elm&#x4E4B;&#x524D;&#xFF0C;&#x628A;newStartVnode&#x8BBE;&#x7F6E;&#x4E3A;&#x4E0B;&#x4E00;&#x4E2A;&#x8282;&#x70B9;&#xFF0C;&#x91CD;&#x590D;&#x4E0A;&#x8FF0;&#x6D41;&#x7A0B;</p>
+</li>
+<li><p>&#x5982;&#x679C;oldStartVnode&#x5C0F;&#x4E8E;&#x7B49;&#x4E8E;oldEndVnode&#xFF0C;&#x5E76;&#x4E14;newStartVnode&#x5C0F;&#x4E8E;&#x7B49;&#x4E8E;newEndVnode&#xFF0C;&#x6267;&#x884C;&#x5FAA;&#x73AF;&#x4F53;&#xFF1B;&#x5426;&#x5219;&#x9000;&#x51FA;&#x5FAA;&#x73AF;</p>
+</li>
+<li><p>&#x5982;&#x679C;oldStartIdx &gt; oldEndIdx&#xFF0C;oldCh&#x5148;&#x904D;&#x5386;&#x5B8C;&#x3002;&#x6B64;&#x65F6;newStartIdx&#x548C;newEndIdx&#x4E4B;&#x95F4;&#x7684;vnode&#x662F;&#x65B0;&#x589E;&#x7684;&#xFF0C;&#x8C03;&#x7528;addVnodes&#xFF0C;addVnodes&#x8C03;&#x7528;insertBefore&#x64CD;&#x4F5C;dom&#x8282;&#x70B9;</p>
+</li>
+<li><p>&#x5982;&#x679C;newStartIdx &gt; newEndIdx&#xFF0C;newCh&#x5148;&#x904D;&#x5386;&#x5B8C;&#x3002;&#x6B64;&#x65F6;oldStartIdx&#x548C;oldEndIdx&#x4E4B;&#x95F4;&#x7684;vnode&#x5728;&#x65B0;&#x7684;&#x5B50;&#x8282;&#x70B9;&#x91CC;&#x5DF2;&#x7ECF;&#x4E0D;&#x5B58;&#x5728;&#x4E86;&#xFF0C;&#x8C03;&#x7528;removeVnodes&#x5220;&#x9664; </p>
+</li>
 </ol>
 <footer class="page-footer"><span class="copyright">Copyright &#xA9; leooman.com 2018 all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">&#x6587;&#x4EF6;&#x6700;&#x65B0;&#x53D1;&#x5E03;&#x65F6;&#x95F4;&#xFF1A;
-2020-03-09 00:15:47
+2020-03-09 12:31:45
 </span></footer>
                                 
                                 </section>
@@ -1543,7 +1418,7 @@ function applyNS (vnode, ns, force) {
 
             
                 
-                <a href="mvvm.html" class="navigation navigation-prev " aria-label="Previous page: 实现MVVM">
+                <a href="VNode.html" class="navigation navigation-prev " aria-label="Previous page: VNode">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
@@ -1559,7 +1434,7 @@ function applyNS (vnode, ns, force) {
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Diff算法","level":"1.4.2","depth":2,"next":{"title":"key","level":"1.4.3","depth":2,"path":"src/vue/key.md","ref":"src/vue/key.md","articles":[]},"previous":{"title":"实现MVVM","level":"1.4.1","depth":2,"path":"src/vue/mvvm.md","ref":"src/vue/mvvm.md","articles":[]},"dir":"ltr"},"config":{"plugins":["simple-page-toc@^0.1.1","github@^2.0.0","splitter@^0.0.8","tbfed-pagefooter@^0.0.1","anchor-navigation-ex@0.1.8","-sharing","sharing-plus@^0.0.2","expandable-chapters-small","chapter-fold"],"root":".","styles":{"website":"styles/website.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright © leooman.com 2018","modify_label":"文件最新发布时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"chapter-fold":{},"github":{"url":"https://github.com/Leooman"},"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"splitter":{},"search":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"serif","size":2},"highlight":{},"anchor-navigation-ex":{"isRewritePageTitle":true,"tocLevel1Icon":"fa fa-hand-o-right","tocLevel2Icon":"fa fa-hand-o-right","tocLevel3Icon":"fa fa-hand-o-right"},"expandable-chapters-small":{},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon","qq","qzone"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Leooman","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"","language":"zh-hans","links":{"sidebar":{}},"gitbook":"3.2.3","description":""},"file":{"path":"src/vue/diff.md","mtime":"2020-03-08T16:15:47.615Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-03-08T16:34:06.677Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Diff算法","level":"1.4.2","depth":2,"next":{"title":"key","level":"1.4.3","depth":2,"path":"src/vue/key.md","ref":"src/vue/key.md","articles":[]},"previous":{"title":"VNode","level":"1.4.1","depth":2,"path":"src/vue/VNode.md","ref":"src/vue/VNode.md","articles":[]},"dir":"ltr"},"config":{"plugins":["simple-page-toc@^0.1.1","github@^2.0.0","splitter@^0.0.8","tbfed-pagefooter@^0.0.1","anchor-navigation-ex@0.1.8","-sharing","sharing-plus@^0.0.2","expandable-chapters-small","chapter-fold"],"root":".","styles":{"website":"styles/website.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright © leooman.com 2018","modify_label":"文件最新发布时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"chapter-fold":{},"github":{"url":"https://github.com/Leooman"},"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"splitter":{},"search":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"serif","size":2},"highlight":{},"anchor-navigation-ex":{"isRewritePageTitle":true,"tocLevel1Icon":"fa fa-hand-o-right","tocLevel2Icon":"fa fa-hand-o-right","tocLevel3Icon":"fa fa-hand-o-right"},"expandable-chapters-small":{},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon","qq","qzone"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Leooman","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"","language":"zh-hans","links":{"sidebar":{}},"gitbook":"3.2.3","description":""},"file":{"path":"src/vue/diff.md","mtime":"2020-03-09T04:31:45.594Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-03-09T04:34:11.421Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
