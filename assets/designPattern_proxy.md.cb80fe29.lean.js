@@ -1,1 +1,0 @@
-import{_ as s,o as n,c as a,d as l}from"./app.acadfc2d.js";const i=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"designPattern/proxy.md"}'),p={name:"designPattern/proxy.md"},o=l("",2),t=[o];function e(c,r,y,F,D,C){return n(),a("div",null,t)}const m=s(p,[["render",e]]);export{i as __pageData,m as default};

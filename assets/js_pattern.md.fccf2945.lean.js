@@ -1,1 +1,0 @@
-import{_ as t,o as e,c as a,d as n}from"./app.acadfc2d.js";const h=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"js/pattern.md"}'),p={name:"js/pattern.md"},s=n("",16),o=[s];function l(r,d,c,i,u,_){return e(),a("div",null,o)}const b=t(p,[["render",l]]);export{h as __pageData,b as default};
