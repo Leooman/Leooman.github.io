@@ -1,0 +1,1 @@
+import{_ as s,o as n,c as a,d as l}from"./app.acadfc2d.js";const C=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"js/try-catch.md"}'),p={name:"js/try-catch.md"},o=l("",1),t=[o];function e(c,r,y,F,D,i){return n(),a("div",null,t)}const f=s(p,[["render",e]]);export{C as __pageData,f as default};

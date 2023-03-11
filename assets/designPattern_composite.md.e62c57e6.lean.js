@@ -1,0 +1,1 @@
+import{_ as s,o as n,c as a,d as l}from"./app.acadfc2d.js";const i=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"designPattern/composite.md"}'),p={name:"designPattern/composite.md"},o=l("",5),t=[o];function e(c,r,F,D,y,A){return n(),a("div",null,t)}const m=s(p,[["render",e]]);export{i as __pageData,m as default};

@@ -1,0 +1,1 @@
+import{_ as s,o as n,c as a,d as l}from"./app.acadfc2d.js";const C=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"js/aop.md"}'),p={name:"js/aop.md"},o=l("",9),t=[o];function e(c,r,y,F,D,A){return n(),a("div",null,t)}const f=s(p,[["render",e]]);export{C as __pageData,f as default};
