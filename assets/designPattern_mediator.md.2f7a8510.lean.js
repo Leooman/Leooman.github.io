@@ -1,1 +1,0 @@
-import{_ as s,c as n,o as a,a as l}from"./app.04bd075c.js";const i=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"designPattern/mediator.md"}'),p={name:"designPattern/mediator.md"},o=l("",3),t=[o];function e(c,r,F,y,D,C){return a(),n("div",null,t)}const E=s(p,[["render",e]]);export{i as __pageData,E as default};
