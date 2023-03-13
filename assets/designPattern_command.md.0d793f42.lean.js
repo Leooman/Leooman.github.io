@@ -1,0 +1,1 @@
+import{_ as s,c as n,o as a,a as l}from"./app.04bd075c.js";const i=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"designPattern/command.md"}'),p={name:"designPattern/command.md"},o=l("",2),t=[o];function e(c,r,F,y,D,A){return a(),n("div",null,t)}const m=s(p,[["render",e]]);export{i as __pageData,m as default};

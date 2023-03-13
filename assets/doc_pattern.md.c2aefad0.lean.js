@@ -1,1 +1,0 @@
-import{_ as t,o as e,c as a,d as n}from"./app.14d12b95.js";const h=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"doc/pattern.md"}'),p={name:"doc/pattern.md"},o=n("",16),s=[o];function l(r,d,c,i,u,_){return e(),a("div",null,s)}const b=t(p,[["render",l]]);export{h as __pageData,b as default};
