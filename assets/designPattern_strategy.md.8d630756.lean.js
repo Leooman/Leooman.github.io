@@ -1,0 +1,1 @@
+import{_ as s,o as n,c as a,d as l}from"./app.14d12b95.js";const i=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"designPattern/strategy.md"}'),p={name:"designPattern/strategy.md"},o=l("",4),t=[o];function e(c,r,y,F,D,A){return n(),a("div",null,t)}const f=s(p,[["render",e]]);export{i as __pageData,f as default};
