@@ -1,1 +1,0 @@
-import{_ as s,c as n,o as a,a as l}from"./app.2bd77815.js";const i=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"designPattern/iterator.md"}'),p={name:"designPattern/iterator.md"},o=l("",1),t=[o];function e(r,c,F,y,D,C){return a(),n("div",null,t)}const _=s(p,[["render",e]]);export{i as __pageData,_ as default};
