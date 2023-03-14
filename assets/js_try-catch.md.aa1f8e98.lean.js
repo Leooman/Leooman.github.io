@@ -1,1 +1,0 @@
-import{_ as s,c as n,o as a,a as l}from"./app.7e9b90cf.js";const C=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"js/try-catch.md"}'),p={name:"js/try-catch.md"},o=l("",1),t=[o];function e(c,r,y,F,D,i){return a(),n("div",null,t)}const f=s(p,[["render",e]]);export{C as __pageData,f as default};

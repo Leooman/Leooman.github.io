@@ -1,1 +1,0 @@
-import{_ as s,c as n,o as a,a as o}from"./app.7e9b90cf.js";const i=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"designPattern/factory.md"}'),l={name:"designPattern/factory.md"},p=o("",1),e=[p];function t(c,r,y,D,F,A){return a(),n("div",null,e)}const _=s(l,[["render",t]]);export{i as __pageData,_ as default};
