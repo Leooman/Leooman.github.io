@@ -1,1 +1,0 @@
-import{_ as s,c as n,o as a,a as l}from"./app.2f36bf42.js";const C=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"js/aop.md"}'),p={name:"js/aop.md"},o=l("",9),t=[o];function e(c,r,y,F,D,A){return a(),n("div",null,t)}const f=s(p,[["render",e]]);export{C as __pageData,f as default};

@@ -1,0 +1,1 @@
+import{_ as s,c as n,o as a,a as l}from"./app.36ba4f36.js";const i=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"designPattern/state.md"}'),p={name:"designPattern/state.md"},o=l("",12),t=[o];function e(c,F,r,y,D,A){return a(),n("div",null,t)}const u=s(p,[["render",e]]);export{i as __pageData,u as default};
